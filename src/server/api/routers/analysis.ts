@@ -1,4 +1,3 @@
-import { env } from '@/env.mjs';
 import { bigIntToString } from '@/lib/toString';
 import { nodeDataProps } from '@/utils/parsePath';
 import { z } from 'zod';
@@ -33,25 +32,6 @@ export const analysisRouter = createTRPCRouter({
     };
     return result;
   }),
-  decisionTreeAnalysis: publicProcedure
-    .input(
-      z.object({
-        oid: z.number().optional(),
-        target: z.string().optional(),
-        features: z.array(z.string()).optional(),
-      }),
-    )
-    .query(async ({ input }) => {
-      if (!(input.oid && input.target && input.features)) return [];
-      const result = await fetch(
-        `${env.FLASK_URL}/api/decision_tree?` +
-          `oid=${input.oid}` +
-          `&target=${input.target}` +
-          `&features=${input.features}`,
-      );
-      const graph = await result.json();
-      return graph;
-    }),
   getTableName: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
     if (input === undefined) return undefined;
     const tableName = await ctx.prisma.object.findFirst({

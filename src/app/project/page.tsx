@@ -5,6 +5,7 @@ import PathAnalysis from '@/app/project/components/PathAnalysis';
 import SelectData from '@/app/project/components/SelectData';
 import StepperComponent from '@/app/project/components/StepperComponent';
 import Summary from '@/app/project/components/Summary';
+import { env } from '@/env.mjs';
 
 export default function ProjectPage() {
   const steps = [
@@ -18,7 +19,7 @@ export default function ProjectPage() {
   const components = [
     <SelectData key={0} />,
     <ColumnAnalysis key={1} />,
-    <PathAnalysis key={2} />,
+    <PathAnalysis server={`${env.FLASK_URL}/api/decision_tree`} key={2} />,
     <GenerateInfographic key={3} />,
     <Summary key={4} />,
     <AllCompleted key={5} />,

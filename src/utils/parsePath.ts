@@ -31,13 +31,12 @@ export interface DecisionTreeGraph {
 
 export type nodeDataProps = Record<number, Object[]>;
 
-export function parsePath(graph: DecisionTreeGraph, rootId: number = 0): DecisionTreePath[] {
+export function parsePath(graph: DecisionTreeGraph | null, rootId: number = 0): DecisionTreePath[] {
   const paths: DecisionTreePath[] = [];
-
-  if (!graph) return [];
 
   // DFS : Depth-First Search
   function dfs(currentId: number, path: number[]): void {
+    if (!graph) return;
     // 將目前節點加入路徑中
     path.push(currentId);
 

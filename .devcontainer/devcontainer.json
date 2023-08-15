@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "dataviz dev container",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick a Node version: 18, 16, 14.
+		// Append -bullseye or -buster to pin to an OS version.
+		// Use -bullseye variants on local arm64/Apple Silicon.
+		"args": {
+			"VARIANT": "18-bullseye"
+		}
+	},
+	"forwardPorts": [
+		3000
+	],
+	"postCreateCommand": "bash initial.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"meganrogge.template-string-converter",
+				"Prisma.prisma",
+				"yoavbls.pretty-ts-errors",
+				"christian-kohler.path-intellisense",
+				"quicktype.quicktype",
+				"christian-kohler.npm-intellisense",
+				"DavidAnson.vscode-markdownlint",
+				"shd101wyy.markdown-preview-enhanced",
+				"MariusAlchimavicius.json-to-ts",
+				"sleistner.vscode-fileutils",
+				"naumovs.color-highlight",
+				"streetsidesoftware.code-spell-checker",
+				"eamodio.gitlens",
+				"mhutchie.git-graph",
+				"ms-azuretools.vscode-docker"
+			]
+		}
+	},
+	"remoteUser": "node",
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": "os-provided"
+	},
+	"mounts": [
+		"source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+		"source=${localWorkspaceFolderBasename}-d3chart-node_modules,target=${containerWorkspaceFolder}/library/d3chart/node_modules,type=volume"
+	]
+}

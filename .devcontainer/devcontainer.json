@@ -22,18 +22,14 @@
 				"meganrogge.template-string-converter",
 				"Prisma.prisma",
 				"yoavbls.pretty-ts-errors",
-				"christian-kohler.path-intellisense",
 				"quicktype.quicktype",
-				"christian-kohler.npm-intellisense",
 				"DavidAnson.vscode-markdownlint",
 				"shd101wyy.markdown-preview-enhanced",
 				"MariusAlchimavicius.json-to-ts",
-				"sleistner.vscode-fileutils",
 				"naumovs.color-highlight",
 				"streetsidesoftware.code-spell-checker",
 				"eamodio.gitlens",
-				"mhutchie.git-graph",
-				"ms-azuretools.vscode-docker"
+				"mhutchie.git-graph"
 			]
 		}
 	},

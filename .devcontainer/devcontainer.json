@@ -29,7 +29,9 @@
 				"naumovs.color-highlight",
 				"streetsidesoftware.code-spell-checker",
 				"eamodio.gitlens",
-				"mhutchie.git-graph"
+				"mhutchie.git-graph",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"VisualStudioExptTeam.intellicode-api-usage-examples"
 			]
 		}
 	},

@@ -1,10 +1,11 @@
 import { CommandModal } from '@/components/Modal/CommandModal';
 import Navbar from '@/components/Navbar';
+import { env } from '@/env.mjs';
+import '@/styles/global.scss';
+import { Session } from 'next-auth';
 import { Provider } from '../components/Provider';
 import { TrpcProvider } from '../components/Provider/TrpcProvider';
 import style from '../styles/rootLayout.module.scss';
-import '@/styles/global.scss';
-import { Session } from 'next-auth';
 
 export const metadata = {
   title: 'DataViz',
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={style['custom-font']}>
       <body className="scrollbar-container">
-        <TrpcProvider>
+        <TrpcProvider httpBatchLink={env.TRPC_CLIENT_HTTP_BATCH_LINK}>
           <Provider session={session}>
             <div>
               <Navbar />

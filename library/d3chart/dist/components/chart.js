@@ -1,1 +1,0 @@
-import{select}from"d3";export function RemoveChart(element){select(element.current).selectAll("*").remove()}

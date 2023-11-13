@@ -84,24 +84,28 @@ export default function Navbar() {
               >
                 Chart library
               </NavbarMenuButton>
-              <NavbarMenuButton
-                active={splitPathName.length >= 2 && splitPathName[2] === 'data' ? true : false}
-                href="/management/data"
-              >
-                Data
-              </NavbarMenuButton>
-              <NavbarMenuButton
-                active={splitPathName.length >= 2 && splitPathName[2] === 'infographic' ? true : false}
-                href="/management/infographic"
-              >
-                Infographic
-              </NavbarMenuButton>
-              <NavbarMenuButton
-                active={splitPathName.length >= 2 && splitPathName[2] === 'settings' ? true : false}
-                href="/management/settings"
-              >
-                Settings
-              </NavbarMenuButton>
+              {status == 'authenticated' && (
+                <>
+                  <NavbarMenuButton
+                    active={splitPathName.length >= 2 && splitPathName[2] === 'data' ? true : false}
+                    href="/management/data"
+                  >
+                    Data
+                  </NavbarMenuButton>
+                  <NavbarMenuButton
+                    active={splitPathName.length >= 2 && splitPathName[2] === 'infographic' ? true : false}
+                    href="/management/infographic"
+                  >
+                    Infographic
+                  </NavbarMenuButton>
+                  <NavbarMenuButton
+                    active={splitPathName.length >= 2 && splitPathName[2] === 'settings' ? true : false}
+                    href="/management/settings"
+                  >
+                    Settings
+                  </NavbarMenuButton>
+                </>
+              )}
             </div>
           </div>
 
@@ -170,9 +174,13 @@ export default function Navbar() {
       {/*---------- Menu list open separator ----------*/}
       <NavbarMenu className={menuOpen ? style['navMenuOpen'] : style['navMenuClose']} onClose={handleClose}>
         <NavbarMenuItem href="/">Chart library</NavbarMenuItem>
-        <NavbarMenuItem href="/management/data">Data</NavbarMenuItem>
-        <NavbarMenuItem href="/management/infographic">Infographic</NavbarMenuItem>
-        <NavbarMenuItem href="/management/settings">Settings</NavbarMenuItem>
+        {status == 'authenticated' && (
+          <>
+            <NavbarMenuItem href="/management/data">Data</NavbarMenuItem>
+            <NavbarMenuItem href="/management/infographic">Infographic</NavbarMenuItem>
+            <NavbarMenuItem href="/management/settings">Settings</NavbarMenuItem>
+          </>
+        )}
         <NavbarMenuItem href="/">Feedback</NavbarMenuItem>
 
         {status === 'unauthenticated' && (

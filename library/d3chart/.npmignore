@@ -1,6 +1,0 @@
-node_modules
-.gitignore
-src/
-.babelrc
-package.lock.json
-temp/

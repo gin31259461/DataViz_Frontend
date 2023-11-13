@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Box,
+  Checkbox,
   Grid,
   IconButton,
   LinearProgress,
@@ -57,7 +58,8 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   const colors = tokens(theme.palette.mode);
 
   /** data state */
-  const [selectDataOid, setSelectDataOid] = useState<number | undefined>(undefined);
+  const [selectDataOID, setSelectDataOID] = useState<number | undefined>(undefined);
+  const [deleteDataOID, setDeleteDataOID] = useState<number[]>([]);
 
   /** page state */
   const [page, setPage] = useState(0);
@@ -84,7 +86,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     counts: counts,
     mid: mid,
   });
-  const dataTable = trpc.dataObject.getTop100FromDataTable.useQuery(selectDataOid);
+  const dataTable = trpc.dataObject.getTop100FromDataTable.useQuery(selectDataOID);
   const lastObjectID = trpc.dataObject.getLastObjectID.useQuery(mid);
   const postData = trpc.dataObject.postData.useMutation();
   const deleteData = trpc.dataObject.deleteData.useMutation();
@@ -97,7 +99,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   };
 
   const handleDataSetClick = (oid: number) => {
-    setSelectDataOid(oid);
+    setSelectDataOID(oid);
     setOpenDialog(true);
   };
 
@@ -146,11 +148,12 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     await dataCounts.refetch();
   };
 
-  const handleDelete = async (dataSetId: number) => {
-    await deleteData.mutateAsync({ mid: mid, oid: dataSetId });
+  const handleDelete = async (deleteIDs: number[]) => {
+    for (const i in deleteIDs) await deleteData.mutateAsync({ mid: mid, oid: deleteIDs[i] });
     setMessage('Delete Successfully');
     setDeleteSuccess(true);
-    setSelectDataOid(undefined);
+    setSelectDataOID(undefined);
+    setDeleteDataOID([]);
     await someDataObject.refetch();
     await dataCounts.refetch();
   };
@@ -193,7 +196,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                 color: colors.greenAccent[500],
               }}
             >
-              <TableCell align="left" sx={{ color: 'inherit', width: '10%' }}>
+              <TableCell align="left" sx={{ color: 'inherit', maxWidth: '10.5%' }}>
                 <div style={{ display: 'flex' }}>
                   ID
                   <TableSortLabel
@@ -203,7 +206,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                   ></TableSortLabel>
                 </div>
               </TableCell>
-              <TableCell sx={{ color: 'inherit', width: '50%' }}>
+              <TableCell sx={{ color: 'inherit', maxWidth: '37.5%' }}>
                 <div style={{ display: 'flex' }}>
                   Name
                   <TableSortLabel
@@ -213,7 +216,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                   ></TableSortLabel>
                 </div>
               </TableCell>
-              <TableCell sx={{ color: 'inherit', width: '20%' }}>
+              <TableCell sx={{ color: 'inherit', maxWidth: '25%' }}>
                 <div style={{ display: 'flex' }}>
                   Last Updated
                   <TableSortLabel
@@ -223,7 +226,10 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                   ></TableSortLabel>
                 </div>
               </TableCell>
-              <TableCell align="right" sx={{ color: 'inherit', width: '20%' }}>
+              <TableCell align="right" sx={{ color: 'inherit', maxWidth: '25%' }}>
+                {deleteDataOID.length > 0 && (
+                  <ConfirmDeleteButton onConfirm={handleDelete} deleteIDs={deleteDataOID}></ConfirmDeleteButton>
+                )}
                 Actions
               </TableCell>
             </TableRow>
@@ -240,12 +246,24 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                 <TableCell>{dataSet.name}</TableCell>
                 <TableCell>{dataSet.lastModified}</TableCell>
                 <TableCell align="right">
+                  <Checkbox
+                    checked={deleteDataOID.findIndex((value) => value == dataSet.id) >= 0}
+                    color="info"
+                    onChange={(e, checked) => {
+                      if (checked) {
+                        setDeleteDataOID([...deleteDataOID, dataSet.id]);
+                      } else {
+                        setDeleteDataOID(
+                          deleteDataOID.filter((v, i) => i != deleteDataOID.findIndex((value) => value == dataSet.id)),
+                        );
+                      }
+                    }}
+                  ></Checkbox>
                   <Tooltip title={'Edit data'}>
                     <IconButton onClick={() => handleEdit(dataSet.id)}>
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
-                  <ConfirmDeleteButton onConfirm={handleDelete} deleteID={dataSet.id}></ConfirmDeleteButton>
                   <Tooltip title={'View data'}>
                     <IconButton onClick={() => handleDataSetClick(dataSet.id)}>
                       <VisibilityIcon />
@@ -270,9 +288,9 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
       </Grid>
 
       <ShowDataDialog
-        title={someDataObject.data?.find((d) => d.id === selectDataOid)?.name}
-        description={someDataObject.data?.find((d) => d.id === selectDataOid)?.description}
-        dataInfo={'預覽前 10 筆資料'}
+        title={someDataObject.data?.find((d) => d.id === selectDataOID)?.name}
+        description={someDataObject.data?.find((d) => d.id === selectDataOID)?.description}
+        dataInfo={'Preview top 100 rows'}
         open={openDialog}
         onClose={handleCloseDialog}
       >

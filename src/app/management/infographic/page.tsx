@@ -1,12 +1,12 @@
 import Loader from '@/components/Loading/Loader';
-import { type InfoProject } from '@/types/InfoProject';
+import { type InfoProjectProps } from '@/types/InfoProject';
 import { lazy, Suspense } from 'react';
+import ProjectManager from './components/ProjectManager';
 
 const Dashboard = lazy(() => import('@/components/Dashboard'));
-const InfoProject = lazy(() => import('@/app/management/infographic/components'));
 
 export default function InfographicPage() {
-  const projects: InfoProject[] = [
+  const projects: InfoProjectProps[] = [
     {
       id: '0',
       name: 'name',
@@ -140,7 +140,7 @@ export default function InfographicPage() {
         <Dashboard>
           <div style={{ width: '100%' }}>
             <Suspense fallback={<Loader />}>
-              <InfoProject projects={projects}></InfoProject>
+              <ProjectManager projects={projects} />
             </Suspense>
           </div>
         </Dashboard>

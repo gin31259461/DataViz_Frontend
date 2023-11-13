@@ -22,12 +22,12 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
 
   return (
-    <Table {...getTableProps()}>
-      <TableHead id={headerID} sx={{ position: 'sticky' }}>
+    <Table {...getTableProps()} sx={{ position: 'relative' }}>
+      <TableHead id={headerID}>
         {headerGroups.map((headerGroup) => (
           <TableRow key={headerGroup.getHeaderGroupProps().key}>
             {headerGroup.headers.map((column) => (
-              <TableCell sx={{ whiteSpace: 'nowrap' }} key={column.getHeaderProps().key}>
+              <TableCell sx={{ whiteSpace: 'nowrap', position: 'sticky' }} key={column.getHeaderProps().key}>
                 {column.render('Header')}
               </TableCell>
             ))}

@@ -34,8 +34,10 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
       <Dialog
         open={open}
         onClose={() => {
-          onClose();
-          setFile(null);
+          if (!loading) {
+            onClose();
+            setFile(null);
+          }
         }}
       >
         <DialogTitle>Add new data</DialogTitle>
@@ -69,6 +71,7 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
         <DialogActions>
           <Button
             sx={{ color: 'inherit' }}
+            disabled={loading}
             onClick={() => {
               onClose();
               setName('');

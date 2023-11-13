@@ -1,13 +1,13 @@
 'use client';
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
-import { NavigationGroup, ProjectGroup, SearchProjectPage } from './CmdMenu';
-import { CommandModalContext } from './Provider';
 import '@/styles/command-modal.scss';
-import opacityToHexString from '@/utils/opacityToHexString';
+import convertOpacityToHexString from '@/utils/opacityToHexString';
 import { styled, useTheme } from '@mui/material';
 import { Command } from 'cmdk';
 import { Fragment, KeyboardEvent, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { NavigationGroup, ProjectGroup, SearchProjectPage } from './CmdMenu';
+import { CommandModalContext } from './Provider';
 
 export const CommandModal = () => {
   const theme = useTheme();
@@ -21,7 +21,7 @@ export const CommandModal = () => {
 
   const activePageStyle = {
     color: theme.palette.info.main,
-    backgroundColor: theme.palette.info.main + opacityToHexString(10),
+    backgroundColor: theme.palette.info.main + convertOpacityToHexString(10),
     border: `1px solid ${theme.palette.info.main}`,
   };
 

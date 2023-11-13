@@ -65,28 +65,31 @@ export default function AccountMenu({
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem
-          onClick={() => {
-            router.push('/management/profile');
-            handleClose();
-          }}
-        >
-          {avatar}
-          {userName ? userName : 'Profile'}
-        </MenuItem>
-        <Divider />
-
-        <MenuItem
-          onClick={() => {
-            router.push('/management/settings');
-            handleClose();
-          }}
-        >
-          <ListItemIcon>
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+        {authenticated && [
+          <MenuItem
+            onClick={() => {
+              router.push('/management/profile');
+              handleClose();
+            }}
+            key={0}
+          >
+            {avatar}
+            {userName ? userName : 'Profile'}
+          </MenuItem>,
+          <Divider key={1} />,
+          <MenuItem
+            onClick={() => {
+              router.push('/management/settings');
+              handleClose();
+            }}
+            key={2}
+          >
+            <ListItemIcon>
+              <SettingsIcon fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>,
+        ]}
 
         <MenuItem onClick={handleLoginOut}>
           <ListItemIcon>

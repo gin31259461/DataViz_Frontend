@@ -7,7 +7,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.string(),
     NODE_ENV: z.enum(['development', 'test', 'production']),
     NEXTAUTH_SECRET: process.env.NODE_ENV === 'production' ? z.string().min(1) : z.string().min(1).optional(),
     NEXTAUTH_URL: z.preprocess(
@@ -30,6 +30,7 @@ export const env = createEnv({
     WKESSO_CLIENT_SECRET: z.string(),
     WKESSO_CALLBACK_URL: z.string().url(),
     FLASK_URL: z.string().url(),
+    TRPC_CLIENT_HTTP_BATCH_LINK: z.string().url(),
   },
 
   /**
@@ -60,6 +61,7 @@ export const env = createEnv({
     WKESSO_CLIENT_SECRET: process.env.WKESSO_CLIENT_SECRET,
     WKESSO_CALLBACK_URL: process.env.WKESSO_CALLBACK_URL,
     FLASK_URL: process.env.FLASK_URL,
+    TRPC_CLIENT_HTTP_BATCH_LINK: process.env.TRPC_CLIENT_HTTP_BATCH_LINK,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

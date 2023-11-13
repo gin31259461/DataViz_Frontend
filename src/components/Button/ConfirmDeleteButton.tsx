@@ -8,20 +8,22 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 
 interface ConfirmDeleteButtonProps {
-  deleteID: number;
-  onConfirm: (dataSetId: number) => Promise<void>;
+  deleteIDs: number[];
+  onConfirm: (dataSetIds: number[]) => Promise<void>;
   onCancel?: () => void;
 }
 
-export default function ConfirmDeleteButton({ deleteID, onConfirm, onCancel }: ConfirmDeleteButtonProps) {
+export default function ConfirmDeleteButton({ deleteIDs: deleteOIDs, onConfirm, onCancel }: ConfirmDeleteButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    if (!loading) setOpen(false);
+  };
   const handleConfirm = async () => {
     setLoading(true);
-    await onConfirm(deleteID);
+    await onConfirm(deleteOIDs);
     handleClose();
     setLoading(false);
   };
@@ -41,9 +43,9 @@ export default function ConfirmDeleteButton({ deleteID, onConfirm, onCancel }: C
       </Tooltip>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Delete?</DialogTitle>
-        <DialogContent>Are you sure you want to delete this item?</DialogContent>
+        <DialogContent>Are you sure you want to delete this?</DialogContent>
         <DialogActions>
-          <Button sx={{ color: 'inherit' }} onClick={handleCancel}>
+          <Button sx={{ color: 'inherit' }} disabled={loading} onClick={handleCancel}>
             Cancel
           </Button>
           <Button sx={{ color: 'inherit' }} onClick={handleConfirm}>

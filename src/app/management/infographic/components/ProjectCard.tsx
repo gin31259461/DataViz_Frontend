@@ -1,11 +1,11 @@
 'use client';
 
-import { type InfoProject } from '@/types/InfoProject';
+import { type InfoProjectProps } from '@/types/InfoProject';
 import { tokens } from '@/utils/theme';
 import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
 
 interface ProjectCardProps {
-  project: InfoProject;
+  project: InfoProjectProps;
   active: boolean;
 }
 

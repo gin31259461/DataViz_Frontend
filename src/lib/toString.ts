@@ -1,6 +1,6 @@
 import { roundNumberToDecimalPlaces } from './math';
 
-export const bigIntToString = (obj: any): unknown => {
+export const bigIntToString = (obj: any): any => {
   if (typeof obj !== 'object' || obj === null) {
     return obj;
   }

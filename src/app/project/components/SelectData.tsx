@@ -1,26 +1,46 @@
 'use client';
 
-import { useProjectStore } from '@/hooks/store/useProjectStore';
+import { BasicColumnTypesMapping, useProjectStore } from '@/hooks/store/useProjectStore';
 import { useUserStore } from '@/hooks/store/useUserStore';
 import { trpc } from '@/server/trpc';
 import { Box, LinearProgress, Typography } from '@mui/material';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import AutoCompleteSelect from '../../../components/Select/AutoCompleteSelect';
 import ObjectTable from '../../../components/Table/ObjectTable';
 
 export default function SelectData() {
   const mid = useUserStore((state) => state.mid);
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const setDataOID = useProjectStore((state) => state.setDataOID);
-  const clear = useProjectStore((state) => state.clear);
   const allData = trpc.dataObject.getAllUserData.useQuery(mid);
-  const userDataTable = trpc.dataObject.getTop100FromDataTable.useQuery(selectedDataOID);
+
+  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const setDataOID = useProjectStore((state) => state.setSelectedDataOID);
+  const setColumnTypes = useProjectStore((state) => state.setColumnTypesMapping);
+  const clearProjectStore = useProjectStore((state) => state.clear);
+
+  const previewSelectedData = trpc.dataObject.getTop100FromDataTable.useQuery(selectedDataOID);
   const dataTableCount = trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
+
+  useEffect(() => {
+    if (previewSelectedData.data && previewSelectedData.data.length > 0) {
+      const columns = Object.keys(previewSelectedData.data[0]);
+      const columnTypesMapping: BasicColumnTypesMapping = { string: [], number: [], Date: [] };
+
+      columns.forEach((col) => {
+        const value = previewSelectedData.data[0][col];
+        if (!isNaN(Date.parse(value)) && new Date(value).getFullYear() <= new Date().getFullYear())
+          columnTypesMapping['Date'].push(col);
+        else if (Number.parseInt(value).toString() == value) columnTypesMapping['number'].push(col);
+        else columnTypesMapping['string'].push(col);
+      });
+
+      setColumnTypes(columnTypesMapping);
+    }
+  }, [previewSelectedData, setColumnTypes]);
 
   const handleSelectChange = (value: string) => {
     if (allData.isSuccess) {
-      clear();
-      setDataOID(Number(value.split('.')[0]));
+      clearProjectStore();
+      setDataOID(Number(value.split(':')[0]));
     }
   };
 
@@ -38,6 +58,7 @@ export default function SelectData() {
         overflowY: 'auto',
         padding: 2,
         width: '100%',
+        position: 'relative',
       }}
     >
       <AutoCompleteSelect
@@ -46,17 +67,17 @@ export default function SelectData() {
             ?.sort((a, b) => {
               return b.OID - a.OID;
             })
-            .map((d, i) => d.OID.toString() + '. ' + d.CName) ?? []
+            .map((d, i) => d.OID.toString() + ' : ' + d.CName) ?? []
         }
         initialValueIndex={allData.data?.findIndex((d) => d.OID == selectedDataOID) ?? 0}
         onChange={handleSelectChange}
         loading={allData.isLoading}
       ></AutoCompleteSelect>
-      {selectedDataOID !== -1 && userDataTable.isLoading && <LinearProgress color="info" sx={{ top: 10 }} />}
-      {userDataTable.data && userDataTable.data.length > 0 && (
+      {selectedDataOID !== -1 && previewSelectedData.isLoading && <LinearProgress color="info" sx={{ top: 10 }} />}
+      {previewSelectedData.data && previewSelectedData.data.length > 0 && (
         <div>
           {dataTableInfo}
-          <ObjectTable headerID="selected-data-table" data={userDataTable.data} />
+          <ObjectTable headerID="selected-data-table" data={previewSelectedData.data} />
         </div>
       )}
     </Box>

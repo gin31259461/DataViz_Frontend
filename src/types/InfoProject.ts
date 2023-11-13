@@ -1,4 +1,4 @@
-export interface InfoProject {
+export interface InfoProjectProps {
   id: string;
   name: string;
   description: string;

@@ -35,6 +35,13 @@ export const dataObjectRouter = createTRPCRouter({
     const convertedData = data.map((obj) => bigIntToString(obj));
     return convertedData;
   }),
+  getAllFromDataTable: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
+    if (input === undefined) return [];
+    const query = `SELECT * FROM [RawDB].[dbo].[D${input}]`;
+    const data = await ctx.prisma.$queryRawUnsafe<Object[]>(query);
+    const convertedData: { [index: string]: any }[] = data.map<object>((obj) => bigIntToString(obj));
+    return convertedData;
+  }),
   getCountFromDataTable: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
     if (input === undefined) return 0;
     type countResult = { count: number };

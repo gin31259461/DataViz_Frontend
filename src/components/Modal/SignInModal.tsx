@@ -19,8 +19,6 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
   const theme = useTheme();
   const { data } = useSession();
   const buttonVariant = theme.palette.mode === 'dark' ? 'contained' : 'outlined';
-
-  const userMID = useUserStore((state) => state.mid);
   const setMID = useUserStore((state) => state.setMID);
 
   useEffect(() => {
@@ -31,34 +29,18 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
     onClose();
   };
 
-  const handleGoogleSignIn = () => {
-    signIn('google');
-    handleClose();
-  };
-
-  const handleDiscordSignIn = () => {
-    signIn('discord');
-    handleClose();
-  };
-
-  const handleGitHubSignIn = () => {
-    signIn('github');
-    handleClose();
-  };
-
-  const handleFacebookSignIn = () => {
-    signIn('facebook');
-    handleClose();
-  };
-
-  const handleWKESSOSignIn = () => {
-    signIn('wkesso');
+  const handleSignIn = (provider: string, action: () => void = () => {}) => {
+    signIn(provider);
+    action();
     handleClose();
   };
 
   const LoginButton = styled(Button)({
     height: 50,
-    width: 300,
+    width: 250,
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   });
 
   return (
@@ -72,49 +54,26 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
           justifyContent: 'center',
         }}
       >
-        <LoginButton
-          variant={buttonVariant}
-          color="primary"
-          startIcon={<Image src={'/assets/icons/google.svg'} height={30} width={30} alt="google"></Image>}
-          onClick={handleGoogleSignIn}
-        >
-          <div style={{ height: '50px', lineHeight: '50px' }}>Sign in with Google</div>
-        </LoginButton>
-
-        <LoginButton
-          variant={buttonVariant}
-          color="primary"
-          startIcon={<Image src={'/assets/icons/discord.svg'} height={30} width={30} alt="discord"></Image>}
-          onClick={handleDiscordSignIn}
-        >
-          <div style={{ height: '50px', lineHeight: '50px' }}>Sign in with Discord</div>
-        </LoginButton>
-
-        <LoginButton
-          variant={buttonVariant}
-          color="primary"
-          startIcon={<Image src={'/assets/icons/facebook.svg'} height={30} width={30} alt="facebook"></Image>}
-          onClick={handleFacebookSignIn}
-        >
-          <div style={{ height: '50px', lineHeight: '50px' }}>Sign in with Facebook</div>
-        </LoginButton>
-
-        <LoginButton
-          variant={buttonVariant}
-          color="primary"
-          startIcon={<Image src={'/assets/icons/github.svg'} height={30} width={30} alt="github"></Image>}
-          onClick={handleGitHubSignIn}
-        >
-          <div style={{ height: '50px', lineHeight: '50px' }}>Sign in with Github</div>
-        </LoginButton>
-
-        <LoginButton
-          variant={buttonVariant}
-          startIcon={<Image src={'/assets/icons/wkesso.ico'} height={30} width={30} alt="wkesso" />}
-          onClick={handleWKESSOSignIn}
-        >
-          <div style={{ height: '50px', lineHeight: '50px' }}>Sign in with WKE SSO</div>
-        </LoginButton>
+        {['Google', 'Discord', 'Facebook', 'Github', 'WKESSO'].map((provider, i) => {
+          return (
+            <LoginButton
+              variant={buttonVariant}
+              color="primary"
+              startIcon={
+                <Image
+                  src={`/assets/icons/${provider.toLowerCase()}.ico`}
+                  height={30}
+                  width={30}
+                  alt={provider}
+                ></Image>
+              }
+              onClick={() => handleSignIn(provider.toLowerCase())}
+              key={i}
+            >
+              <div>Sign in with {provider}</div>
+            </LoginButton>
+          );
+        })}
       </DialogContent>
 
       <DialogActions>

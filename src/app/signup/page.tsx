@@ -2,7 +2,7 @@
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import { trpc } from '@/server/trpc';
-import { validateEmail } from '@/utils/validateEmail';
+import { emailValidation } from '@/utils/validateEmail';
 import { Box, Button, CircularProgress, Container, Paper, TextField, Typography, useTheme } from '@mui/material';
 import { signIn, useSession } from 'next-auth/react';
 import { redirect, useSearchParams } from 'next/navigation';
@@ -94,7 +94,7 @@ export default function SignUp() {
         </Typography>
         <TextField
           value={email}
-          error={!isEmailUsed || !validateEmail(email)}
+          error={!isEmailUsed || !emailValidation(email)}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setEmail(e.target.value);
           }}
@@ -104,12 +104,12 @@ export default function SignUp() {
                 ? ''
                 : `An account already exists with this e-mail address. Please sign
                     in to that account first, then connect your ${provider} account.`}
-              {validateEmail(email) ? '' : 'Invalid e-mail format. Please try another one.'}
+              {emailValidation(email) ? '' : 'Invalid e-mail format. Please try another one.'}
             </Fragment>
           }
         ></TextField>
         <Button
-          disabled={!isEmailUsed || !isUsernameUsed || username.length <= 0 || !validateEmail(email) || pending}
+          disabled={!isEmailUsed || !isUsernameUsed || username.length <= 0 || !emailValidation(email) || pending}
           color="info"
           variant="contained"
           onClick={async () => {

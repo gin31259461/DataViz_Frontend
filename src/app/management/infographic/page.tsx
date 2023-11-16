@@ -134,6 +134,7 @@ export default function InfographicPage() {
       lastModified: 'latest',
     },
   ];
+
   return (
     <div>
       <Suspense fallback={<Loader />}>

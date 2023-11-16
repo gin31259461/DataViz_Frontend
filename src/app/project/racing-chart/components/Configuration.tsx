@@ -31,8 +31,8 @@ const CustomFromSelect: React.FC<CustomFromSelectProps> = (props) => {
     props.defaultValue
       ? props.items?.findIndex((value) => value == props.defaultValue).toString() ?? ''
       : props.items && props.items.length > 0
-      ? '0'
-      : '',
+        ? '0'
+        : '',
   );
 
   const handleChange = (event: SelectChangeEvent) => {

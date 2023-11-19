@@ -6,7 +6,7 @@
   "scripts": {
     "start": "next start",
     "container-dev": "WATCHPACK_POLLING=true next dev -H 127.0.0.1",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "lint": "next lint",
     "db-push": "prisma db push",

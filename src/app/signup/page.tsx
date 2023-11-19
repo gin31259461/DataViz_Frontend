@@ -2,13 +2,13 @@
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import { trpc } from '@/server/trpc';
-import { emailValidation } from '@/utils/validateEmail';
+import { emailValidation } from '@/utils/emailValidation';
 import { Box, Button, CircularProgress, Container, Paper, TextField, Typography, useTheme } from '@mui/material';
 import { signIn, useSession } from 'next-auth/react';
 import { redirect, useSearchParams } from 'next/navigation';
 import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 
-export default function SignUp() {
+export default function SignUpPage() {
   const { status } = useSession();
   const params = useSearchParams();
   const theme = useTheme();

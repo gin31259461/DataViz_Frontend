@@ -35,9 +35,9 @@ export const NavigationGroup = () => {
         <DatasetOutlinedIcon />
         Data
       </CommandModalItem>
-      <CommandModalItem value="infographic" onSelect={() => selectedHandler('/management/infographic')}>
+      <CommandModalItem value="project" onSelect={() => selectedHandler('/management/project')}>
         <ShowChartOutlinedIcon />
-        Infographic
+        Project
       </CommandModalItem>
       <CommandModalItem value="profile" onSelect={() => selectedHandler('/management/profile')}>
         <AccountBoxOutlinedIcon />

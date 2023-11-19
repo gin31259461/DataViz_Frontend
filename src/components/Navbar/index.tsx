@@ -94,9 +94,9 @@ export default function Navbar() {
                   </NavbarMenuButton>
                   <NavbarMenuButton
                     active={splitPathName.length >= 2 && splitPathName[2] === 'infographic' ? true : false}
-                    href="/management/infographic"
+                    href="/management/project"
                   >
-                    Infographic
+                    Project
                   </NavbarMenuButton>
                   <NavbarMenuButton
                     active={splitPathName.length >= 2 && splitPathName[2] === 'settings' ? true : false}
@@ -177,7 +177,7 @@ export default function Navbar() {
         {status == 'authenticated' && (
           <>
             <NavbarMenuItem href="/management/data">Data</NavbarMenuItem>
-            <NavbarMenuItem href="/management/infographic">Infographic</NavbarMenuItem>
+            <NavbarMenuItem href="/management/project">Project</NavbarMenuItem>
             <NavbarMenuItem href="/management/settings">Settings</NavbarMenuItem>
           </>
         )}

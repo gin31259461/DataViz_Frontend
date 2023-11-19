@@ -1,12 +1,10 @@
-import Loader from '@/components/Loading/Loader';
-import { type InfoProjectProps } from '@/types/InfoProject';
-import { lazy, Suspense } from 'react';
+import Dashboard from '@/components/Dashboard';
+import { type ProjectProps } from '@/types/InfoProject';
+import { Container } from '@mui/material';
 import ProjectManager from './components/ProjectManager';
 
-const Dashboard = lazy(() => import('@/components/Dashboard'));
-
-export default function InfographicPage() {
-  const projects: InfoProjectProps[] = [
+export default function ProjectPage() {
+  const projects: ProjectProps[] = [
     {
       id: '0',
       name: 'name',
@@ -136,16 +134,10 @@ export default function InfographicPage() {
   ];
 
   return (
-    <div>
-      <Suspense fallback={<Loader />}>
-        <Dashboard>
-          <div style={{ width: '100%' }}>
-            <Suspense fallback={<Loader />}>
-              <ProjectManager projects={projects} />
-            </Suspense>
-          </div>
-        </Dashboard>
-      </Suspense>
-    </div>
+    <Dashboard>
+      <Container>
+        <ProjectManager projects={projects} />
+      </Container>
+    </Dashboard>
   );
 }

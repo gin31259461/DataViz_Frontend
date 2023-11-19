@@ -1,10 +1,9 @@
 import Footer from '@/components/Footer';
-import Loader from '@/components/Loading/Loader';
 import { Container, Typography } from '@mui/material';
-import { lazy, Suspense } from 'react';
-import HomeIntro from './home/HomeIntro';
+import { lazy } from 'react';
+import HomeIntro from './components/HomeIntro';
 
-const Gallery = lazy(() => import('@/app/home/Gallery'));
+const Gallery = lazy(() => import('@/app/components/Gallery'));
 
 export default function Home() {
   return (
@@ -15,9 +14,7 @@ export default function Home() {
           <Typography variant="h3" sx={{ marginTop: 3, marginBottom: 3, textAlign: 'center' }}>
             Chart Library
           </Typography>
-          <Suspense fallback={<Loader />}>
-            <Gallery />
-          </Suspense>
+          <Gallery />
         </div>
       </Container>
       <Footer />

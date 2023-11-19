@@ -7,13 +7,6 @@ interface ProjectListProps {
 export default function ProjectList({ children }: ProjectListProps) {
   const theme = useTheme();
 
-  // useEffect(() => {
-  //   const TableHead = document.getElementById('project-list-table');
-  //   if (TableHead !== null) {
-  //     TableHead.style.top = `${TableHead.getBoundingClientRect().top + window.scrollY / 2}px`;
-  //   }
-  // }, []);
-
   return (
     <Table sx={{ position: 'relative' }}>
       <TableHead id="project-list-table">

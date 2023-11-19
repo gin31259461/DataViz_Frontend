@@ -34,7 +34,7 @@ function RaceChartPage() {
         components={components}
         backButtonDisabled={backButtonDisabled}
         nextButtonDisabled={nextButtonDisabled}
-        callback={() => router.push('/management/infographic')}
+        callback={() => router.push('/management/project')}
       />
     </CustomStepperContext.Provider>
   );

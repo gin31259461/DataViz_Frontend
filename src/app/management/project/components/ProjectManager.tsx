@@ -1,12 +1,14 @@
 'use client';
 
+import CardButton from '@/components/Button/CardButton';
+import IconCardButton from '@/components/Button/IconCardButton';
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import convertOpacityToHexString from '@/utils/opacityToHexString';
-import AddIcon from '@mui/icons-material/Add';
-import AddchartIcon from '@mui/icons-material/Addchart';
-import GridViewIcon from '@mui/icons-material/GridView';
-import ListIcon from '@mui/icons-material/List';
-import TimelineIcon from '@mui/icons-material/Timeline';
+import AddChartIcon from '@mui/icons-material/AddchartOutlined';
+import AddIcon from '@mui/icons-material/AddOutlined';
+import GridViewIcon from '@mui/icons-material/GridViewOutlined';
+import ListIcon from '@mui/icons-material/ListOutlined';
+import TimelineIcon from '@mui/icons-material/TimelineOutlined';
 import {
   Box,
   Container,
@@ -25,10 +27,8 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import CardButton from '../../../../components/Button/CardButton';
-import IconCardButton from '../../../../components/Button/IconCardButton';
 import ContextMenu from '../../../../components/ContextMenu';
-import { type InfoProjectProps } from '../../../../types/InfoProject';
+import { type ProjectProps } from '../../../../types/InfoProject';
 import ProjectCard from './ProjectCard';
 import ProjectList from './ProjectList';
 
@@ -36,7 +36,7 @@ type ViewMode = 'grid' | 'list';
 type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 
 type ProjectListProps = {
-  projects: InfoProjectProps[];
+  projects: ProjectProps[];
 };
 
 export default function ProjectManager({ projects }: ProjectListProps) {
@@ -83,13 +83,9 @@ export default function ProjectManager({ projects }: ProjectListProps) {
                 title="New racing chart project"
                 icon={<TimelineIcon color="info" />}
                 description=""
-                onClick={() => router.push('./project/racing-chart')}
+                onClick={() => router.push('/create/racing-chart')}
               ></CardButton>
-              <CardButton
-                title="New infographic project"
-                icon={<AddchartIcon color="info" />}
-                description=""
-              ></CardButton>
+              <CardButton title="New basic project" icon={<AddChartIcon color="info" />} description=""></CardButton>
             </DialogContent>
           </Dialog>
         </Grid>

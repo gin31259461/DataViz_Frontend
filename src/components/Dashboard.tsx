@@ -87,11 +87,11 @@ export default function Dashboard({ children }: DashboardProps) {
             </ListItemIcon>
             <ListItemText primary="Data" />
           </ListItemButton>
-          <ListItemButton href="/management/infographic">
+          <ListItemButton href="/management/project">
             <ListItemIcon>
               <ShowChartRoundedIcon />
             </ListItemIcon>
-            <ListItemText primary="Infographic" sx={{ whiteSpace: 'nowrap' }} />
+            <ListItemText primary="Project" sx={{ whiteSpace: 'nowrap' }} />
           </ListItemButton>
         </List>
         <Divider />

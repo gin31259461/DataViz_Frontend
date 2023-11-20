@@ -1,7 +1,7 @@
 import { createTRPCRouter } from '@/server/api/trpc';
 import { analysisRouter } from './routers/analysis';
-import { userRouter } from './routers/user';
-import { dataObjectRouter } from './routers/user-data';
+import { dataObjectRouter } from './routers/data';
+import { userRouter } from './routers/member';
 
 export const appRouter = createTRPCRouter({
   dataObject: dataObjectRouter,

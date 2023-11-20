@@ -1,6 +1,6 @@
 'use client';
 
-import { type ProjectProps } from '@/types/InfoProject';
+import { type ProjectProps } from '@/types/Project';
 import { tokens } from '@/utils/theme';
 import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
 

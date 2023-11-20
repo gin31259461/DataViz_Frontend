@@ -1,5 +1,5 @@
 import Dashboard from '@/components/Dashboard';
-import { type ProjectProps } from '@/types/InfoProject';
+import { type ProjectProps } from '@/types/Project';
 import { Container } from '@mui/material';
 import ProjectManager from './components/ProjectManager';
 

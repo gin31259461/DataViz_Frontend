@@ -28,7 +28,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ContextMenu from '../../../../components/ContextMenu';
-import { type ProjectProps } from '../../../../types/InfoProject';
+import { type ProjectProps } from '../../../../types/Project';
 import ProjectCard from './ProjectCard';
 import ProjectList from './ProjectList';
 

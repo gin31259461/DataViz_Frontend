@@ -3,10 +3,8 @@ import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
-// TODO: change schema
-
 export const dataObjectRouter = createTRPCRouter({
-  getUserDataCount: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
+  getMemberDataCount: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
     const count = await ctx.prisma.object.count({
       where: {
         OwnerMID: { equals: input },
@@ -15,7 +13,7 @@ export const dataObjectRouter = createTRPCRouter({
     });
     return count;
   }),
-  getSomeUserData: publicProcedure
+  getSomeMemberData: publicProcedure
     .input(z.object({ order: z.string(), start: z.number(), counts: z.number(), mid: z.number() }))
     .query(async ({ input, ctx }) => {
       const data = await ctx.prisma.vd_Data.findMany({
@@ -51,7 +49,7 @@ export const dataObjectRouter = createTRPCRouter({
     const result = await ctx.prisma.$queryRawUnsafe<countResult[]>(query);
     return result[0].count;
   }),
-  getAllUserData: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
+  getAllMemberData: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
     const result = await ctx.prisma.object.findMany({
       where: {
         OwnerMID: { equals: input },
@@ -74,7 +72,7 @@ export const dataObjectRouter = createTRPCRouter({
       const query = Prisma.sql`
         DECLARE @lastID NVARCHAR(MAX)
 
-        EXEC dbo.usp_PostData
+        EXEC dbo.xp_postData
           @mid = ${input.mid},
           @name = ${input.name},
           @des = ${input.des},
@@ -86,7 +84,7 @@ export const dataObjectRouter = createTRPCRouter({
     }),
   deleteData: publicProcedure.input(z.object({ mid: z.number(), oid: z.number() })).mutation(async ({ input, ctx }) => {
     const query = Prisma.sql`
-        EXEC dbo.usp_DeleteData
+        EXEC dbo.xp_deleteData
           @mid = ${input.mid},
           @oid = ${input.oid}
       `;

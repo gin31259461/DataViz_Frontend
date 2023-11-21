@@ -45,6 +45,10 @@ export function I3SPrismaAdapter(p: PrismaClient): Adapter {
         },
       });
 
+      // TODO: member class
+      // https://github.com/prisma/prisma/issues/7510
+      p.$executeRaw`exec xp_insertMemberClass ${obj.OID}`;
+
       return {
         ...data,
         id: obj.OID.toString(),

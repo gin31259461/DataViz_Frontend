@@ -10,7 +10,7 @@ import ObjectTable from '../../../components/Table/ObjectTable';
 
 export default function SelectData() {
   const mid = useUserStore((state) => state.mid);
-  const allData = trpc.dataObject.getAllUserData.useQuery(mid);
+  const allData = trpc.dataObject.getAllMemberData.useQuery(mid);
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const setDataOID = useProjectStore((state) => state.setSelectedDataOID);

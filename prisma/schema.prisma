@@ -1,5 +1,3 @@
-// TODO: change database schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["views"]
@@ -95,14 +93,6 @@ model Archive {
   @@index([MD5], map: "IX_Archive_MD5")
 }
 
-model Chart {
-  CID         Int           @id(map: "PK_Chart")
-  Type        String?       @db.NVarChar(20)
-  StyleJSTR   String?       @db.NVarChar(Max)
-  Object      Object        @relation(fields: [CID], references: [OID], onUpdate: NoAction, map: "FK_Chart_CID")
-  Infographic Infographic[]
-}
-
 model Class {
   CID                                 Int           @id(map: "PK_Class") @default(autoincrement())
   Type                                Int?          @db.SmallInt
@@ -155,10 +145,9 @@ model ContentType {
 }
 
 model Data {
-  DID         Int           @id(map: "PK_Data")
-  MD5         Bytes?        @db.Binary(16)
-  Object      Object        @relation(fields: [DID], references: [OID], onUpdate: NoAction, map: "FK_Data_DID")
-  Infographic Infographic[]
+  DID    Int    @id(map: "PK_Data")
+  MD5    Bytes? @db.Binary(16)
+  Object Object @relation(fields: [DID], references: [OID], onUpdate: NoAction, map: "FK_Data_DID")
 }
 
 model Entity {
@@ -202,17 +191,6 @@ model Groups {
   Since  DateTime @default(now(), map: "DF__Groups__Since__01142BA1") @db.DateTime
   Type   Int?     @db.TinyInt
   GM     GM[]
-}
-
-model Infographic {
-  IID    Int     @id(map: "PK_Infographic")
-  DID    Int
-  CID    Int
-  CJSTR  String? @db.NVarChar(Max)
-  DJSTR  String? @db.NVarChar(Max)
-  Chart  Chart   @relation(fields: [CID], references: [CID], onUpdate: NoAction, map: "FK_Infographic_CID")
-  Data   Data    @relation(fields: [DID], references: [DID], onUpdate: NoAction, map: "FK_Infographic_DID")
-  Object Object  @relation(fields: [IID], references: [OID], onUpdate: NoAction, map: "FK_Infographic_IID")
 }
 
 model Inheritance {
@@ -330,31 +308,29 @@ model Nation {
 }
 
 model Object {
-  OID                    Int          @id(map: "PK_Object") @default(autoincrement())
-  Type                   Int          @db.SmallInt
-  CName                  String?      @db.NVarChar(255)
-  CDes                   String?      @db.NVarChar(800)
-  EName                  String?      @db.NVarChar(255)
-  EDes                   String?      @db.NVarChar(800)
-  Since                  DateTime     @default(now(), map: "DF__Object__Since__3A81B327") @db.DateTime
-  LastModifiedDT         DateTime     @default(now(), map: "DF__Object__LastModi__3B75D760") @db.DateTime
-  OtherDT                DateTime     @default(now(), map: "DF__Object__OtherDT__3C69FB99") @db.DateTime
-  DataByte               Bytes?       @db.Binary(1)
+  OID                    Int         @id(map: "PK_Object") @default(autoincrement())
+  Type                   Int         @db.SmallInt
+  CName                  String?     @db.NVarChar(255)
+  CDes                   String?     @db.NVarChar(800)
+  EName                  String?     @db.NVarChar(255)
+  EDes                   String?     @db.NVarChar(800)
+  Since                  DateTime    @default(now(), map: "DF__Object__Since__3A81B327") @db.DateTime
+  LastModifiedDT         DateTime    @default(now(), map: "DF__Object__LastModi__3B75D760") @db.DateTime
+  OtherDT                DateTime    @default(now(), map: "DF__Object__OtherDT__3C69FB99") @db.DateTime
+  DataByte               Bytes?      @db.Binary(1)
   OwnerMID               Int?
-  nClick                 Int          @default(0, map: "DF__Object__nClick__3D5E1FD2")
+  nClick                 Int         @default(0, map: "DF__Object__nClick__3D5E1FD2")
   nOutlinks              Int?
   nInlinks               Int?
-  bPublished             Boolean      @default(true, map: "DF__Object__bPublish__3E52440B")
+  bPublished             Boolean     @default(true, map: "DF__Object__bPublish__3E52440B")
   Archive                Archive?
-  Chart                  Chart?
   CO                     CO[]
   Data                   Data?
-  Infographic            Infographic?
   InvIndexO              InvIndexO[]
-  Member                 Member?      @relation("Member_MIDToObject")
-  OwnerMIDToMember       Member?      @relation("Object_OwnerMIDToMember", fields: [OwnerMID], references: [MID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Object_OwnerMID")
-  ORel_ORel_OID1ToObject ORel[]       @relation("ORel_OID1ToObject")
-  ORel_ORel_OID2ToObject ORel[]       @relation("ORel_OID2ToObject")
+  Member                 Member?     @relation("Member_MIDToObject")
+  OwnerMIDToMember       Member?     @relation("Object_OwnerMIDToMember", fields: [OwnerMID], references: [MID], onDelete: NoAction, onUpdate: NoAction, map: "FK_Object_OwnerMID")
+  ORel_ORel_OID1ToObject ORel[]      @relation("ORel_OID1ToObject")
+  ORel_ORel_OID2ToObject ORel[]      @relation("ORel_OID2ToObject")
   OS                     OS[]
   Post                   Post?
   RawIndexO              RawIndexO[]
@@ -704,15 +680,4 @@ view vd_Data {
   lastModified String? @db.VarChar(30)
   frequency    Int
   md5          Bytes?  @db.Binary(16)
-}
-
-view vd_Chart {
-  id           Int     @id
-  title        String? @db.NVarChar(255)
-  subtitle     String? @db.NVarChar(255)
-  description  String? @db.NVarChar(800)
-  since        String? @db.VarChar(30)
-  lastModified String? @db.VarChar(30)
-  type         String? @db.NVarChar(20)
-  style        String? @db.NVarChar(Max)
 }

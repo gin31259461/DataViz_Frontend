@@ -79,8 +79,8 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   const [message, setMessage] = useState('');
 
   const start = page * counts;
-  const dataCounts = trpc.dataObject.getUserDataCount.useQuery(mid);
-  const someDataObject = trpc.dataObject.getSomeUserData.useQuery({
+  const dataCounts = trpc.dataObject.getMemberDataCount.useQuery(mid);
+  const someDataObject = trpc.dataObject.getSomeMemberData.useQuery({
     order: orderDirection,
     start: start + 1,
     counts: counts,

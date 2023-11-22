@@ -1,5 +1,4 @@
 import { bigIntToString } from '@/lib/toString';
-import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
@@ -33,6 +32,7 @@ export const dataObjectRouter = createTRPCRouter({
     const query = `SELECT TOP 100 * FROM [RawDB].[dbo].[D${input}]`;
     const data = await ctx.prisma.$queryRawUnsafe<Object[]>(query);
     const convertedData = data.map((obj) => bigIntToString(obj));
+    console.log(convertedData);
     return convertedData;
   }),
   getAllFromDataTable: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
@@ -58,7 +58,7 @@ export const dataObjectRouter = createTRPCRouter({
     });
     return result;
   }),
-  getLastObjectID: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
+  getObjectLastID: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
     const result = await ctx.prisma.$queryRaw<
       {
         last: number;
@@ -69,25 +69,10 @@ export const dataObjectRouter = createTRPCRouter({
   postData: publicProcedure
     .input(z.object({ mid: z.number(), name: z.string(), des: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const query = Prisma.sql`
-        DECLARE @lastID NVARCHAR(MAX)
-
-        EXEC dbo.xp_postData
-          @mid = ${input.mid},
-          @name = ${input.name},
-          @des = ${input.des},
-          @lastID = @lastID OUTPUT
-
-        SELECT @lastID as lastID
-      `;
-      await ctx.prisma.$queryRaw<Object[]>(query);
+      let lastID = null;
+      await ctx.prisma.$executeRaw`exec dbo.xp_postData ${input.mid}, ${input.name}, ${input.des}, ${lastID} output`;
     }),
   deleteData: publicProcedure.input(z.object({ mid: z.number(), oid: z.number() })).mutation(async ({ input, ctx }) => {
-    const query = Prisma.sql`
-        EXEC dbo.xp_deleteData
-          @mid = ${input.mid},
-          @oid = ${input.oid}
-      `;
-    await ctx.prisma.$queryRaw(query);
+    await ctx.prisma.$executeRaw`exec [dbo].[xp_deleteData] ${input.mid}, ${input.oid}`;
   }),
 });

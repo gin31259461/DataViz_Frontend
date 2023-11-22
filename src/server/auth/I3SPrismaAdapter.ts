@@ -45,9 +45,7 @@ export function I3SPrismaAdapter(p: PrismaClient): Adapter {
         },
       });
 
-      // TODO: member class
-      // https://github.com/prisma/prisma/issues/7510
-      p.$executeRaw`exec xp_insertMemberClass ${obj.OID}`;
+      await p.$executeRaw`exec [dbo].[xp_insertMemberClass] ${obj.OID}`;
 
       return {
         ...data,
@@ -182,6 +180,7 @@ export function I3SPrismaAdapter(p: PrismaClient): Adapter {
           },
         },
       });
+
       if (!userAndSession) return null;
       const { Member, ...session } = userAndSession;
       return new Promise((resolve, reject) => {

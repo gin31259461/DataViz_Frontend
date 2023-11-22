@@ -87,7 +87,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     mid: mid,
   });
   const dataTable = trpc.dataObject.getTop100FromDataTable.useQuery(selectDataOID);
-  const lastObjectID = trpc.dataObject.getLastObjectID.useQuery(mid);
+  const objectLastID = trpc.dataObject.getObjectLastID.useQuery(mid);
   const postData = trpc.dataObject.postData.useMutation();
   const deleteData = trpc.dataObject.deleteData.useMutation();
 
@@ -125,10 +125,10 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
         des: FormData.get('des')?.toString() ?? '',
       });
 
-      await lastObjectID.refetch();
+      await objectLastID.refetch();
 
-      if (lastObjectID.data) {
-        FormData.append('lastID', (Number(lastObjectID.data) + 1).toString());
+      if (objectLastID.data) {
+        FormData.append('lastID', (Number(objectLastID.data) + 1).toString());
         await fetch(`${flaskServer}/api/upload`, {
           method: 'POST',
           body: FormData,

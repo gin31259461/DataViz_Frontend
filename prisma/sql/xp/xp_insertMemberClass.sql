@@ -16,15 +16,11 @@ BEGIN
   WHERE PCID = 1
     AND Class.EName = 'Member'
 
-  DECLARE @CName NVARCHAR(400),
-    @EName NVARCHAR(400)
+  DECLARE @Account NVARCHAR(400)
 
-  SELECT @CName = CName,
-    @EName = EName
-  FROM [dbo].[Object]
-  WHERE OID = @MID
-
-  SET @CName = @CName + CAST(@MID AS NVARCHAR(2000))
+  SELECT @Account = Account
+  FROM [dbo].[Member]
+  WHERE MID = @MID
 
   DECLARE @CCID INT,
     @MemberIDPath NVARCHAR(255),
@@ -33,8 +29,8 @@ BEGIN
   -- insert member's class
   EXEC xp_insertClass @MemberClassID,
     1,
-    @CName,
-    @EName,
+    @Account,
+    'Member''s Class',
     @CCID OUTPUT
 
   UPDATE Member

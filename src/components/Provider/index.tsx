@@ -18,14 +18,16 @@ export function Provider({ children, session }: ProviderProps) {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <SessionProvider session={session}>
-          <CommandModalContext.Provider value={ControlCommandModal}>
-            <div>{children}</div>
-          </CommandModalContext.Provider>
-        </SessionProvider>
-      </ThemeProvider>
+      <div>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div>
+            <SessionProvider session={session} basePath="/api/auth">
+              <CommandModalContext.Provider value={ControlCommandModal}>{children}</CommandModalContext.Provider>
+            </SessionProvider>
+          </div>
+        </ThemeProvider>
+      </div>
     </ColorModeContext.Provider>
   );
 }

@@ -68,27 +68,18 @@ export const authOptions: NextAuthOptions = {
           Account: true,
           EMail: true,
           Valid: true,
+          CID: true,
         },
         where: {
           EMail: user.email ?? '',
         },
       });
 
-      const loggedInMember = await prisma.mSession.findFirst({
-        select: {
-          SID: true,
-          MID: true,
-        },
-        where: {
-          MID: signedMember?.MID,
-          ExpiredDT: {
-            gt: new Date(),
-          },
-        },
-      });
+      if (signedMember && signedMember.CID == null) {
+        await prisma.$executeRaw`exec [dbo].[xp_insertMemberClass] ${signedMember.MID}`;
+      }
 
-      if (!signedMember || loggedInMember) return true;
-      else if (!signedAccount && account) {
+      if (signedMember && !signedAccount && account) {
         const obj = await prisma.object.create({
           data: {
             Type: 2,
@@ -113,7 +104,7 @@ export const authOptions: NextAuthOptions = {
           },
         });
         return `/signup?provider=${account?.provider}&username=${signedMember.Account}&email=${signedMember.EMail}&MID=${obj.OID}`;
-      } else if (signedAccount && !signedMember.Valid) {
+      } else if (signedMember && signedAccount && !signedMember.Valid) {
         return `/signup?provider=${account?.provider}&MID=${signedMember.MID}`;
       }
 

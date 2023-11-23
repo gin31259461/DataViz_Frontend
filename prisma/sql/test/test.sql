@@ -1,12 +1,27 @@
---select * from Object
---select * from Member
---select * from Class
+SELECT *
+FROM Object
+SELECT * from Account
+SELECT *
+FROM Member
+SELECT *
+FROM Class
 
---delete from Member where MID >= 536
---delete from Object where OID >= 536
+DELETE FROM Member WHERE MID >= 536
+DELETE FROM Object WHERE OID >= 536
+SELECT *
+FROM Inheritance
 
---exec xp_deleteClass 67
---exec xp_insertMemberClass 297
 
-select * from Entity
-select * from MSession
+EXEC xp_insertMemberClass 297
+
+
+-- delete member
+declare @ID int
+set @ID = 557
+delete from [Object] WHERE OID = @ID
+delete from [Member] WHERE MID = @ID
+DELETE from [Account] where MID = @ID
+
+EXEC xp_deleteClass 107
+EXEC xp_deleteClass 108
+EXEC xp_deleteClass 109

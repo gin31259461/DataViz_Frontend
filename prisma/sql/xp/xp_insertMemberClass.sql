@@ -4,53 +4,40 @@ GO
 CREATE
   OR
 
-ALTER PROCEDURE xp_insertMemberClass @MID INT
-  -- 新創建會員的 ID
+ALTER PROCEDURE xp_insertMemberClass
+  @MID INT
+-- 新創建會員的 ID
 AS
 BEGIN
-  DECLARE @MemberClassID INT
+  DECLARE @Member INT
 
-  SELECT @MemberClassID = CID
-  FROM Class,
-    Inheritance
-  WHERE PCID = 1
-    AND Class.EName = 'Member'
+  SELECT @Member = CID
+  FROM Class
+  WHERE nLevel = 1 AND Class.EName = 'Member'
 
-  DECLARE @Account NVARCHAR(400)
+  DECLARE @Account NVARCHAR(255), @CName NVARCHAR(255)
 
   SELECT @Account = Account
   FROM [dbo].[Member]
   WHERE MID = @MID
 
-  DECLARE @CCID INT,
-    @MemberIDPath NVARCHAR(255),
-    @MemberNamePath NVARCHAR(800)
+  DECLARE @CCID INT
 
   -- insert member's class
-  EXEC xp_insertClass @MemberClassID,
+  EXEC xp_insertClass @Member,
     1,
     @Account,
-    'Member''s Class',
+    'Member',
     @CCID OUTPUT
 
   UPDATE Member
   SET CID = @CCID
   WHERE MID = @MID
 
-  SELECT @MemberIDPath = IDPath,
-    @MemberNamePath = NamePath
-  FROM Class
-  WHERE CID = @CCID
-
   -- insert project class to member's class
   EXEC xp_insertClass @CCID,
-    1,
+    8,
     '專案',
     'Project',
     @CCID OUTPUT
-
-  UPDATE Class
-  SET IDPath = @MemberIDPath + '/' + IDPath,
-    NamePath = @MemberNamePath + '/' + NamePath
-  WHERE CID = @CCID
 END

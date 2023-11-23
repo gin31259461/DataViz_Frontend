@@ -1,5 +1,5 @@
 import { createTRPCRouter } from '@/server/api/trpc';
-import { analysisRouter } from './routers/analysis';
+import { analysisRouter } from '../../../temp/analysis';
 import { dataObjectRouter } from './routers/data';
 import { userRouter } from './routers/member';
 

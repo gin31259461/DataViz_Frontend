@@ -3,6 +3,7 @@
   "C_Cpp.intelliSenseEngineFallback": "enabled",
   "cSpell.words": [
     "Addchart",
+    "executesql",
     "tanstack",
     "visx"
   ]

@@ -10,47 +10,47 @@ import ObjectTable from '../../../components/Table/ObjectTable';
 
 export default function SelectData() {
   const mid = useUserStore((state) => state.mid);
-  const allData = trpc.dataObject.getAllMemberData.useQuery(mid);
+  const allMemberData = trpc.dataObject.getAllMemberData.useQuery(mid);
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const setDataOID = useProjectStore((state) => state.setSelectedDataOID);
-  const setColumnTypes = useProjectStore((state) => state.setColumnTypesMapping);
+  const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataOID);
+  const setColumnTypesMapping = useProjectStore((state) => state.setColumnTypesMapping);
   const clearProjectStore = useProjectStore((state) => state.clear);
 
-  const previewSelectedData = trpc.dataObject.getTop100FromDataTable.useQuery(selectedDataOID);
-  const dataTableCount = trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
+  const top100FromDataTable = trpc.dataObject.getTop100FromDataTable.useQuery(selectedDataOID);
+  const rowsCountFromDataTable = trpc.dataObject.getRowsCountFromDataTable.useQuery(selectedDataOID);
 
   useEffect(() => {
-    if (previewSelectedData.data && previewSelectedData.data.length > 0) {
-      const columns = Object.keys(previewSelectedData.data[0]);
+    if (top100FromDataTable.data && top100FromDataTable.data.length > 0) {
+      const columns = Object.keys(top100FromDataTable.data[0]);
       const columnTypesMapping: BasicColumnTypesMapping = { string: [], number: [], Date: [] };
 
       columns.forEach((col) => {
-        const value = previewSelectedData.data[0][col];
+        const value = top100FromDataTable.data[0][col];
         if (!isNaN(Date.parse(value)) && new Date(value).getFullYear() <= new Date().getFullYear())
           columnTypesMapping['Date'].push(col);
         else if (Number.parseInt(value).toString() == value) columnTypesMapping['number'].push(col);
         else columnTypesMapping['string'].push(col);
       });
 
-      setColumnTypes(columnTypesMapping);
+      setColumnTypesMapping(columnTypesMapping);
     }
-  }, [previewSelectedData, setColumnTypes]);
+  }, [top100FromDataTable, setColumnTypesMapping]);
 
   const handleSelectChange = (value: string) => {
-    if (allData.isSuccess) {
+    if (allMemberData.isSuccess) {
       clearProjectStore();
-      setDataOID(Number(value.split(':')[0]));
+      setSelectedDataOID(Number(value.split(':')[0]));
     }
   };
 
   const dataTableInfo = useMemo(() => {
     return (
       <Typography sx={{ padding: 2 }} variant="h6">
-        Total row : <strong>{dataTableCount.data}</strong>, only show top <strong>100</strong> row
+        Total row : <strong>{rowsCountFromDataTable.data}</strong>, only show top <strong>100</strong> row
       </Typography>
     );
-  }, [dataTableCount]);
+  }, [rowsCountFromDataTable]);
 
   return (
     <Box
@@ -63,21 +63,21 @@ export default function SelectData() {
     >
       <AutoCompleteSelect
         options={
-          allData.data
+          allMemberData.data
             ?.sort((a, b) => {
-              return b.OID - a.OID;
+              return b.id - a.id;
             })
-            .map((d, i) => d.OID.toString() + ' : ' + d.CName) ?? []
+            .map((d, i) => d.id.toString() + ' : ' + d.name) ?? []
         }
-        initialValueIndex={allData.data?.findIndex((d) => d.OID == selectedDataOID) ?? 0}
+        initialValueIndex={allMemberData.data?.findIndex((d) => d.id == selectedDataOID) ?? 0}
         onChange={handleSelectChange}
-        loading={allData.isLoading}
+        loading={allMemberData.isLoading}
       ></AutoCompleteSelect>
-      {selectedDataOID !== -1 && previewSelectedData.isLoading && <LinearProgress color="info" sx={{ top: 10 }} />}
-      {previewSelectedData.data && previewSelectedData.data.length > 0 && (
+      {selectedDataOID !== -1 && top100FromDataTable.isLoading && <LinearProgress color="info" sx={{ top: 10 }} />}
+      {top100FromDataTable.data && top100FromDataTable.data.length > 0 && (
         <div>
           {dataTableInfo}
-          <ObjectTable headerID="selected-data-table" data={previewSelectedData.data} />
+          <ObjectTable headerID="selected-data-table" data={top100FromDataTable.data} />
         </div>
       )}
     </Box>

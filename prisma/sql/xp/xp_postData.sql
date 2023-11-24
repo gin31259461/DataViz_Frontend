@@ -7,9 +7,7 @@ GO
 CREATE
   OR
 
-ALTER PROCEDURE [dbo].[xp_postData] @mid INT,
-  @name NVARCHAR(800),
-  @des NVARCHAR(MAX),
+ALTER PROCEDURE [dbo].[xp_postData] @mid INT, @name NVARCHAR(800), @des NVARCHAR(MAX),
   @lastID NVARCHAR(MAX) OUTPUT
 AS
 BEGIN
@@ -20,22 +18,10 @@ BEGIN
 
     DECLARE @insertedRows TABLE (id INT);
 
-    INSERT INTO OBJECT (
-      TYPE,
-      CName,
-      CDes,
-      nClick,
-      OwnerMID
-      )
+    INSERT INTO OBJECT (TYPE, CName, CDes, nClick, OwnerMID)
     OUTPUT inserted.OID
     INTO @insertedRows
-    VALUES (
-      6,
-      @Name,
-      @Des,
-      1,
-      @MID
-      )
+    VALUES (6, @Name, @Des, 1, @MID)
 
     SELECT @lastID = id
     FROM @insertedRows;
@@ -52,8 +38,7 @@ BEGIN
       ROLLBACK TRANSACTION
     END
 
-    SELECT ERROR_NUMBER() AS ErrorNumber,
-      ERROR_MESSAGE() AS ErrorMessage
+    SELECT ERROR_NUMBER() AS ErrorNumber, ERROR_MESSAGE() AS ErrorMessage
   END CATCH
 
   SET XACT_ABORT OFF

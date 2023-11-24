@@ -41,81 +41,27 @@ BEGIN
 			DECLARE @CID INT
 			DECLARE @nlevel INT
 
-			INSERT INTO Class (
-				CName,
-				[Type],
-				EName
-				)
-			VALUES (
-				@CName,
-				@Type,
-				@EName
-				)
+			INSERT INTO Class (CName, [Type], EName)
+			VALUES (@CName, @Type, @EName)
 
 			SET @CID = @@Identity
 
 			IF @PCID IS NOT NULL
-				INSERT INTO Inheritance (
-					PCID,
-					CCID
-					)
-				VALUES (
-					@PCID,
-					@CID
-					)
+				INSERT INTO Inheritance (PCID, CCID)
+				VALUES (@PCID, @CID)
 
 			-- 利用GetCID 取得Parent的CID
-			INSERT INTO Permission (
-				CID,
-				RoleType,
-				RoleID,
-				PermissionBits
-				)
-			VALUES (
-				@CID,
-				0,
-				0,
-				63
-				)
+			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
+			VALUES (@CID, 0, 0, 63)
 
-			INSERT INTO Permission (
-				CID,
-				RoleType,
-				RoleID,
-				PermissionBits
-				)
-			VALUES (
-				@CID,
-				1,
-				1,
-				3
-				)
+			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
+			VALUES (@CID, 1, 1, 3)
 
-			INSERT INTO Permission (
-				CID,
-				RoleType,
-				RoleID,
-				PermissionBits
-				)
-			VALUES (
-				@CID,
-				0,
-				1,
-				3
-				)
+			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
+			VALUES (@CID, 0, 1, 3)
 
-			INSERT INTO Permission (
-				CID,
-				RoleType,
-				RoleID,
-				PermissionBits
-				)
-			VALUES (
-				@CID,
-				0,
-				2,
-				3
-				)
+			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
+			VALUES (@CID, 0, 2, 3)
 
 			UPDATE Class
 			SET nLevel = dbo.fn_getLevel(@PCID)
@@ -128,15 +74,14 @@ BEGIN
 			IF (@nlevel = 1)
 			BEGIN
 				UPDATE Class
-				SET NamePath = @CName,
-					IDPath = @CID
+				SET NamePath = @CName, IDPath = @CID
 				WHERE CID = @CID
 			END
 			ELSE
 			BEGIN
 				UPDATE Class
-				SET NamePath = dbo.fn_getNamePath(@PCID, @CName),
-					IDPath = dbo.fn_getIDPath(@PCID, @CID)
+				SET NamePath = dbo.fn_getNamePath(@PCID, @CName), IDPath = dbo.fn_getIDPath(
+						@PCID, @CID)
 				WHERE CID = @CID
 			END
 
@@ -157,8 +102,7 @@ BEGIN
 			ROLLBACK TRANSACTION
 		END
 
-		SELECT ERROR_NUMBER() AS ErrorNumber,
-			ERROR_MESSAGE() AS ErrorMessage
+		SELECT ERROR_NUMBER() AS ErrorNumber, ERROR_MESSAGE() AS ErrorMessage
 	END CATCH
 
 	SET XACT_ABORT OFF

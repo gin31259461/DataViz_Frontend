@@ -7,8 +7,7 @@ GO
 CREATE
   OR
 
-ALTER PROCEDURE [dbo].[xp_deleteData] @mid INT,
-  @oid INT
+ALTER PROCEDURE [dbo].[xp_deleteData] @mid INT, @oid INT
 AS
 BEGIN
   IF EXISTS (
@@ -28,7 +27,8 @@ BEGIN
       AND OwnerMID = @mid
 
     DECLARE @sql NVARCHAR(max) = '
-		  DROP TABLE RawDB.dbo.D' + cast(@oid AS NVARCHAR(max))
+		  DROP TABLE RawDB.dbo.D' + cast(@oid AS NVARCHAR(
+          max))
   END
 
   EXEC sp_executesql @sql

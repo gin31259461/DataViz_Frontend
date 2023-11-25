@@ -1,14 +1,12 @@
 'use client';
 
-import { useUserStore } from '@/hooks/store/useUserStore';
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogActions, IconButton, styled, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import Image from 'next/image';
-import { useEffect } from 'react';
 
 interface SignInModalProps {
   open: boolean;
@@ -17,13 +15,7 @@ interface SignInModalProps {
 
 const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
   const theme = useTheme();
-  const { data } = useSession();
   const buttonVariant = theme.palette.mode === 'dark' ? 'contained' : 'outlined';
-  const setMID = useUserStore((state) => state.setMID);
-
-  useEffect(() => {
-    if (data) setMID(Number(data.user.id));
-  }, [data, setMID]);
 
   const handleClose = () => {
     onClose();

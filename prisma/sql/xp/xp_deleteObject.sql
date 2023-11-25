@@ -14,6 +14,7 @@ BEGIN
   DELETE
   FROM [ORel]
   WHERE OID1 = @OID
+    OR OID2 = @OID
 
   DELETE
   FROM [Object]

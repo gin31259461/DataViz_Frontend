@@ -4,7 +4,6 @@ import CardButton from '@/components/Button/CardButton';
 import IconCardButton from '@/components/Button/IconCardButton';
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import convertOpacityToHexString from '@/utils/opacityToHexString';
-import AddChartIcon from '@mui/icons-material/AddchartOutlined';
 import AddIcon from '@mui/icons-material/AddOutlined';
 import GridViewIcon from '@mui/icons-material/GridViewOutlined';
 import ListIcon from '@mui/icons-material/ListOutlined';
@@ -35,11 +34,11 @@ import ProjectList from './ProjectList';
 type ViewMode = 'grid' | 'list';
 type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 
-type ProjectListProps = {
+type ProjectManagerProps = {
   projects: ProjectProps[];
 };
 
-export default function ProjectManager({ projects }: ProjectListProps) {
+export default function ProjectManager({ projects }: ProjectManagerProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [sortTarget, setSortTarget] = useState<SortTarget>('name');
   const [activeID, setActiveID] = useState<string | null>(null);
@@ -66,11 +65,12 @@ export default function ProjectManager({ projects }: ProjectListProps) {
           borderBottom: `${useSplitLineStyle()}`,
         }}
       >
+        {/* ---------- create project start ----------  */}
         <Grid container gap={2}>
           <Grid item sm={12}>
             <CardButton
               title="New project"
-              description="Automatic analyze data to infographic"
+              description="Create various projects"
               icon={<AddIcon color="secondary" fontSize="large" />}
               onClick={() => setNewProjectDialogOpen(true)}
             ></CardButton>
@@ -79,16 +79,18 @@ export default function ProjectManager({ projects }: ProjectListProps) {
           <Dialog open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
             <DialogTitle>Create new project</DialogTitle>
             <DialogContent sx={{ width: 400, display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {/* ---------- project options start ----------  */}
               <CardButton
                 title="New racing chart project"
                 icon={<TimelineIcon color="info" />}
                 description=""
                 onClick={() => router.push('/create/racing-chart')}
               ></CardButton>
-              <CardButton title="New basic project" icon={<AddChartIcon color="info" />} description=""></CardButton>
+              {/* ---------- project options end ----------  */}
             </DialogContent>
           </Dialog>
         </Grid>
+        {/* ---------- create project end ----------  */}
 
         <Grid container justifyContent="flex-end" alignItems={'flex-end'} marginTop={3}>
           <div style={{ marginRight: 10 }}>
@@ -144,14 +146,14 @@ export default function ProjectManager({ projects }: ProjectListProps) {
                   <TableCell padding="none">
                     <ContextMenu id={project.id}>
                       <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
-                        {project.name}
+                        {project.title}
                       </div>
                     </ContextMenu>
                   </TableCell>
                   <TableCell padding="none">
                     <ContextMenu id={project.id}>
                       <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
-                        {project.lastModified}
+                        {project.lastModifiedDT.toDateString()}
                       </div>
                     </ContextMenu>
                   </TableCell>

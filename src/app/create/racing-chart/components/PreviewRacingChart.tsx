@@ -66,7 +66,7 @@ function PreviewRacingChart() {
   const [_, forceUpdate] = useState<boolean>();
 
   return (
-    <Container>
+    <Container sx={{ paddingTop: 10 }}>
       <div ref={ChartContainerRef} style={{ display: 'flex' }}>
         {keyframes.length > 0 && chartContainerOffset && (
           <Suspense fallback={<LoadingWithTitle title="Generating racing bar chart" />}>

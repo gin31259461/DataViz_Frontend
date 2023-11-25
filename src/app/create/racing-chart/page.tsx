@@ -1,5 +1,6 @@
 'use client';
 
+import { useProjectStore } from '@/hooks/store/useProjectStore';
 import { useRouter } from 'next/navigation';
 import AllCompleted from '../components/AllCompleted';
 import CustomStepper, { CustomStepperContext, useCustomStepperAction } from '../components/CustomStepper';
@@ -8,6 +9,8 @@ import Configuration from './components/Configuration';
 import PreviewRacingChart from './components/PreviewRacingChart';
 
 function RaceChartPage() {
+  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+
   const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];
   const stepperValue = useCustomStepperAction(steps.length);
   const components = [
@@ -24,6 +27,7 @@ function RaceChartPage() {
   };
 
   const nextButtonDisabled = () => {
+    if (!selectedDataOID) return true;
     return false;
   };
 

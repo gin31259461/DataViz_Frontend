@@ -1,5 +1,6 @@
 'use client';
 
+import { useUserStore } from '@/hooks/store/useUserStore';
 import { ColorModeContext, useMode } from '@/utils/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Session } from 'next-auth';
@@ -9,12 +10,17 @@ import { CommandModalContext, useCommandModal } from '../Modal/CommandModal/Prov
 
 interface ProviderProps {
   children: React.ReactNode;
-  session: Session;
+  session: Session | null;
 }
 
 export function Provider({ children, session }: ProviderProps) {
   const { theme, colorMode } = useMode();
   const ControlCommandModal = useCommandModal();
+  const setMID = useUserStore((state) => state.setMID);
+
+  if (session) {
+    setMID(parseInt(session.user.id));
+  }
 
   return (
     <ColorModeContext.Provider value={colorMode}>

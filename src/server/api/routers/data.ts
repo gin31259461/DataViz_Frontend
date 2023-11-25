@@ -27,6 +27,14 @@ export const dataObjectRouter = createTRPCRouter({
       });
       return data;
     }),
+  getOneMemberData: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
+    const data = await ctx.prisma.vd_Data.findFirst({
+      where: {
+        id: input,
+      },
+    });
+    return data;
+  }),
   getAllMemberData: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
     const result = await ctx.prisma.vd_Data.findMany({
       where: {

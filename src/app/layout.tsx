@@ -1,8 +1,9 @@
 import { CommandModal } from '@/components/Modal/CommandModal';
 import Navbar from '@/components/Navbar';
 import { env } from '@/env.mjs';
+import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
-import { Session } from 'next-auth';
+import { getServerSession, Session } from 'next-auth';
 import { Provider } from '../components/Provider';
 import { TrpcProvider } from '../components/Provider/TrpcProvider';
 import style from '../styles/rootLayout.module.scss';
@@ -18,14 +19,9 @@ export const metadata = {
   // 'og:description':
 };
 
-export default function RootLayout({
-  children,
+export default async function RootLayout({ children }: { children: React.ReactNode; session: Session }) {
+  const session = await getServerSession(authOptions);
 
-  session,
-}: {
-  children: React.ReactNode;
-  session: Session;
-}) {
   return (
     <html lang="en" className={style['custom-font']}>
       <body className="scrollbar-container">

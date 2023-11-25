@@ -21,7 +21,13 @@ BEGIN
     CREATE OR ALTER VIEW vd_project_' + @account +
     '
     AS
-    SELECT C.*
+    SELECT
+      C.CID as id,
+      C.EName as title,
+      C.EDes as des,
+      C.IDPath as path,
+      C.Since as since,
+      C.LastModifiedDT as lastModifiedDT
     FROM [dbo].[Inheritance] I, [dbo].[Class] C
     WHERE I.PCID = (
         SELECT CID

@@ -35,7 +35,7 @@ BEGIN
   EXEC [dbo].[xp_insertClass] @CCID, 8, @CName, @EName, @CCID OUTPUT
 
   UPDATE Class
-  SET EDes = @EDes
+  SET EDes = @EDes, cRank = 0
   WHERE CID = @CCID
 END
 GO

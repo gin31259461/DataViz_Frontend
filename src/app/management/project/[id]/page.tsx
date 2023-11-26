@@ -18,6 +18,9 @@ function ProjectPage() {
   const argObjects = trpc.project.getArgFromObservation.useQuery(observations.data && observations.data[0].CID);
   const CDes = argObjects.data && argObjects.data[0].CDes;
 
+  console.log('observations', observations.data);
+  console.log('args', argObjects.data);
+
   const args: ArgumentProps = JSON.parse(CDes ?? '{}');
 
   const dataTable = trpc.dataObject.getAllFromDataTable.useQuery(args.dataId);

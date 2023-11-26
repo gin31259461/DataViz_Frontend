@@ -40,26 +40,22 @@ export const projectRouter = createTRPCRouter({
     return null;
   }),
   getProjectObservations: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
-    const observations = await ctx.prisma.inheritance.findMany({
+    const data = await ctx.prisma.inheritance.findMany({
       select: {
-        CCID: true,
+        Class_Inheritance_CCIDToClass: true,
       },
       where: {
         PCID: input,
       },
     });
-    const cidS = observations.map((o) => o.CCID);
-    const data = await ctx.prisma.class.findMany({ where: { CID: { in: cidS } } });
 
-    return data;
+    return data.map((d) => d.Class_Inheritance_CCIDToClass);
   }),
   getArgFromObservation: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
     if (!input) return null;
 
-    const args = await ctx.prisma.cO.findMany({ select: { OID: true }, where: { CID: input } });
-    const oidS = args.map((a) => a.OID);
-    const data = await ctx.prisma.object.findMany({ where: { OID: { in: oidS } } });
-    return data;
+    const data = await ctx.prisma.cO.findMany({ select: { Object: true }, where: { CID: input } });
+    return data.map((d) => d.Object);
   }),
   deleteProject: publicProcedure.input(z.number()).mutation(async ({ input, ctx }) => {
     const observations = await ctx.prisma.inheritance.findMany({

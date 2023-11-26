@@ -10,7 +10,7 @@ interface CustomStepperProps {
   components: React.ReactNode[];
   backButtonDisabled: () => boolean;
   nextButtonDisabled: () => boolean;
-  callback: () => void;
+  callback: () => Promise<void>;
 }
 
 const CustomStepper: React.FC<CustomStepperProps> = ({
@@ -78,8 +78,8 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
               disabled={nextButtonDisabled()}
               color="info"
               sx={{ position: 'absolute', fontSize: 15, right: 20 }}
-              onClick={() => {
-                if (stepContext.activeStep === steps.length - 1) callback();
+              onClick={async () => {
+                if (stepContext.activeStep === steps.length - 1) await callback();
                 stepContext.changeActiveStep('next');
               }}
               variant={stepContext.activeStep !== steps.length - 1 ? 'outlined' : 'contained'}

@@ -17,7 +17,7 @@ async function getProject(mid: number) {
   });
 
   if (member) {
-    const sqlStr = `select * from vd_project_${member.Account}`;
+    const sqlStr = `select * from vd_project_${member.Account} order by id desc`;
     const data: ProjectProps[] = await prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
     return data;
   }

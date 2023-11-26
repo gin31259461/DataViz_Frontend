@@ -8,8 +8,8 @@ CREATE
 -- 1. insert into object (type = 7，arg)
 -- 2. orel between arg object and data object
 -- 3. co relationship between observation id and oid (rank must specified)
-ALTER PROCEDURE xp_insertArgObject @CID INT, @DID INT, @CDes NVARCHAR(800), @EName
-  NVARCHAR(255), @EDes NVARCHAR(800)
+ALTER PROCEDURE xp_insertArgObject @CID INT, @CDes NVARCHAR(800), @EName NVARCHAR(255),
+  @EDes NVARCHAR(800)
 AS
 BEGIN
   -- step 1
@@ -27,10 +27,6 @@ BEGIN
   SELECT @rankCount = count(*)
   FROM [dbo].[CO]
   WHERE CID = @CID
-
-  -- step 2
-  INSERT INTO [dbo].[ORel] (OID1, OID2)
-  VALUES (@CurrentObjectID, @DID)
 
   -- step 3
   INSERT INTO [dbo].[CO] (CID, OID, Rank)

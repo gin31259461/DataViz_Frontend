@@ -7,12 +7,12 @@ CREATE
 -- MID: prooject creator
 -- EName: projecct title
 -- EDes: projecct description
--- CCID: current added project id -> output
+-- CCID: current added id
 ALTER PROCEDURE xp_insertProjectClass @mid INT, @EName NVARCHAR(255), @EDes NVARCHAR(800
-  ), @CCID INT OUTPUT
+  )
 AS
 BEGIN
-  DECLARE @ProjectClassID INT
+  DECLARE @ProjectClassID INT, @CCID INT
 
   SELECT @ProjectClassID = [dbo].[fn_getProjectClassID](@mid)
 

@@ -1,4 +1,5 @@
-import { RacingBarChartColumns, useProjectStore } from '@/hooks/store/useProjectStore';
+import { RacingBarChartMapping } from '@/components/ChartEngine/RacingBarChartEngine';
+import { DataArgsProps, useProjectStore } from '@/hooks/store/useProjectStore';
 import { trpc } from '@/server/trpc';
 import AbcIcon from '@mui/icons-material/Abc';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -13,6 +14,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -71,35 +73,58 @@ const CustomSelect: React.FC<CustomFromSelectProps> = (props) => {
 
 function Configuration() {
   const theme = useTheme();
-  const columnTypesMapping = useProjectStore((state) => state.columnTypesMapping);
-  const racingChartDataColumnMapping = useProjectStore((state) => state.racingBarChartDataColumnMapping);
-  const setRacingChartDataColumnMapping = useProjectStore((state) => state.setRacingChartDataColumnMapping);
+  const columnTypeMapping = useProjectStore((state) => state.columnTypeMapping);
+  const dataArgs = useProjectStore((state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>);
+  const setDataArgs = useProjectStore((state) => state.setDataArgs);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const title = useProjectStore((state) => state.title);
+  const des = useProjectStore((state) => state.des);
+  const setTitle = useProjectStore((state) => state.setTitle);
+  const setDes = useProjectStore((state) => state.setDes);
+  const setChartType = useProjectStore((state) => state.setChartType);
   const rowsCountFromDataTable = trpc.dataObject.getRowsCountFromDataTable.useQuery(selectedDataOID);
   const oneMemberData = trpc.dataObject.getOneMemberData.useQuery(selectedDataOID);
 
   useEffect(() => {
-    if (racingChartDataColumnMapping.date.length == 0)
-      setRacingChartDataColumnMapping({
-        date: columnTypesMapping?.Date[0] ?? '',
-        name: columnTypesMapping?.string[0] ?? '',
-        value: columnTypesMapping?.number[0] ?? '',
-        category: columnTypesMapping?.string[0] ?? '',
+    if (!dataArgs) {
+      setDataArgs({
+        mapping: {
+          date: columnTypeMapping?.date[0] ?? '',
+          name: columnTypeMapping?.string[0] ?? '',
+          value: columnTypeMapping?.number[0] ?? '',
+          category: columnTypeMapping?.string[0] ?? '',
+        },
       });
-  }, [racingChartDataColumnMapping, columnTypesMapping, setRacingChartDataColumnMapping]);
+    }
+  }, [dataArgs, columnTypeMapping, setDataArgs]);
+
+  useEffect(() => {
+    setChartType('racing-bar-chart');
+  }, [setChartType]);
 
   const onChange = useCallback(
     (label: string, value: string) => {
-      const newMapping = { ...racingChartDataColumnMapping };
-      newMapping[label as RacingBarChartColumns] = value;
-      setRacingChartDataColumnMapping(newMapping);
+      const newMapping = { ...dataArgs };
+      if (newMapping.mapping) {
+        newMapping.mapping[label] = value;
+        setDataArgs(newMapping as DataArgsProps<RacingBarChartMapping>);
+      }
     },
-    [racingChartDataColumnMapping, setRacingChartDataColumnMapping],
+    [dataArgs, setDataArgs],
   );
 
   return (
     <Container sx={{ paddingTop: 5 }}>
       <Grid container gap={10}>
+        <Grid container gap={3}>
+          <Typography variant="h4">Project setting</Typography>
+          <Grid container>
+            <TextField label="Name" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
+          </Grid>
+          <Grid container>
+            <TextField label="Description" fullWidth multiline value={des} onChange={(e) => setDes(e.target.value)} />
+          </Grid>
+        </Grid>
         <Grid container>
           <Grid item sm={8}>
             <Typography variant="h4">Chart type</Typography>
@@ -149,10 +174,10 @@ function Configuration() {
               <CustomSelect
                 required
                 label="date"
-                items={columnTypesMapping?.Date}
+                items={columnTypeMapping?.date}
                 helperText="this is required filed"
                 onChange={onChange}
-                defaultValue={racingChartDataColumnMapping.date}
+                defaultValue={dataArgs?.mapping.date}
               ></CustomSelect>
             </Grid>
           </Grid>
@@ -167,10 +192,10 @@ function Configuration() {
               <CustomSelect
                 required
                 label="name"
-                items={columnTypesMapping?.string}
+                items={columnTypeMapping?.string}
                 helperText="this is required filed"
                 onChange={onChange}
-                defaultValue={racingChartDataColumnMapping.name}
+                defaultValue={dataArgs?.mapping.name}
               ></CustomSelect>
             </Grid>
           </Grid>
@@ -185,10 +210,10 @@ function Configuration() {
               <CustomSelect
                 required
                 label="value"
-                items={columnTypesMapping?.number.concat(columnTypesMapping?.Date)}
+                items={columnTypeMapping?.number.concat(columnTypeMapping.date)}
                 helperText="this is required filed"
                 onChange={onChange}
-                defaultValue={racingChartDataColumnMapping.value}
+                defaultValue={dataArgs?.mapping.value}
               ></CustomSelect>
             </Grid>
           </Grid>
@@ -202,9 +227,9 @@ function Configuration() {
             <Grid item sm={4}>
               <CustomSelect
                 label="category"
-                items={columnTypesMapping?.string}
+                items={columnTypeMapping?.string}
                 onChange={onChange}
-                defaultValue={racingChartDataColumnMapping.category}
+                defaultValue={dataArgs?.mapping.category}
               ></CustomSelect>
             </Grid>
           </Grid>

@@ -1,6 +1,8 @@
 'use client';
 
 import { useProjectStore } from '@/hooks/store/useProjectStore';
+import { useUserStore } from '@/hooks/store/useUserStore';
+import { trpc } from '@/server/trpc';
 import { useRouter } from 'next/navigation';
 import AllCompleted from '../components/AllCompleted';
 import CustomStepper, { CustomStepperContext, useCustomStepperAction } from '../components/CustomStepper';
@@ -9,7 +11,14 @@ import Configuration from './components/Configuration';
 import PreviewRacingChart from './components/PreviewRacingChart';
 
 function RaceChartPage() {
+  const createArg = trpc.project.createArg.useMutation();
+  const mid = useUserStore((state) => state.mid);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const title = useProjectStore((state) => state.title);
+  const des = useProjectStore((state) => state.des);
+  const chartType = useProjectStore((state) => state.chartType);
+  const chartArgs = useProjectStore((state) => state.chartArgs);
+  const dataArgs = useProjectStore((state) => state.dataArgs);
 
   const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];
   const stepperValue = useCustomStepperAction(steps.length);
@@ -31,6 +40,22 @@ function RaceChartPage() {
     return false;
   };
 
+  const onConfirm = async () => {
+    if (selectedDataOID) {
+      await createArg.mutateAsync({
+        title: title,
+        des: des,
+        mid: mid,
+        args: JSON.stringify({
+          dataId: selectedDataOID,
+          chartType: chartType,
+          chartArgs: chartArgs,
+          dataArgs: dataArgs,
+        }),
+      });
+    }
+  };
+
   return (
     <CustomStepperContext.Provider value={stepperValue}>
       <CustomStepper
@@ -38,7 +63,10 @@ function RaceChartPage() {
         components={components}
         backButtonDisabled={backButtonDisabled}
         nextButtonDisabled={nextButtonDisabled}
-        callback={() => router.push('/management/project')}
+        callback={async () => {
+          await onConfirm();
+          router.push(`/management/project?r=${Math.random()}`);
+        }}
       />
     </CustomStepperContext.Provider>
   );

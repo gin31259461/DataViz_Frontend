@@ -1,5 +1,5 @@
 export interface ProjectProps {
-  id: string;
+  id: number;
   title: string;
   des: string;
   path: string;
@@ -8,8 +8,8 @@ export interface ProjectProps {
 }
 
 export interface ArgumentProps {
-  type: string;
-  chartArg: object;
-  dataArg: object;
   dataId: number;
+  chartType: string;
+  dataArgs: object;
+  chartArgs: object;
 }

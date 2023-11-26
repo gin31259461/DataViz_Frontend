@@ -1,14 +1,19 @@
 import { Menu, MenuItem, PopoverPosition } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ConfirmModal } from './Modal/ConfirmModal';
 
 interface ContextMenuProps {
-  id: string;
+  id: number;
   children: React.ReactNode;
+  onDelete: () => Promise<void>;
   maxWidth?: number | string;
 }
 
-export default function ContextMenu({ children, maxWidth, id }: ContextMenuProps) {
+export default function ContextMenu({ children, maxWidth, id, onDelete }: ContextMenuProps) {
   const [anchorPosition, setAnchorPosition] = useState<PopoverPosition | undefined>(undefined);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const router = useRouter();
 
   const handleContextMenu = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -38,9 +43,17 @@ export default function ContextMenu({ children, maxWidth, id }: ContextMenuProps
         open={Boolean(anchorPosition)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onClick={handleMenuItemClick}>Open</MenuItem>
+        <MenuItem onClick={() => router.push(`/management/project/${id}`)}>Open</MenuItem>
         <MenuItem onClick={handleMenuItemClick}>Rename</MenuItem>
-        <MenuItem onClick={handleMenuItemClick}>Delete</MenuItem>
+        <MenuItem onClick={() => setDeleteModalOpen(true)}>Delete</MenuItem>
+        <ConfirmModal
+          open={deleteModalOpen}
+          title="Delete project"
+          onConfirm={onDelete}
+          onClose={() => setDeleteModalOpen(false)}
+        >
+          Are you sure you want to delete this project?
+        </ConfirmModal>
       </Menu>
     </div>
   );

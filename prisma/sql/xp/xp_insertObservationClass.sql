@@ -12,7 +12,7 @@ ALTER PROCEDURE xp_insertObservationClass @ProjectCID INT, @EName NVARCHAR(255),
   NVARCHAR(800), @CCID INT OUTPUT
 AS
 BEGIN
-  DECLARE @guid UNIQUEIDENTIFIER, @CName VARCHAR(255)
+  DECLARE @guid UNIQUEIDENTIFIER, @CName VARCHAR(255), @currentCRank TINYINT
 
   SELECT @guid = NEWID()
 
@@ -20,8 +20,12 @@ BEGIN
 
   EXEC [dbo].[xp_insertClass] @ProjectCID, 8, @CName, @EName, @CCID OUTPUT
 
+  SELECT TOP 1 @currentCRank = cRank
+  FROM Class
+  WHERE CID = @ProjectCID
+
   UPDATE Class
-  SET EDes = @EDes
+  SET EDes = @EDes, cRank = @currentCRank + 1
   WHERE CID = @CCID
 END
 GO

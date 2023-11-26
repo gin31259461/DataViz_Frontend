@@ -1,60 +1,81 @@
 import { create } from 'zustand';
 
-export type BasicColumnTypesMapping = {
+export interface BasicColumnTypeMapping {
   string: string[];
   number: string[];
-  Date: string[];
-};
+  date: string[];
+}
 
-export type RacingBarChartDataColumnMapping = {
-  date: string;
-  name: string;
-  value: string;
-  category: string;
-};
+export type ChartTypes = 'racing-bar-chart';
 
-export type RacingBarChartColumns = 'date' | 'name' | 'value' | 'category';
+export interface DataArgsProps<T> {
+  mapping: T;
+}
 
-interface ProjectStoreProps {
-  selectedDataOID: number | undefined;
-  selectedData: object | null;
-  target: string | undefined;
-  features: string[] | undefined;
-  columns: string[] | undefined;
-  columnTypesMapping: BasicColumnTypesMapping | undefined;
-  racingBarChartDataColumnMapping: RacingBarChartDataColumnMapping;
-  setColumns: (columns: string[]) => void;
-  setColumnTypesMapping: (mapping: BasicColumnTypesMapping) => void;
-  setRacingChartDataColumnMapping: (mapping: RacingBarChartDataColumnMapping) => void;
-  setTarget: (target: string | undefined) => void;
-  setFeatures: (features: string[] | undefined) => void;
+export type ChartArgsProps = object;
+export type ColumnTypeMappingProps = BasicColumnTypeMapping;
+
+export interface ProjectStoreProps {
+  title: string;
+  setTitle: (title: string) => void;
+  des: string;
+  setDes: (des: string) => void;
+  selectedDataOID: number | null;
   setSelectedDataOID: (oid: number) => void;
+  selectedData: object | null;
   setSelectedData: (data: object) => void;
+  chartType: ChartTypes | undefined;
+  setChartType: (chartType: ChartTypes) => void;
+  chartArgs: ChartArgsProps | undefined;
+  setChartArgs: (chartArgs: object) => void;
+  dataArgs: DataArgsProps<{}> | undefined;
+  setDataArgs: (dataArgs: DataArgsProps<{}>) => void;
+  columnTypeMapping: ColumnTypeMappingProps | undefined;
+  setColumnTypeMapping: (columnTypeMapping: ColumnTypeMappingProps) => void;
   clear: () => void;
 }
 
 export const useProjectStore = create<ProjectStoreProps>()((set, get) => ({
-  selectedDataOID: undefined,
-  target: undefined,
-  features: undefined,
+  title: 'unnamed',
+  setTitle: (title: string) => set({ title: title }),
+  des: 'here is no description',
+  setDes: (des: string) => set({ des: des }),
+  selectedDataOID: null,
+  setSelectedDataOID: (oid) =>
+    set({
+      selectedDataOID: oid,
+    }),
   selectedData: null,
-  columnTypesMapping: undefined,
-  racingBarChartDataColumnMapping: { date: '', name: '', value: '', category: '' },
-  columns: undefined,
-  setColumns: (columns: string[]) => set({ columns: columns }),
-  setColumnTypesMapping: (mapping: BasicColumnTypesMapping) => set({ columnTypesMapping: mapping }),
-  setRacingChartDataColumnMapping: (mapping: RacingBarChartDataColumnMapping) =>
-    set({ racingBarChartDataColumnMapping: mapping }),
-  setTarget: (target: string | undefined) => set({ target: target }),
-  setFeatures: (features: string[] | undefined) => set({ features: features }),
-  setSelectedDataOID: (oid: number) => set({ selectedDataOID: oid }),
-  setSelectedData: (data: object) => set({ selectedData: data }),
+  setSelectedData: (data) =>
+    set({
+      selectedData: data,
+    }),
+  chartType: undefined,
+  setChartType: (chartType) =>
+    set({
+      chartType: chartType,
+    }),
+  chartArgs: undefined,
+  setChartArgs: (chartArgs) =>
+    set({
+      chartArgs: chartArgs,
+    }),
+  dataArgs: undefined,
+  setDataArgs: (dataArgs) =>
+    set({
+      dataArgs: dataArgs,
+    }),
+  columnTypeMapping: undefined,
+  setColumnTypeMapping: (columnTypeMapping) =>
+    set({
+      columnTypeMapping: columnTypeMapping,
+    }),
   clear: () =>
     set({
-      selectedDataOID: undefined,
-      target: undefined,
-      features: undefined,
+      selectedDataOID: null,
       selectedData: null,
-      columnTypesMapping: undefined,
+      chartType: undefined,
+      chartArgs: undefined,
+      dataArgs: undefined,
     }),
 }));

@@ -15,11 +15,27 @@ export const projectRouter = createTRPCRouter({
     .input(z.object({ mid: z.number(), title: z.string(), des: z.string(), args: z.string() }))
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.$executeRaw`exec xp_insertProjectClass ${input.mid}, ${input.title}, ${input.des}`;
-
       const result: { last: number }[] = await ctx.prisma.$queryRaw`select IDENT_CURRENT('Class') as last`;
+      const currentCID = result[0].last;
 
-      await ctx.prisma
-        .$executeRaw`exec xp_insertArgObject ${result[0].last}, ${input.args}, ${input.title}, ${input.des}`;
+      const count = await ctx.prisma.cO.count({
+        where: { CID: currentCID },
+      });
+
+      await ctx.prisma.object.create({
+        data: {
+          CDes: input.args,
+          EName: input.title,
+          EDes: input.des,
+          Type: 7,
+          CO: {
+            create: {
+              CID: currentCID,
+              Rank: count + 1,
+            },
+          },
+        },
+      });
     }),
   getLastProjectId: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
     const member = await ctx.prisma.member.findFirst({

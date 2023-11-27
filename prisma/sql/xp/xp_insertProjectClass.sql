@@ -7,7 +7,6 @@ CREATE
 -- MID: prooject creator
 -- EName: projecct title
 -- EDes: projecct description
--- CCID: current added id
 ALTER PROCEDURE xp_insertProjectClass @mid INT, @EName NVARCHAR(255), @EDes NVARCHAR(800
   )
 AS

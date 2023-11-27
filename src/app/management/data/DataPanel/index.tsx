@@ -149,7 +149,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   };
 
   const handleDelete = async (deleteIDs: number[]) => {
-    for (const i in deleteIDs) await deleteData.mutateAsync({ mid: mid, oid: deleteIDs[i] });
+    await deleteData.mutateAsync({ mid: mid, oidS: deleteIDs });
     setMessage('Delete Successfully');
     setDeleteSuccess(true);
     setSelectDataOID(undefined);

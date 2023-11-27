@@ -75,25 +75,43 @@ export const dataObjectRouter = createTRPCRouter({
   postData: publicProcedure
     .input(z.object({ mid: z.number(), name: z.string(), des: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      const data = await ctx.prisma.object.create({
+      await ctx.prisma.object.create({
         data: {
           Type: 6,
           CName: input.name,
           CDes: input.des,
           nClick: 1,
           OwnerMID: input.mid,
+          Data: { create: {} },
         },
         select: {
           OID: true,
         },
       });
-      await ctx.prisma.data.create({
-        data: {
-          DID: data.OID,
+    }),
+  deleteData: publicProcedure
+    .input(z.object({ mid: z.number(), oidS: z.array(z.number()) }))
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.data.deleteMany({
+        where: {
+          DID: {
+            in: input.oidS,
+          },
         },
       });
+      await ctx.prisma.object.deleteMany({
+        where: {
+          OID: {
+            in: input.oidS,
+          },
+          OwnerMID: input.mid,
+          Type: 6,
+        },
+      });
+
+      for (let oid of input.oidS) {
+        const sqlStr = `drop table [RawDB].[dbo].[D${oid}]`;
+        await ctx.prisma.$executeRaw`exec sp_executesql ${sqlStr}`;
+      }
     }),
-  deleteData: publicProcedure.input(z.object({ mid: z.number(), oid: z.number() })).mutation(async ({ input, ctx }) => {
-    await ctx.prisma.$executeRaw`exec [dbo].[xp_deleteData] ${input.mid}, ${input.oid}`;
-  }),
 });

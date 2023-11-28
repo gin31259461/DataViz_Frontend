@@ -1,5 +1,7 @@
 'use client';
 
+import { useUserStore } from '@/hooks/store/useUserStore';
+import { trpc } from '@/server/trpc';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DatasetOutlinedIcon from '@mui/icons-material/DatasetOutlined';
@@ -65,7 +67,7 @@ export const ProjectGroup = () => {
         <SearchOutlinedIcon />
         Search Project
       </CommandModalItem>
-      <CommandModalItem value="new project" shortcut="N P" onSelect={() => selectedHandler('/project')}>
+      <CommandModalItem value="new project" shortcut="N P" onSelect={() => selectedHandler('/management/project')}>
         <AddOutlinedIcon />
         New Project
       </CommandModalItem>
@@ -74,10 +76,28 @@ export const ProjectGroup = () => {
 };
 
 export const SearchProjectPage = () => {
+  const mid = useUserStore((state) => state.mid);
+  const allProjects = trpc.project.getAllProjects.useQuery(mid);
+  const ControlCommandModal = useContext(CommandModalContext);
+  const router = useRouter();
+
   return (
     <Command.Group>
-      <CommandModalItem value="test1">test1</CommandModalItem>
-      <CommandModalItem value="test2">test2</CommandModalItem>
+      {allProjects.data &&
+        allProjects.data.map((project) => {
+          return (
+            <CommandModalItem
+              key={project.id}
+              value={project.title}
+              onSelect={() => {
+                ControlCommandModal.setOpen(false);
+                router.push(`/management/project/${project.id}`);
+              }}
+            >
+              {project.title}
+            </CommandModalItem>
+          );
+        })}
     </Command.Group>
   );
 };

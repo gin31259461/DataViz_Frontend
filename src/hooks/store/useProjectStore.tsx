@@ -36,9 +36,9 @@ export interface ProjectStoreProps {
 }
 
 export const useProjectStore = create<ProjectStoreProps>()((set, get) => ({
-  title: 'unnamed',
+  title: 'unnamed title',
   setTitle: (title: string) => set({ title: title }),
-  des: 'here is no description',
+  des: 'description',
   setDes: (des: string) => set({ des: des }),
   selectedDataOID: null,
   setSelectedDataOID: (oid) =>

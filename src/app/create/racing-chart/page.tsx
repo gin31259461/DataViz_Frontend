@@ -4,13 +4,14 @@ import { useProjectStore } from '@/hooks/store/useProjectStore';
 import { useUserStore } from '@/hooks/store/useUserStore';
 import { trpc } from '@/server/trpc';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import AllCompleted from '../components/AllCompleted';
 import CustomStepper, { CustomStepperContext, useCustomStepperAction } from '../components/CustomStepper';
 import SelectData from '../components/SelectData';
 import Configuration from './components/Configuration';
 import PreviewRacingChart from './components/PreviewRacingChart';
 
-function RaceChartPage() {
+function CreateRacingBarChartPage() {
   const createArg = trpc.project.createArg.useMutation();
   const mid = useUserStore((state) => state.mid);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
@@ -19,6 +20,8 @@ function RaceChartPage() {
   const chartType = useProjectStore((state) => state.chartType);
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const dataArgs = useProjectStore((state) => state.dataArgs);
+  const [confirm, setConfirm] = useState(false);
+  const lastProjectId = trpc.project.getLastProjectId.useQuery(mid);
 
   const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];
   const stepperValue = useCustomStepperAction(steps.length);
@@ -56,6 +59,12 @@ function RaceChartPage() {
     }
   };
 
+  useEffect(() => {
+    if (confirm) {
+      router.push(`/management/project/${lastProjectId.data}`);
+    }
+  }, [router, confirm, lastProjectId]);
+
   return (
     <CustomStepperContext.Provider value={stepperValue}>
       <CustomStepper
@@ -65,10 +74,11 @@ function RaceChartPage() {
         nextButtonDisabled={nextButtonDisabled}
         callback={async () => {
           await onConfirm();
-          router.push(`/management/project?r=${Math.random()}`);
+          await lastProjectId.refetch();
+          setConfirm(true);
         }}
       />
     </CustomStepperContext.Provider>
   );
 }
-export default RaceChartPage;
+export default CreateRacingBarChartPage;

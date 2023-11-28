@@ -1,5 +1,6 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
 import type { Adapter, AdapterAccount } from 'next-auth/adapters';
+import { defaultSetting } from '../api/routers/member';
 
 const selectUserOpts = {
   MID: true,
@@ -29,6 +30,7 @@ export function I3SPrismaAdapter(p: PrismaClient): Adapter {
         data: {
           Type: 2, // Type = 2 represents Member in I3S
           CName: data.name,
+          EDes: JSON.stringify(defaultSetting),
           Member: {
             create: {
               Account: user?.Account ? data.email : username,

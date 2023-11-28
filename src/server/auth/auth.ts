@@ -4,6 +4,7 @@ import DiscordProvider from 'next-auth/providers/discord';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import { defaultSetting } from '../api/routers/member';
 import { prisma } from '../db';
 import { I3SPrismaAdapter } from './I3SPrismaAdapter';
 import WKESSOProvider from './WKESSOProvider';
@@ -84,6 +85,7 @@ export const authOptions: NextAuthOptions = {
           data: {
             Type: 2,
             CName: user.name,
+            EDes: JSON.stringify(defaultSetting),
             Member: {
               create: {
                 Valid: false,

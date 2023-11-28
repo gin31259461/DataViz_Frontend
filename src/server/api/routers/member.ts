@@ -31,6 +31,10 @@ export const AccountZodSchema = z.record(z.unknown()).and(
   }),
 );
 
+const SettingZodSchema = z.object({ darkMode: z.boolean() });
+export type SettingSchema = z.infer<typeof SettingZodSchema>;
+export const defaultSetting: SettingSchema = { darkMode: false };
+
 export const userRouter = createTRPCRouter({
   isEmailUsed: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
     const member = await ctx.prisma.member.findUnique({

@@ -3,6 +3,7 @@
 import CardButton from '@/components/Button/CardButton';
 import IconCardButton from '@/components/Button/IconCardButton';
 import { useSplitLineStyle } from '@/hooks/useStyles';
+import { ProjectSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
 import convertOpacityToHexString from '@/utils/opacityToHexString';
 import AddIcon from '@mui/icons-material/AddOutlined';
@@ -28,16 +29,15 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ContextMenu from '../../../../components/ContextMenu';
-import { type ProjectProps } from '../../../../types/Project';
 import ProjectCard from './ProjectCard';
 import ProjectList from './ProjectList';
 
 type ViewMode = 'grid' | 'list';
 type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 
-type ProjectManagerProps = {
-  projects: ProjectProps[];
-};
+interface ProjectManagerProps {
+  projects: ProjectSchema[];
+}
 
 export default function ProjectManager({ projects }: ProjectManagerProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');

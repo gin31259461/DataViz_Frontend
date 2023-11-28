@@ -1,18 +1,15 @@
 'use client';
 
-import { ProjectZodSchema } from '@/server/api/routers/project';
-import { tokens } from '@/utils/theme';
+import { ProjectSchema } from '@/server/api/routers/project';
 import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
-import { z } from 'zod';
 
 interface ProjectCardProps {
-  project: z.infer<typeof ProjectZodSchema>;
+  project: ProjectSchema;
   active: boolean;
 }
 
 export default function ProjectCard({ project, active }: ProjectCardProps) {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   return (
     <Card
@@ -22,7 +19,6 @@ export default function ProjectCard({ project, active }: ProjectCardProps) {
       }}
     >
       <CardActionArea>
-        {/* <CardMedia component="img" height="140" image={project.image} alt={project.name} /> */}
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {project.title}

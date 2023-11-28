@@ -79,7 +79,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   const [message, setMessage] = useState('');
 
   const start = page * counts;
-  const dataCounts = trpc.dataObject.getMemberDataCount.useQuery(mid);
+  const memberDataCount = trpc.dataObject.getMemberDataCount.useQuery(mid);
   const someDataObject = trpc.dataObject.getSomeMemberData.useQuery({
     order: orderDirection,
     start: start + 1,
@@ -145,7 +145,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
       console.log(error);
     }
     await someDataObject.refetch();
-    await dataCounts.refetch();
+    await memberDataCount.refetch();
   };
 
   const handleDelete = async (deleteIDs: number[]) => {
@@ -155,7 +155,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     setSelectDataOID(undefined);
     setDeleteDataOID([]);
     await someDataObject.refetch();
-    await dataCounts.refetch();
+    await memberDataCount.refetch();
   };
 
   const DataTable = useMemo(() => {
@@ -278,7 +278,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
               <TablePagination
                 onPageChange={handlePageChange}
                 rowsPerPageOptions={[]}
-                count={dataCounts.data ?? 0}
+                count={memberDataCount.data ?? 0}
                 rowsPerPage={counts}
                 page={page}
               />

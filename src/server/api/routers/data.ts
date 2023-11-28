@@ -6,7 +6,7 @@ export const dataObjectRouter = createTRPCRouter({
   getMemberDataCount: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
     const count = await ctx.prisma.object.count({
       where: {
-        OwnerMID: { equals: input },
+        OwnerMID: input,
         Type: 6,
       },
     });

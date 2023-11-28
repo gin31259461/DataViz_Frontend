@@ -6,8 +6,8 @@ import RacingBarChartEngine, {
   RacingBarChartMapping,
 } from '@/components/ChartEngine/RacingBarChartEngine';
 import { DataArgsProps } from '@/hooks/store/useProjectStore';
+import { ArgSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
-import { ArgumentProps } from '@/types/Project';
 import { Container } from '@mui/material';
 import { useParams } from 'next/navigation';
 
@@ -21,7 +21,7 @@ function ProjectPage() {
   console.log('observations', observations.data);
   console.log('args', argObjects.data);
 
-  const args: ArgumentProps = JSON.parse(CDes ?? '{}');
+  const args: ArgSchema = JSON.parse(CDes ?? '{}');
 
   const dataTable = trpc.dataObject.getAllFromDataTable.useQuery(args.dataId);
 

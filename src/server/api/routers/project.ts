@@ -1,16 +1,7 @@
-import { ProjectProps } from '@/types/Project';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
-export interface createArgProps {
-  mid: number;
-  dataId: number;
-  title: string;
-  des: string;
-  args: string;
-}
-
-export const ProjectZodSchema = z.object({
+const ProjectZodSchema = z.object({
   id: z.number(),
   title: z.string(),
   des: z.string(),
@@ -18,6 +9,16 @@ export const ProjectZodSchema = z.object({
   since: z.date(),
   lastModifiedDT: z.date(),
 });
+
+const ArgZodSchema = z.object({
+  dataId: z.number(),
+  chartType: z.string(),
+  dataArgs: z.object({}),
+  chartArgs: z.object({}),
+});
+
+export type ProjectSchema = z.infer<typeof ProjectZodSchema>;
+export type ArgSchema = z.infer<typeof ArgZodSchema>;
 
 export const projectRouter = createTRPCRouter({
   createArg: publicProcedure
@@ -58,7 +59,7 @@ export const projectRouter = createTRPCRouter({
 
     if (member) {
       const sqlStr = `select top 1 id from vd_project_${member.Account} order by id desc`;
-      const data: ProjectProps[] = await ctx.prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
+      const data: ProjectSchema[] = await ctx.prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
       return data.length > 0 ? data[0].id : null;
     }
 

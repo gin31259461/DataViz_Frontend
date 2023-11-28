@@ -1,7 +1,7 @@
 import Dashboard from '@/components/Dashboard';
+import { ProjectSchema } from '@/server/api/routers/project';
 import { authOptions } from '@/server/auth/auth';
 import { prisma } from '@/server/db';
-import { ProjectProps } from '@/types/Project';
 import { Container } from '@mui/material';
 import { getServerSession } from 'next-auth';
 import ProjectManager from './components/ProjectManager';
@@ -18,7 +18,7 @@ async function getProject(mid: number) {
 
   if (member) {
     const sqlStr = `select * from vd_project_${member.Account} order by id desc`;
-    const data: ProjectProps[] = await prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
+    const data: ProjectSchema[] = await prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
     return data;
   }
 

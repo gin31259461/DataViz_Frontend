@@ -3,7 +3,7 @@ GO
 
 DECLARE @CCID INT
 
-EXEC [dbo].[xp_insertClass] 1, 1, '會員', 'Member', @CCID OUTPUT
+EXEC [dbo].[xp_insertClass] 1, 1, 'member', 'Member', @CCID OUTPUT
 
 UPDATE Class
 SET nLevel = 1

@@ -15,7 +15,9 @@ import { useParams } from 'next/navigation';
 function ProjectPage() {
   const projectId = parseInt(useParams().id as string);
   const observations = trpc.project.getProjectObservations.useQuery(projectId);
-  const argObjects = trpc.project.getArgFromObservation.useQuery(observations.data && observations.data[0].CID);
+  const argObjects = trpc.project.getArgFromObservation.useQuery(
+    observations.data && observations.data[0].CID,
+  );
   const CDes = argObjects.data && argObjects.data[0].CDes;
 
   console.log('observations', observations.data);
@@ -29,7 +31,10 @@ function ProjectPage() {
     <Container sx={{ paddingTop: 10 }}>
       {dataTable.data && args.dataArgs && args.chartArgs && (
         <RacingBarChartEngine
-          data={convertToRacingBarChartData(dataTable.data, args.dataArgs as DataArgsProps<RacingBarChartMapping>)}
+          data={convertToRacingBarChartData(
+            dataTable.data,
+            args.dataArgs as DataArgsProps<RacingBarChartMapping>,
+          )}
           args={args.chartArgs as RacingBarChartArgs}
         />
       )}

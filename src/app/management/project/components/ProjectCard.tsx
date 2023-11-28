@@ -1,7 +1,13 @@
 'use client';
 
 import { ProjectSchema } from '@/server/api/routers/project';
-import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Typography,
+  useTheme,
+} from '@mui/material';
 
 interface ProjectCardProps {
   project: ProjectSchema;
@@ -15,7 +21,9 @@ export default function ProjectCard({ project, active }: ProjectCardProps) {
     <Card
       sx={{
         maxWidth: 345,
-        border: active ? '2px solid ' + theme.palette.info.main : theme.palette.background.paper,
+        border: active
+          ? '2px solid ' + theme.palette.info.main
+          : theme.palette.background.paper,
       }}
     >
       <CardActionArea>

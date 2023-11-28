@@ -18,7 +18,9 @@ type TokenResponse = {
 };
 
 // * reference document : https://sso.wke.csie.ncnu.edu.tw/document
-export default function WKESSOProvider<P extends WKESSOProfile>(options: OAuthUserConfig<P>): OAuthConfig<P> {
+export default function WKESSOProvider<P extends WKESSOProfile>(
+  options: OAuthUserConfig<P>,
+): OAuthConfig<P> {
   const { clientId } = options;
   const baseUrl = 'https://sso.wke.csie.ncnu.edu.tw';
   const redirectURL = env.WKESSO_CALLBACK_URL;
@@ -121,7 +123,9 @@ export default function WKESSOProvider<P extends WKESSOProfile>(options: OAuthUs
         }
 
         // ! step 1 + step 2
-        const basic = Buffer.from(clientId + ':' + clientSecret).toString('base64');
+        const basic = Buffer.from(clientId + ':' + clientSecret).toString(
+          'base64',
+        );
 
         const payload = {
           grant_type: 'authorization_code',

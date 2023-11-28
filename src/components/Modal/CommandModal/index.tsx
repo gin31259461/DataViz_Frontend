@@ -5,7 +5,15 @@ import '@/styles/command-modal.scss';
 import convertOpacityToHexString from '@/utils/opacityToHexString';
 import { styled, useTheme } from '@mui/material';
 import { Command } from 'cmdk';
-import { Fragment, KeyboardEvent, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import {
+  Fragment,
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { NavigationGroup, ProjectGroup, SearchProjectPage } from './CmdMenu';
 import { CommandModalContext } from './Provider';
 
@@ -16,7 +24,8 @@ export const CommandModal = () => {
   const [inputValue, setInputValue] = useState('');
   const ControlCommandModal = useContext(CommandModalContext);
 
-  const activePage = ControlCommandModal.pages[ControlCommandModal.pages.length - 1];
+  const activePage =
+    ControlCommandModal.pages[ControlCommandModal.pages.length - 1];
   const isHome = activePage === 'home';
 
   const activePageStyle = {
@@ -82,13 +91,19 @@ export const CommandModal = () => {
         className="command-menu"
         style={{
           display: ControlCommandModal.isOpen ? 'flex' : 'none',
-          backgroundColor: theme.palette.mode === 'dark' ? 'rgb(0, 0, 0, 0.3)' : 'rgb(252, 252, 252, 0.3)',
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? 'rgb(0, 0, 0, 0.3)'
+              : 'rgb(252, 252, 252, 0.3)',
         }}
         ref={ref}
         sx={{
           '[cmdk-root]': {
             border: useSplitLineStyle(),
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#fcfcfc',
+            backgroundColor:
+              theme.palette.mode === 'dark'
+                ? theme.palette.grey[800]
+                : '#fcfcfc',
           },
           '[cmdk-separator]': {
             backgroundColor: theme.palette.divider,
@@ -96,13 +111,17 @@ export const CommandModal = () => {
           '[cmdk-input]': {
             caretColor: theme.palette.primary.main,
             color: theme.palette.primary.main,
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#fcfcfc',
+            backgroundColor:
+              theme.palette.mode === 'dark'
+                ? theme.palette.grey[800]
+                : '#fcfcfc',
             '&::placeholder': {
               color: theme.palette.grey[500],
             },
           },
           '[cmdk-vercel-badge]': {
-            border: theme.palette.mode === 'light' ? border : '1px solid #fcfcfc',
+            border:
+              theme.palette.mode === 'light' ? border : '1px solid #fcfcfc',
             textAlign: 'center',
           },
           '[cmdk-vercel-shortcuts]': {
@@ -129,7 +148,11 @@ export const CommandModal = () => {
               cmdk-vercel-badge=""
               onClick={() =>
                 ControlCommandModal.setPages(
-                  ControlCommandModal.pages.slice(0, ControlCommandModal.pages.findIndex((page) => page === p) + 1),
+                  ControlCommandModal.pages.slice(
+                    0,
+                    ControlCommandModal.pages.findIndex((page) => page === p) +
+                      1,
+                  ),
                 )
               }
               style={p === activePage ? activePageStyle : {}}

@@ -11,7 +11,14 @@ export default function Home() {
       <Container>
         <HomeIntro />
         <div style={{ paddingBottom: '24px' }}>
-          <Typography variant="h3" sx={{ marginTop: 3, marginBottom: 3, textAlign: 'center' }}>
+          <Typography
+            variant="h3"
+            sx={{
+              marginTop: 3,
+              marginBottom: 3,
+              textAlign: 'center',
+            }}
+          >
             Chart Library
           </Typography>
           <Gallery />

@@ -28,7 +28,13 @@ const buildFindData = (data: FrameDataProps[]) => {
       dataByDateAndName.set(date, nextGroup);
     }
   });
-  const finder = ({ date, name }: { date: string | number | Date; name: string }) => {
+  const finder = ({
+    date,
+    name,
+  }: {
+    date: string | number | Date;
+    name: string;
+  }) => {
     try {
       return dataByDateAndName.get(date)[name];
     } catch (e) {
@@ -68,7 +74,10 @@ export const makeKeyframes = (data: FrameDataProps[], numOfSlice: number) => {
       const next = i !== frames.length - 1 ? frames[i + 1] : null;
 
       if (!next) {
-        result.push({ ...frame, date: new Date(frame.date) });
+        result.push({
+          ...frame,
+          date: new Date(frame.date),
+        });
       } else {
         const prevTimestamp = new Date(prev.date).getTime();
         const nextTimestamp = new Date(next.date).getTime();
@@ -77,9 +86,13 @@ export const makeKeyframes = (data: FrameDataProps[], numOfSlice: number) => {
           const sliceDate = new Date(prevTimestamp + (diff * i) / numOfSlice);
           const sliceData = frame.data.map(({ name, value, ...others }) => {
             const prevValue = value;
-            const nextDataPoint = findData({ date: next.date, name });
+            const nextDataPoint = findData({
+              date: next.date,
+              name,
+            });
             const nextValue = nextDataPoint ? nextDataPoint.value : 0;
-            const sliceValue = prevValue + ((nextValue - prevValue) * i) / numOfSlice;
+            const sliceValue =
+              prevValue + ((nextValue - prevValue) * i) / numOfSlice;
             return {
               name,
               value: sliceValue,
@@ -112,12 +125,19 @@ function useKeyframes(input: string | FrameDataProps[], numOfSlice: number) {
         const { data: csvString } = resp;
         const data = csvParse(csvString)
           .slice(1)
-          .map(([date, name, category, value]: [string | number | Date, string, string, number]) => ({
-            date,
-            name,
-            category,
-            value: Number(value),
-          }));
+          .map(
+            ([date, name, category, value]: [
+              string | number | Date,
+              string,
+              string,
+              number,
+            ]) => ({
+              date,
+              name,
+              category,
+              value: Number(value),
+            }),
+          );
         const keyframes = makeKeyframes(data, numOfSlice);
         setKeyframes(keyframes);
       });

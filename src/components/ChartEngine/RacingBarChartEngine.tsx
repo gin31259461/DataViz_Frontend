@@ -5,8 +5,13 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Container, IconButton } from '@mui/material';
 import { Suspense, useEffect, useRef, useState } from 'react';
-import RacingBarChart, { RacingBarChartController } from '../Chart/RacingBarChart/RacingBarChart';
-import { FrameDataProps, makeKeyframes } from '../Chart/RacingBarChart/useKeyframes';
+import RacingBarChart, {
+  RacingBarChartController,
+} from '../Chart/RacingBarChart/RacingBarChart';
+import {
+  FrameDataProps,
+  makeKeyframes,
+} from '../Chart/RacingBarChart/useKeyframes';
 
 export interface RacingBarChartMapping {
   [k: string]: string;
@@ -43,16 +48,25 @@ export const convertToRacingBarChartData = (
   return newData;
 };
 
-function RacingBarChartEngine(props: { data: FrameDataProps[]; args: RacingBarChartArgs }) {
+function RacingBarChartEngine(props: {
+  data: FrameDataProps[];
+  args: RacingBarChartArgs;
+}) {
   const keyframes = makeKeyframes(props.data, props.args.numOfSlice);
   const chartRef = useRef<RacingBarChartController>();
   const ChartContainerRef = useRef(null);
-  const [chartContainerOffset, setChartContainerOffset] = useState<{ width: number; height: number } | null>(null);
+  const [chartContainerOffset, setChartContainerOffset] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
 
   useEffect(() => {
     if (ChartContainerRef.current) {
       const element = ChartContainerRef.current as HTMLDivElement;
-      setChartContainerOffset({ width: element.offsetWidth, height: element.offsetHeight });
+      setChartContainerOffset({
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+      });
     }
   }, [ChartContainerRef]);
 
@@ -73,7 +87,9 @@ function RacingBarChartEngine(props: { data: FrameDataProps[]; args: RacingBarCh
     <Container>
       <div ref={ChartContainerRef} style={{ display: 'flex' }}>
         {keyframes.length > 0 && chartContainerOffset && (
-          <Suspense fallback={<LoadingWithTitle title="Generating racing bar chart" />}>
+          <Suspense
+            fallback={<LoadingWithTitle title="Generating racing bar chart" />}
+          >
             <RacingBarChart
               keyframes={keyframes}
               numOfBars={props.args.numOfBars}

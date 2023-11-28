@@ -9,6 +9,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "lint": "next lint",
+    "lint:fix": "eslint --ext .ts,.tsx,.js --fix ./src",
     "db-push": "prisma db push",
     "db-pull": "prisma db pull",
     "db-gen": "prisma generate",

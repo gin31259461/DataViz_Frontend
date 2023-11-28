@@ -57,19 +57,32 @@ export default function Navbar() {
     <div
       className={style['container']}
       style={{
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgb(20, 27, 45, 0.7)' : 'rgb(252, 252, 252, 0.8)',
+        backgroundColor:
+          theme.palette.mode === 'dark'
+            ? 'rgb(20, 27, 45, 0.7)'
+            : 'rgb(252, 252, 252, 0.8)',
         borderBottom: `${useSplitLineStyle()}`,
       }}
     >
       <div className={style['navbar-container']}>
         <div>
-          <Link onClick={handleClose} href={'/'} className={style['link']} title={''}>
+          <Link
+            onClick={handleClose}
+            href={'/'}
+            className={style['link']}
+            title={''}
+          >
             <DataVizIcon color={theme.palette.primary.main}></DataVizIcon>
           </Link>
         </div>
 
         <h2 style={{ marginLeft: '12px' }}>
-          <Link onClick={handleClose} href={'/'} className={style['link']} title={''}>
+          <Link
+            onClick={handleClose}
+            href={'/'}
+            className={style['link']}
+            title={''}
+          >
             Data Viz
           </Link>
         </h2>
@@ -87,19 +100,33 @@ export default function Navbar() {
               {status == 'authenticated' && (
                 <>
                   <NavbarMenuButton
-                    active={splitPathName.length >= 2 && splitPathName[2] === 'data' ? true : false}
+                    active={
+                      splitPathName.length >= 2 && splitPathName[2] === 'data'
+                        ? true
+                        : false
+                    }
                     href="/management/data"
                   >
                     Data
                   </NavbarMenuButton>
                   <NavbarMenuButton
-                    active={splitPathName.length >= 2 && splitPathName[2] === 'infographic' ? true : false}
+                    active={
+                      splitPathName.length >= 2 &&
+                      splitPathName[2] === 'infographic'
+                        ? true
+                        : false
+                    }
                     href="/management/project"
                   >
                     Project
                   </NavbarMenuButton>
                   <NavbarMenuButton
-                    active={splitPathName.length >= 2 && splitPathName[2] === 'settings' ? true : false}
+                    active={
+                      splitPathName.length >= 2 &&
+                      splitPathName[2] === 'settings'
+                        ? true
+                        : false
+                    }
                     href="/management/settings"
                   >
                     Settings
@@ -111,7 +138,13 @@ export default function Navbar() {
 
           <div className={style['navMenuSecond']}>
             <div className={style['navMenuSecond-1']}>
-              <Button sx={{ border: useSplitLineStyle(), textTransform: 'none' }} color="primary">
+              <Button
+                sx={{
+                  border: useSplitLineStyle(),
+                  textTransform: 'none',
+                }}
+                color="primary"
+              >
                 Feedback
               </Button>
               {status === 'unauthenticated' && (
@@ -133,13 +166,20 @@ export default function Navbar() {
 
             <IconButton onClick={() => colorMode.toggleColorMode()}>
               {theme.palette.mode === 'dark' ? (
-                <DarkModeOutlinedIcon fontSize={'medium'}></DarkModeOutlinedIcon>
+                <DarkModeOutlinedIcon
+                  fontSize={'medium'}
+                ></DarkModeOutlinedIcon>
               ) : (
-                <LightModeOutlinedIcon fontSize={'medium'}></LightModeOutlinedIcon>
+                <LightModeOutlinedIcon
+                  fontSize={'medium'}
+                ></LightModeOutlinedIcon>
               )}
             </IconButton>
 
-            <IconButton className={style['navMenuListButton']} onClick={handleMenuOpen}>
+            <IconButton
+              className={style['navMenuListButton']}
+              onClick={handleMenuOpen}
+            >
               {menuOpen ? (
                 <CloseOutlinedIcon fontSize={'medium'}></CloseOutlinedIcon>
               ) : (
@@ -172,19 +212,26 @@ export default function Navbar() {
       {/*---------- Navbar menu separator ----------*/}
 
       {/*---------- Menu list open separator ----------*/}
-      <NavbarMenu className={menuOpen ? style['navMenuOpen'] : style['navMenuClose']} onClose={handleClose}>
+      <NavbarMenu
+        className={menuOpen ? style['navMenuOpen'] : style['navMenuClose']}
+        onClose={handleClose}
+      >
         <NavbarMenuItem href="/">Chart library</NavbarMenuItem>
         {status == 'authenticated' && (
           <>
             <NavbarMenuItem href="/management/data">Data</NavbarMenuItem>
             <NavbarMenuItem href="/management/project">Project</NavbarMenuItem>
-            <NavbarMenuItem href="/management/settings">Settings</NavbarMenuItem>
+            <NavbarMenuItem href="/management/settings">
+              Settings
+            </NavbarMenuItem>
           </>
         )}
         <NavbarMenuItem href="/">Feedback</NavbarMenuItem>
 
         {status === 'unauthenticated' && (
-          <NavbarMenuItem onClick={() => setSignInModalOpen(true)}>Login</NavbarMenuItem>
+          <NavbarMenuItem onClick={() => setSignInModalOpen(true)}>
+            Login
+          </NavbarMenuItem>
         )}
       </NavbarMenu>
 

@@ -15,7 +15,14 @@ const AccountPage = async () => {
   const session = await getServerSession(authOptions);
   return (
     <Dashboard>
-      <Container sx={{ marginTop: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Container
+        sx={{
+          marginTop: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <div>
           <Typography variant="h4">Account information</Typography>
           {[
@@ -40,7 +47,11 @@ const AccountPage = async () => {
           })}
           <AccountListItemContainer>
             <AccountListItemLeft>
-              <Button sx={{ textTransform: 'none' }} variant="outlined" color="info">
+              <Button
+                sx={{ textTransform: 'none' }}
+                variant="outlined"
+                color="info"
+              >
                 Change Password
               </Button>
             </AccountListItemLeft>
@@ -51,17 +62,26 @@ const AccountPage = async () => {
         </div>
         <div>
           <Typography variant="h5">Connect account</Typography>
-          {['google', 'discord', 'facebook', 'github', 'wkesso'].map((provider) => {
-            return (
-              <>
-                <AccountListItem
-                  startIcon={<Image src={`/assets/icons/${provider}.ico`} height={30} width={30} alt="google"></Image>}
-                  provider={provider}
-                ></AccountListItem>
-                <Divider />
-              </>
-            );
-          })}
+          {['google', 'discord', 'facebook', 'github', 'wkesso'].map(
+            (provider) => {
+              return (
+                <>
+                  <AccountListItem
+                    startIcon={
+                      <Image
+                        src={`/assets/icons/${provider}.ico`}
+                        height={30}
+                        width={30}
+                        alt="google"
+                      ></Image>
+                    }
+                    provider={provider}
+                  ></AccountListItem>
+                  <Divider />
+                </>
+              );
+            },
+          )}
         </div>
       </Container>
     </Dashboard>

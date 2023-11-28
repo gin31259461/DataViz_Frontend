@@ -25,13 +25,17 @@ interface DashboardProps {
   children: React.ReactNode;
 }
 
+const openWidth = 150;
+const closeWidth = 50;
+
 export default function Dashboard({ children }: DashboardProps) {
   const theme = useTheme();
-  const [drawerWidth, setDrawerWidth] = useState(180);
+
+  const [drawerWidth, setDrawerWidth] = useState(openWidth);
   const [open, setOpen] = useState(true);
 
   const handleDrawerOpen = () => {
-    setDrawerWidth(180);
+    setDrawerWidth(openWidth);
     setOpen(true);
   };
 
@@ -41,7 +45,7 @@ export default function Dashboard({ children }: DashboardProps) {
 
   useEffect(() => {
     if (!open) {
-      setDrawerWidth(50);
+      setDrawerWidth(closeWidth);
     }
   }, [open]);
 

@@ -3,7 +3,12 @@ import { AxisBottom as VisxAxisBottom } from '@visx/axis';
 import { Group } from '@visx/group';
 import { Bar as VisxBar, Circle as VisxCircle } from '@visx/shape';
 import { Text as VisxText } from '@visx/text';
-import { MouseEvent as MouseEventGeneric, RefObject, useRef, useState } from 'react';
+import {
+  MouseEvent as MouseEventGeneric,
+  RefObject,
+  useRef,
+  useState,
+} from 'react';
 
 export interface AxisBottomProps {
   x: number;
@@ -26,15 +31,20 @@ const AxisBottom = (props: AxisBottomProps) => {
   const [mouseover, setMouseover] = useState(false);
   const rectHeight = strokeWidth * 20;
   const rectWidthOffset = 40;
-  const rectWidth = props.scale(props.maxFrameLength - 1) - props.scale(0) + rectWidthOffset;
+  const rectWidth =
+    props.scale(props.maxFrameLength - 1) - props.scale(0) + rectWidthOffset;
 
-  const handleMouseMove = (e: Event | MouseEventGeneric<SVGGElement, MouseEvent>) => {
+  const handleMouseMove = (
+    e: Event | MouseEventGeneric<SVGGElement, MouseEvent>,
+  ) => {
     const event = e as MouseEventGeneric<SVGGElement, MouseEvent>;
     const originOffset = GroupRef.current?.getBoundingClientRect().x ?? 0;
     const inGroupCurrentX = event.clientX - originOffset;
 
     let closestIndex = props.currentFrameIndex;
-    let shortestDistance = Math.abs(props.scale(0) - props.scale(props.maxFrameLength - 1));
+    let shortestDistance = Math.abs(
+      props.scale(0) - props.scale(props.maxFrameLength - 1),
+    );
 
     for (let i = 0; i < props.maxFrameLength; i++) {
       const scaleXPoint = props.scale(i);
@@ -112,7 +122,10 @@ const AxisBottom = (props: AxisBottomProps) => {
             if (mousemove) handleMouseMove(event);
           }}
           onMouseUp={() => setMousemove(false)}
-          style={{ cursor: 'col-resize', userSelect: 'none' }}
+          style={{
+            cursor: 'col-resize',
+            userSelect: 'none',
+          }}
           opacity={1}
           cx={props.x}
           cy={props.y2}

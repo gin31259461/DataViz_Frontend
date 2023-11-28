@@ -23,7 +23,9 @@ export const TrpcProvider: React.FC<TrpcProviderProps> = (props) => {
   );
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        {props.children}
+      </QueryClientProvider>
     </trpc.Provider>
   );
 };

@@ -28,10 +28,18 @@ const RacingBarGroup = forwardRef(function ForwardRacingBarGroup(
 
   const transitions = useTransition(transitionData, {
     initial: (d) => d,
-    from: { y: yScale.range()[1] + barGap * (transitionData.length - 1), width: 0, value: 0 },
+    from: {
+      y: yScale.range()[1] + barGap * (transitionData.length - 1),
+      width: 0,
+      value: 0,
+    },
     enter: (d) => d,
     update: (d) => d,
-    leave: { y: yScale.range()[1] + barGap * (transitionData.length - 1), width: 0, value: 0 },
+    leave: {
+      y: yScale.range()[1] + barGap * (transitionData.length - 1),
+      width: 0,
+      value: 0,
+    },
     keys: (d) => d.name,
     ref: api,
   });

@@ -10,7 +10,10 @@ import { useEffect } from 'react';
 
 function PreviewRacingChart() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const selectedData = trpc.dataObject.getAllFromDataTable.useQuery<{ [index: string]: any }[]>(selectedDataOID);
+  const selectedData =
+    trpc.dataObject.getAllFromDataTable.useQuery<{ [index: string]: any }[]>(
+      selectedDataOID,
+    );
   const dataArgs = useProjectStore<DataArgsProps<RacingBarChartMapping>>(
     (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>,
   );

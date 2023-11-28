@@ -26,5 +26,8 @@ export const bigIntToString = (obj: any): any => {
 
 export const numberToStringPercentage = (percentage: number | undefined) => {
   if (!percentage) return '';
-  return (roundNumberToDecimalPlaces(percentage, 2) * 100).toFixed(0).toString() + '%';
+  return (
+    (roundNumberToDecimalPlaces(percentage, 2) * 100).toFixed(0).toString() +
+    '%'
+  );
 };

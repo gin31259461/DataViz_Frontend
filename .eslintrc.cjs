@@ -10,6 +10,11 @@ module.exports = {
   },
   rules: {
     'react/no-unescaped-entities': 'off',
-    'prettier/prettier': ['error'],
+    'prettier/prettier': [
+      'error',
+      {
+        printWidth: 80,
+      },
+    ],
   },
 };

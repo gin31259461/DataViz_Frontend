@@ -8,15 +8,28 @@ interface AutoCompleteSelectProps {
   onChange: (value: string) => void;
 }
 
-const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({ initialValueIndex, loading, options, onChange }) => {
+const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
+  initialValueIndex,
+  loading,
+  options,
+  onChange,
+}) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [selectedValue, setSelectedValue] = useState<string | null>(options[initialValueIndex]);
+  const [selectedValue, setSelectedValue] = useState<string | null>(
+    options[initialValueIndex],
+  );
 
-  const handleInputChange = (event: React.SyntheticEvent<Element>, value: string) => {
+  const handleInputChange = (
+    event: React.SyntheticEvent<Element>,
+    value: string,
+  ) => {
     setInputValue(value);
   };
 
-  const handleOptionChange = (event: React.SyntheticEvent, value: string | null) => {
+  const handleOptionChange = (
+    event: React.SyntheticEvent,
+    value: string | null,
+  ) => {
     setSelectedValue(value);
     if (value) {
       onChange(value);

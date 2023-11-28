@@ -13,7 +13,9 @@ interface TabProps {
 
 const TabSlider: React.FC<TabProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'up' | 'down'>('left');
+  const [slideDirection, setSlideDirection] = useState<
+    'left' | 'right' | 'up' | 'down'
+  >('left');
   const borderStyle = useSplitLineStyle();
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
@@ -52,7 +54,13 @@ const TabSlider: React.FC<TabProps> = ({ tabs }) => {
               overflow: 'hidden',
             }}
           >
-            <Slide direction={slideDirection} in={activeTab == i} mountOnEnter unmountOnExit timeout={500}>
+            <Slide
+              direction={slideDirection}
+              in={activeTab == i}
+              mountOnEnter
+              unmountOnExit
+              timeout={500}
+            >
               <Box
                 sx={{
                   maxWidth: '100%',

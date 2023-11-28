@@ -10,8 +10,15 @@ interface ContextMenuProps {
   maxWidth?: number | string;
 }
 
-export default function ContextMenu({ children, maxWidth, id, onDelete }: ContextMenuProps) {
-  const [anchorPosition, setAnchorPosition] = useState<PopoverPosition | undefined>(undefined);
+export default function ContextMenu({
+  children,
+  maxWidth,
+  id,
+  onDelete,
+}: ContextMenuProps) {
+  const [anchorPosition, setAnchorPosition] = useState<
+    PopoverPosition | undefined
+  >(undefined);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const router = useRouter();
 
@@ -43,7 +50,9 @@ export default function ContextMenu({ children, maxWidth, id, onDelete }: Contex
         open={Boolean(anchorPosition)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onClick={() => router.push(`/management/project/${id}`)}>Open</MenuItem>
+        <MenuItem onClick={() => router.push(`/management/project/${id}`)}>
+          Open
+        </MenuItem>
         <MenuItem onClick={handleMenuItemClick}>Rename</MenuItem>
         <MenuItem onClick={() => setDeleteModalOpen(true)}>Delete</MenuItem>
         <ConfirmModal

@@ -3,17 +3,26 @@ import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
 export const dataObjectRouter = createTRPCRouter({
-  getMemberDataCount: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
-    const count = await ctx.prisma.object.count({
-      where: {
-        OwnerMID: input,
-        Type: 6,
-      },
-    });
-    return count;
-  }),
+  getMemberDataCount: publicProcedure
+    .input(z.number())
+    .query(async ({ input, ctx }) => {
+      const count = await ctx.prisma.object.count({
+        where: {
+          OwnerMID: input,
+          Type: 6,
+        },
+      });
+      return count;
+    }),
   getSomeMemberData: publicProcedure
-    .input(z.object({ order: z.string(), start: z.number(), counts: z.number(), mid: z.number() }))
+    .input(
+      z.object({
+        order: z.string(),
+        start: z.number(),
+        counts: z.number(),
+        mid: z.number(),
+      }),
+    )
     .query(async ({ input, ctx }) => {
       const data = await ctx.prisma.vd_Data.findMany({
         orderBy: {
@@ -27,53 +36,75 @@ export const dataObjectRouter = createTRPCRouter({
       });
       return data;
     }),
-  getOneMemberData: publicProcedure.input(z.number().nullish()).query(async ({ input, ctx }) => {
-    if (!input) return null;
+  getOneMemberData: publicProcedure
+    .input(z.number().nullish())
+    .query(async ({ input, ctx }) => {
+      if (!input) return null;
 
-    const data = await ctx.prisma.vd_Data.findFirst({
-      where: {
-        id: input,
-      },
-    });
-    return data;
-  }),
-  getAllMemberData: publicProcedure.input(z.number()).query(async ({ input, ctx }) => {
-    const result = await ctx.prisma.vd_Data.findMany({
-      where: {
-        ownerID: { equals: input },
-      },
-    });
-    return result;
-  }),
-  getTop100FromDataTable: publicProcedure.input(z.number().nullish()).query(async ({ input, ctx }) => {
-    if (!input) return [];
+      const data = await ctx.prisma.vd_Data.findFirst({
+        where: {
+          id: input,
+        },
+      });
+      return data;
+    }),
+  getAllMemberData: publicProcedure
+    .input(z.number())
+    .query(async ({ input, ctx }) => {
+      const result = await ctx.prisma.vd_Data.findMany({
+        where: {
+          ownerID: { equals: input },
+        },
+      });
+      return result;
+    }),
+  getTop100FromDataTable: publicProcedure
+    .input(z.number().nullish())
+    .query(async ({ input, ctx }) => {
+      if (!input) return [];
 
-    const sqlStr = `SELECT TOP 100 * FROM [RawDB].[dbo].[D${input}]`;
-    const data: Object[] = await ctx.prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
-    const convertedData = data.map((obj) => bigIntToString(obj));
-    return convertedData;
-  }),
-  getAllFromDataTable: publicProcedure.input(z.number().nullish()).query(async ({ input, ctx }) => {
-    if (!input) return [];
+      const sqlStr = `SELECT TOP 100 * FROM [RawDB].[dbo].[D${input}]`;
+      const data: Object[] = await ctx.prisma
+        .$queryRaw`exec sp_executesql ${sqlStr}`;
+      const convertedData = data.map((obj) => bigIntToString(obj));
+      return convertedData;
+    }),
+  getAllFromDataTable: publicProcedure
+    .input(z.number().nullish())
+    .query(async ({ input, ctx }) => {
+      if (!input) return [];
 
-    const sqlStr = `SELECT * FROM [RawDB].[dbo].[D${input}]`;
-    const data: Object[] = await ctx.prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
-    const convertedData: { [index: string]: any }[] = data.map<object>((obj) => bigIntToString(obj));
-    return convertedData;
-  }),
-  getRowsCountFromDataTable: publicProcedure.input(z.number().nullish()).query(async ({ input, ctx }) => {
-    if (!input) return 0;
+      const sqlStr = `SELECT * FROM [RawDB].[dbo].[D${input}]`;
+      const data: Object[] = await ctx.prisma
+        .$queryRaw`exec sp_executesql ${sqlStr}`;
+      const convertedData: { [index: string]: any }[] = data.map<object>(
+        (obj) => bigIntToString(obj),
+      );
+      return convertedData;
+    }),
+  getRowsCountFromDataTable: publicProcedure
+    .input(z.number().nullish())
+    .query(async ({ input, ctx }) => {
+      if (!input) return 0;
 
-    const sqlStr = `SELECT count(*) AS count FROM [RawDB].[dbo].[D${input}]`;
-    const result: { count: number }[] = await ctx.prisma.$queryRaw`exec sp_executesql ${sqlStr}`;
-    return result[0].count;
-  }),
+      const sqlStr = `SELECT count(*) AS count FROM [RawDB].[dbo].[D${input}]`;
+      const result: { count: number }[] = await ctx.prisma
+        .$queryRaw`exec sp_executesql ${sqlStr}`;
+      return result[0].count;
+    }),
   getCurrentObjectId: publicProcedure.query(async ({ ctx }) => {
-    const result: { last: number }[] = await ctx.prisma.$queryRaw`select IDENT_CURRENT('Object') as last`;
+    const result: { last: number }[] = await ctx.prisma
+      .$queryRaw`select IDENT_CURRENT('Object') as last`;
     return result[0].last;
   }),
   postData: publicProcedure
-    .input(z.object({ mid: z.number(), name: z.string(), des: z.string() }))
+    .input(
+      z.object({
+        mid: z.number(),
+        name: z.string(),
+        des: z.string(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.object.create({
         data: {
@@ -90,7 +121,12 @@ export const dataObjectRouter = createTRPCRouter({
       });
     }),
   deleteData: publicProcedure
-    .input(z.object({ mid: z.number(), oidS: z.array(z.number()) }))
+    .input(
+      z.object({
+        mid: z.number(),
+        oidS: z.array(z.number()),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.data.deleteMany({
         where: {

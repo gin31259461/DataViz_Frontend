@@ -1,4 +1,12 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 import { useState } from 'react';
 import CsvInputFiled from './CsvInputField';
 
@@ -8,7 +16,11 @@ interface DataFormDialogProps {
   onSubmit: (formData: FormData) => Promise<void>;
 }
 
-export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialogProps) {
+export default function DataFormModal({
+  open,
+  onClose,
+  onSubmit,
+}: DataFormDialogProps) {
   const [file, setFile] = useState<File | string | null>(null);
   const [name, setName] = useState('');
   const [des, setDes] = useState('');
@@ -81,7 +93,11 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
           >
             Cancel
           </Button>
-          <Button sx={{ color: 'inherit' }} onClick={handleSubmit} disabled={file === null || loading}>
+          <Button
+            sx={{ color: 'inherit' }}
+            onClick={handleSubmit}
+            disabled={file === null || loading}
+          >
             {loading ? <CircularProgress color="info" size={20} /> : 'Submit'}
           </Button>
         </DialogActions>

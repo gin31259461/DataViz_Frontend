@@ -8,7 +8,12 @@ interface CardButtonProps {
   onClick?: () => void;
 }
 
-export default function CardButton({ title, description, icon, onClick }: CardButtonProps) {
+export default function CardButton({
+  title,
+  description,
+  icon,
+  onClick,
+}: CardButtonProps) {
   return (
     <Card sx={{ width: '100%', border: useSplitLineStyle() }}>
       <CardActionArea onClick={onClick}>
@@ -21,7 +26,16 @@ export default function CardButton({ title, description, icon, onClick }: CardBu
               {description}
             </Typography>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'right', width: '20%' }}>{icon}</div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'right',
+              width: '20%',
+            }}
+          >
+            {icon}
+          </div>
         </CardContent>
       </CardActionArea>
     </Card>

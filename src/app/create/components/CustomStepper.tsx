@@ -2,7 +2,15 @@
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import { tokens } from '@/utils/theme';
-import { Box, Button, Grid, Step, StepLabel, Stepper, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Step,
+  StepLabel,
+  Stepper,
+  useTheme,
+} from '@mui/material';
 import { createContext, useContext, useMemo, useState } from 'react';
 
 interface CustomStepperProps {
@@ -55,7 +63,11 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
         }}
       >
         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Stepper activeStep={stepContext.activeStep} orientation="horizontal" sx={{ ...stepStyle, width: '100%' }}>
+          <Stepper
+            activeStep={stepContext.activeStep}
+            orientation="horizontal"
+            sx={{ ...stepStyle, width: '100%' }}
+          >
             {steps.map((label, index) => (
               <Step key={index}>
                 <StepLabel>{label}</StepLabel>
@@ -64,11 +76,20 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
           </Stepper>
         </Grid>
         <Grid container>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <Button
               disabled={backButtonDisabled()}
               color="info"
-              sx={{ position: 'absolute', fontSize: 15, left: 20 }}
+              sx={{
+                position: 'absolute',
+                fontSize: 15,
+                left: 20,
+              }}
               onClick={() => stepContext.changeActiveStep('prev')}
               variant="outlined"
             >
@@ -77,12 +98,21 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
             <Button
               disabled={nextButtonDisabled()}
               color="info"
-              sx={{ position: 'absolute', fontSize: 15, right: 20 }}
+              sx={{
+                position: 'absolute',
+                fontSize: 15,
+                right: 20,
+              }}
               onClick={async () => {
-                if (stepContext.activeStep === steps.length - 1) await callback();
+                if (stepContext.activeStep === steps.length - 1)
+                  await callback();
                 stepContext.changeActiveStep('next');
               }}
-              variant={stepContext.activeStep !== steps.length - 1 ? 'outlined' : 'contained'}
+              variant={
+                stepContext.activeStep !== steps.length - 1
+                  ? 'outlined'
+                  : 'contained'
+              }
             >
               {stepContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
             </Button>
@@ -122,8 +152,10 @@ export const useCustomStepperAction = (stepLength: number) => {
     return {
       activeStep: activeStep,
       changeActiveStep: (action) => {
-        if (action == 'next') setActiveStep((prev) => (prev < stepLength - 1 ? prev + 1 : prev));
-        else if (action == 'prev') setActiveStep((prev) => (prev > 0 ? prev - 1 : prev));
+        if (action == 'next')
+          setActiveStep((prev) => (prev < stepLength - 1 ? prev + 1 : prev));
+        else if (action == 'prev')
+          setActiveStep((prev) => (prev > 0 ? prev - 1 : prev));
       },
     };
   }, [activeStep, stepLength]);

@@ -17,7 +17,13 @@ export default function FooterContainer({ children }: FooterContainerProps) {
         padding: theme.spacing(6, 0),
       }}
     >
-      <Container maxWidth="lg" sx={{ borderTop: useSplitLineStyle(), paddingTop: '2vh' }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          borderTop: useSplitLineStyle(),
+          paddingTop: '2vh',
+        }}
+      >
         {children}
       </Container>
     </footer>

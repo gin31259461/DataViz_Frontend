@@ -3,7 +3,15 @@ import { Group } from '@visx/group';
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale';
 import { Text as VisxText } from '@visx/text';
 import { schemeTableau10 } from 'd3-scale-chromatic';
-import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { SpringRef } from 'react-spring';
 import RacingAxisBottom from './RacingAxisBottom';
 import RacingAxisTop from './RacingAxisTop';
@@ -40,16 +48,26 @@ export interface AnimationStateProps {
 }
 
 const RacingBarChart = forwardRef(function ForwardRacingBarChart(
-  { numOfBars, width, height, margin, keyframes, onStart, onStop, barGap }: RacingBarChartProps,
+  {
+    numOfBars,
+    width,
+    height,
+    margin,
+    keyframes,
+    onStart,
+    onStop,
+    barGap,
+  }: RacingBarChartProps,
   ref,
 ) {
   const theme = useTheme();
 
-  const [{ frameIdx, animationKey, playing }, setAnimation] = useState<AnimationStateProps>({
-    frameIdx: 0,
-    animationKey: 0,
-    playing: false,
-  });
+  const [{ frameIdx, animationKey, playing }, setAnimation] =
+    useState<AnimationStateProps>({
+      frameIdx: 0,
+      animationKey: 0,
+      playing: false,
+    });
 
   const updateFrameRef = useRef<NodeJS.Timeout | null>(null);
   // when replay, increment the key to rerender the chart.
@@ -126,7 +144,10 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
 
   const frame = keyframes[frameIdx];
   const { date: currentDate, data: frameData } = frame;
-  const dates = useMemo(() => keyframes.map((frame) => frame.date as Date), [keyframes]);
+  const dates = useMemo(
+    () => keyframes.map((frame) => frame.date as Date),
+    [keyframes],
+  );
   const values = frameData.map(({ value }) => value);
   const gapOffset = barGap * (numOfBars - 1);
   const xMax = width - margin.left - margin.right;
@@ -167,7 +188,10 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
     return keyframes[0].data.map((d) => d.name);
   }, [keyframes]);
 
-  const colorScale = useMemo(() => scaleOrdinal().domain(nameList).range(schemeTableau10), [nameList]);
+  const colorScale = useMemo(
+    () => scaleOrdinal().domain(nameList).range(schemeTableau10),
+    [nameList],
+  );
   const dateInYear = new Date(currentDate).getFullYear();
 
   return (
@@ -181,11 +205,30 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
           barGap={barGap}
           ref={barGroupRef}
         />
-        <RacingAxisTop domainMax={domainMax} xMax={xMax} height={yMax + gapOffset} ref={axisTopRef} />
-        <text textAnchor="end" style={{ fontSize: '2.25em', fill: theme.palette.text.primary }} x={xMax} y={yMax}>
+        <RacingAxisTop
+          domainMax={domainMax}
+          xMax={xMax}
+          height={yMax + gapOffset}
+          ref={axisTopRef}
+        />
+        <text
+          textAnchor="end"
+          style={{
+            fontSize: '2.25em',
+            fill: theme.palette.text.primary,
+          }}
+          x={xMax}
+          y={yMax}
+        >
           {dateInYear}
         </text>
-        <line x1={0} y1={0} x2={0} y2={yMax + gapOffset} stroke={theme.palette.text.primary} />
+        <line
+          x1={0}
+          y1={0}
+          x2={0}
+          y2={yMax + gapOffset}
+          stroke={theme.palette.text.primary}
+        />
         <Group>
           <VisxText
             fill={theme.palette.text.primary}

@@ -11,7 +11,10 @@ interface AvatarProps {
 
 const getInitials = (name: string) => {
   const names = name.split(' ');
-  return names.reduce((result, word) => result + (word[0] ? word[0].toUpperCase() : ''), '');
+  return names.reduce(
+    (result, word) => result + (word[0] ? word[0].toUpperCase() : ''),
+    '',
+  );
 };
 
 export default function Avatar({ src, alt, initials, size = 30 }: AvatarProps) {

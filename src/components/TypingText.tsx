@@ -37,8 +37,15 @@ export default function TypingText() {
 
   useEffect(() => {
     if (document.getElementById('typing-text') !== null) {
-      document.getElementById('typing-text')?.style.setProperty('--cursor-color', color.greenAccent[500]);
-      document.getElementById('typing-text')?.style.setProperty('--background-color', theme.palette.background.default);
+      document
+        .getElementById('typing-text')
+        ?.style.setProperty('--cursor-color', color.greenAccent[500]);
+      document
+        .getElementById('typing-text')
+        ?.style.setProperty(
+          '--background-color',
+          theme.palette.background.default,
+        );
     }
   }, [theme.palette.mode, theme.palette.background, color.greenAccent]);
 

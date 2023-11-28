@@ -1,4 +1,10 @@
-import { Alert, AlertColor, Snackbar, SnackbarProps, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertColor,
+  Snackbar,
+  SnackbarProps,
+  Typography,
+} from '@mui/material';
 
 interface MessageSnackbarProps extends Omit<SnackbarProps, 'open'> {
   open: boolean;
@@ -19,7 +25,10 @@ export default function MessageSnackbar({
       open={open}
       autoHideDuration={5000}
       onClose={onClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
       message={message}
       key={{ vertical: 'bottom', horizontal: 'right' }}
       {...props}

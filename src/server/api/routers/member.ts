@@ -27,41 +27,53 @@ export const AccountZodSchema = z.record(z.unknown()).and(
     providerAccountId: z.string(),
     userId: z.string().optional(),
     provider: z.string(),
-    type: z.union([z.literal('oauth'), z.literal('email'), z.literal('credentials')]),
+    type: z.union([
+      z.literal('oauth'),
+      z.literal('email'),
+      z.literal('credentials'),
+    ]),
   }),
 );
 
-const SettingZodSchema = z.object({ darkMode: z.boolean() });
+const SettingZodSchema = z.object({
+  darkMode: z.boolean(),
+});
 export type SettingSchema = z.infer<typeof SettingZodSchema>;
-export const defaultSetting: SettingSchema = { darkMode: false };
+export const defaultSetting: SettingSchema = {
+  darkMode: false,
+};
 
 export const userRouter = createTRPCRouter({
-  isEmailUsed: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
-    const member = await ctx.prisma.member.findUnique({
-      select: {
-        EMail: true,
-      },
-      where: {
-        EMail: input,
-      },
-    });
+  isEmailUsed: publicProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      const member = await ctx.prisma.member.findUnique({
+        select: {
+          EMail: true,
+        },
+        where: {
+          EMail: input,
+        },
+      });
 
-    if (member?.EMail) return false;
-    return true;
-  }),
-  isUserNameUsed: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
-    const user = await ctx.prisma.member.findUnique({
-      select: {
-        Account: true,
-      },
-      where: {
-        Account: input,
-      },
-    });
+      if (member?.EMail) return false;
+      return true;
+    }),
+  isUserNameUsed: publicProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.member.findUnique({
+        select: {
+          Account: true,
+        },
+        where: {
+          Account: input,
+        },
+      });
 
-    if (user?.Account) return false;
-    return true;
-  }),
+      if (user?.Account) return false;
+      return true;
+    }),
   enable: publicProcedure
     .input(
       z
@@ -117,18 +129,20 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
-  getLinkedAccount: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
-    if (!input) return [];
+  getLinkedAccount: publicProcedure
+    .input(z.number().optional())
+    .query(async ({ input, ctx }) => {
+      if (!input) return [];
 
-    const res = await ctx.prisma.account.findMany({
-      select: {
-        provider: true,
-      },
-      where: {
-        MID: input,
-      },
-    });
+      const res = await ctx.prisma.account.findMany({
+        select: {
+          provider: true,
+        },
+        where: {
+          MID: input,
+        },
+      });
 
-    return res;
-  }),
+      return res;
+    }),
 });

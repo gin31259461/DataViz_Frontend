@@ -1,4 +1,11 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
 import { useState } from 'react';
 
 interface ConfirmModalProps {
@@ -10,7 +17,14 @@ interface ConfirmModalProps {
   onCancel?: () => void;
 }
 
-export const ConfirmModal: React.FC<ConfirmModalProps> = ({ onConfirm, onCancel, open, title, children, onClose }) => {
+export const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  onConfirm,
+  onCancel,
+  open,
+  title,
+  children,
+  onClose,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleClose = () => {

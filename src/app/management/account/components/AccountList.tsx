@@ -14,9 +14,16 @@ interface AccountListItemProps {
 export const AccountListItem: React.FC<AccountListItemProps> = (props) => {
   const { data } = useSession();
   const [loading, setLoading] = useState(false);
-  const [activeProvider, setActiveProvider] = useState<LiteralUnion<BuiltInProviderType> | undefined>(undefined);
-  const accounts = trpc.user.getLinkedAccount.useQuery(data ? parseInt(data?.user.id) : undefined).data;
-  const connectStatus = accounts?.findIndex((account) => account.provider === props.provider) === -1 ? false : true;
+  const [activeProvider, setActiveProvider] = useState<
+    LiteralUnion<BuiltInProviderType> | undefined
+  >(undefined);
+  const accounts = trpc.user.getLinkedAccount.useQuery(
+    data ? parseInt(data?.user.id) : undefined,
+  ).data;
+  const connectStatus =
+    accounts?.findIndex((account) => account.provider === props.provider) === -1
+      ? false
+      : true;
   const unLinkAccount = trpc.user.unLinkAccount.useMutation();
 
   const handleConnect = async () => {
@@ -28,7 +35,11 @@ export const AccountListItem: React.FC<AccountListItemProps> = (props) => {
   const handleDisconnect = async () => {
     setLoading(true);
     setActiveProvider(props.provider);
-    if (data) unLinkAccount.mutateAsync({ MID: parseInt(data.user.id), provider: props.provider });
+    if (data)
+      unLinkAccount.mutateAsync({
+        MID: parseInt(data.user.id),
+        provider: props.provider,
+      });
   };
 
   useEffect(() => {
@@ -42,7 +53,9 @@ export const AccountListItem: React.FC<AccountListItemProps> = (props) => {
         {props.startIcon}
         {props.provider}
       </AccountListItemLeft>
-      <AccountListItemCenter>{connectStatus ? 'Connected' : 'Not Connected'}</AccountListItemCenter>
+      <AccountListItemCenter>
+        {connectStatus ? 'Connected' : 'Not Connected'}
+      </AccountListItemCenter>
       <AccountListItemRight>
         <Button
           sx={{

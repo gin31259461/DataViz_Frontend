@@ -13,7 +13,10 @@ export const isValidCsvString = (str: string) => {
 
       if (/^".*"$/.test(column)) {
         // check if ' ' pair
-        if (/^".*[^"]$/.test(column) || /^[^"]*"$/.test(column.replace(/""/g, ''))) {
+        if (
+          /^".*[^"]$/.test(column) ||
+          /^[^"]*"$/.test(column.replace(/""/g, ''))
+        ) {
           return false;
         }
       } else {

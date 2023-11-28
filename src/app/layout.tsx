@@ -19,7 +19,12 @@ export const metadata = {
   // 'og:description':
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode; session: Session }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+  session: Session;
+}) {
   const session = await getServerSession(authOptions);
 
   return (

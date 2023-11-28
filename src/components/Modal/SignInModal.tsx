@@ -15,7 +15,8 @@ interface SignInModalProps {
 
 const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
   const theme = useTheme();
-  const buttonVariant = theme.palette.mode === 'dark' ? 'contained' : 'outlined';
+  const buttonVariant =
+    theme.palette.mode === 'dark' ? 'contained' : 'outlined';
 
   const handleClose = () => {
     onClose();
@@ -46,26 +47,28 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
           justifyContent: 'center',
         }}
       >
-        {['Google', 'Discord', 'Facebook', 'Github', 'WKESSO'].map((provider, i) => {
-          return (
-            <LoginButton
-              variant={buttonVariant}
-              color="primary"
-              startIcon={
-                <Image
-                  src={`/assets/icons/${provider.toLowerCase()}.ico`}
-                  height={30}
-                  width={30}
-                  alt={provider}
-                ></Image>
-              }
-              onClick={() => handleSignIn(provider.toLowerCase())}
-              key={i}
-            >
-              <div>Sign in with {provider}</div>
-            </LoginButton>
-          );
-        })}
+        {['Google', 'Discord', 'Facebook', 'Github', 'WKESSO'].map(
+          (provider, i) => {
+            return (
+              <LoginButton
+                variant={buttonVariant}
+                color="primary"
+                startIcon={
+                  <Image
+                    src={`/assets/icons/${provider.toLowerCase()}.ico`}
+                    height={30}
+                    width={30}
+                    alt={provider}
+                  ></Image>
+                }
+                onClick={() => handleSignIn(provider.toLowerCase())}
+                key={i}
+              >
+                <div>Sign in with {provider}</div>
+              </LoginButton>
+            );
+          },
+        )}
       </DialogContent>
 
       <DialogActions>

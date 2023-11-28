@@ -11,7 +11,9 @@ export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
 
 const t = initTRPC.context<Context>().create();
 
-export const createContext = async (opts?: trpcNext.CreateNextContextOptions) => {
+export const createContext = async (
+  opts?: trpcNext.CreateNextContextOptions,
+) => {
   const req = opts?.req;
   const res = opts?.res;
 

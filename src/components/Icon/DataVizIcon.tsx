@@ -4,7 +4,14 @@ interface DataVizIconProps {
 
 export default function DataVizIcon({ color }: DataVizIconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 32 32">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      x="0px"
+      y="0px"
+      width="40px"
+      height="40px"
+      viewBox="0 0 32 32"
+    >
       <style type="text/css">
         {`
           .een{fill: ${color};}

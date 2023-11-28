@@ -49,12 +49,12 @@ function CreateRacingBarChartPage() {
         title: title,
         des: des,
         mid: mid,
-        args: JSON.stringify({
+        args: {
           dataId: selectedDataOID,
-          chartType: chartType,
-          chartArgs: chartArgs,
-          dataArgs: dataArgs,
-        }),
+          chartType: chartType ?? '',
+          chartArgs: chartArgs ?? {},
+          dataArgs: dataArgs ?? {},
+        },
       });
     }
   };

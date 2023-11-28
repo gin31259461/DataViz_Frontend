@@ -1,3 +1,5 @@
+select * from Class
+
 SELECT *
 FROM [Object]
 UPDATE [Object] SET EDes = '{}' WHERE [Type] = 2

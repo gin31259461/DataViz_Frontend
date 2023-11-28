@@ -13,8 +13,8 @@ const ProjectZodSchema = z.object({
 const ArgZodSchema = z.object({
   dataId: z.number(),
   chartType: z.string(),
-  dataArgs: z.object({}),
-  chartArgs: z.object({}),
+  dataArgs: z.any(),
+  chartArgs: z.any(),
 });
 
 export type ProjectSchema = z.infer<typeof ProjectZodSchema>;
@@ -22,7 +22,7 @@ export type ArgSchema = z.infer<typeof ArgZodSchema>;
 
 export const projectRouter = createTRPCRouter({
   createArg: publicProcedure
-    .input(z.object({ mid: z.number(), title: z.string(), des: z.string(), args: z.string() }))
+    .input(z.object({ mid: z.number(), title: z.string(), des: z.string(), args: ArgZodSchema }))
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.$executeRaw`exec xp_insertProjectClass ${input.mid}, ${input.title}, ${input.des}`;
       const result: { last: number }[] = await ctx.prisma.$queryRaw`select IDENT_CURRENT('Class') as last`;
@@ -34,7 +34,7 @@ export const projectRouter = createTRPCRouter({
 
       await ctx.prisma.object.create({
         data: {
-          CDes: input.args,
+          CDes: JSON.stringify(input.args),
           EName: input.title,
           EDes: input.des,
           Type: 7,

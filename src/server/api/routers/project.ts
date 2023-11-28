@@ -10,6 +10,15 @@ export interface createArgProps {
   args: string;
 }
 
+export const ProjectZodSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  des: z.string(),
+  path: z.string(),
+  since: z.date(),
+  lastModifiedDT: z.date(),
+});
+
 export const projectRouter = createTRPCRouter({
   createArg: publicProcedure
     .input(z.object({ mid: z.number(), title: z.string(), des: z.string(), args: z.string() }))

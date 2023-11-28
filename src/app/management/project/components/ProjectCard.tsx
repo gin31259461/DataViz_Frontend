@@ -1,11 +1,12 @@
 'use client';
 
-import { type ProjectProps } from '@/types/Project';
+import { ProjectZodSchema } from '@/server/api/routers/project';
 import { tokens } from '@/utils/theme';
 import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
+import { z } from 'zod';
 
 interface ProjectCardProps {
-  project: ProjectProps;
+  project: z.infer<typeof ProjectZodSchema>;
   active: boolean;
 }
 

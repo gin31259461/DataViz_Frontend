@@ -3144,13 +3144,13 @@ packages:
   /@types/react-reconciler@0.26.7:
     resolution: {integrity: sha512-mBDYl8x+oyPX/VBb3E638N0B7xG+SPk/EAMcVPeexqus/5aTpTphQi0curhhshOqRrc9t6OPoJfEUkbymse/lQ==}
     dependencies:
-      '@types/react': 18.0.28
+      '@types/react': 18.2.39
     dev: false
 
   /@types/react-reconciler@0.28.8:
     resolution: {integrity: sha512-SN9c4kxXZonFhbX4hJrZy37yw9e7EIxcpHCxQv5JUS18wDE5ovkQKlqQEkufdJCCMfuI9BnjUJvhYeJ9x5Ra7g==}
     dependencies:
-      '@types/react': 18.0.28
+      '@types/react': 18.2.39
     dev: false
 
   /@types/react-table@7.7.18:
@@ -3163,14 +3163,6 @@ packages:
     resolution: {integrity: sha512-ZVNmWumUIh5NhH8aMD9CR2hdW0fNuYInlocZHaZ+dgk/1K49j1w/HoAuK1ki+pgscQrOFRTlXeoURtuzEkV3dg==}
     dependencies:
       '@types/react': 18.2.39
-    dev: false
-
-  /@types/react@18.0.28:
-    resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
-    dependencies:
-      '@types/prop-types': 15.7.10
-      '@types/scheduler': 0.16.6
-      csstype: 3.1.2
     dev: false
 
   /@types/react@18.2.39:

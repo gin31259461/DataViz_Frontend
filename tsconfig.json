@@ -40,7 +40,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/server/pyodide/pyodide.js"  ],
   "exclude": [
     "node_modules",
     "temp",

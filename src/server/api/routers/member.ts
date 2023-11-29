@@ -47,7 +47,7 @@ export const userRouter = createTRPCRouter({
   isEmailUsed: publicProcedure
     .input(z.string())
     .query(async ({ input, ctx }) => {
-      const member = await ctx.prisma.member.findUnique({
+      const member = await ctx.prismaWriter.member.findUnique({
         select: {
           EMail: true,
         },
@@ -62,7 +62,7 @@ export const userRouter = createTRPCRouter({
   isUserNameUsed: publicProcedure
     .input(z.string())
     .query(async ({ input, ctx }) => {
-      const user = await ctx.prisma.member.findUnique({
+      const user = await ctx.prismaWriter.member.findUnique({
         select: {
           Account: true,
         },
@@ -87,7 +87,7 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       if (!input) return;
 
-      await ctx.prisma.member.update({
+      await ctx.prismaWriter.member.update({
         data: {
           Account: input.username,
           Valid: true,
@@ -108,7 +108,7 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const account = await ctx.prisma.account.findFirst({
+      const account = await ctx.prismaWriter.account.findFirst({
         select: {
           providerAccountId: true,
         },
@@ -120,7 +120,7 @@ export const userRouter = createTRPCRouter({
 
       if (!account?.providerAccountId) return;
 
-      await ctx.prisma.account.delete({
+      await ctx.prismaWriter.account.delete({
         where: {
           provider_providerAccountId: {
             provider: input.provider,
@@ -134,7 +134,7 @@ export const userRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input) return [];
 
-      const res = await ctx.prisma.account.findMany({
+      const res = await ctx.prismaWriter.account.findMany({
         select: {
           provider: true,
         },

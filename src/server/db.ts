@@ -2,19 +2,37 @@ import { env } from '@/env.mjs';
 import { Prisma, PrismaClient } from '@prisma/client';
 
 declare global {
-  var prisma: PrismaClient | undefined;
+  var prismaWriter: PrismaClient | undefined;
+  var prismaReader: PrismaClient | undefined;
 }
 
 export const prismaMethod = {
   sql: Prisma.sql,
 };
 
-export const prisma =
-  global.prisma ||
+export const prismaWriter =
+  global.prismaWriter ||
   new PrismaClient({
+    datasources: {
+      db: {
+        url: 'sqlserver://10.21.24.190;database=DV;user=apiw;password=.apiw.;encrypt=true;trustServerCertificate=true;',
+      },
+    },
+    log: ['query'],
+  });
+
+export const prismaReader =
+  global.prismaReader ||
+  new PrismaClient({
+    datasources: {
+      db: {
+        url: 'sqlserver://10.21.24.190;database=DV;user=apir;password=.apir.;encrypt=true;trustServerCertificate=true;',
+      },
+    },
     log: ['query'],
   });
 
 if (env.NODE_ENV !== 'production') {
-  global.prisma = prisma;
+  global.prismaWriter = prismaWriter;
+  global.prismaReader = prismaReader;
 }

@@ -31,17 +31,17 @@ export const projectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await ctx.prisma
+      await ctx.prismaWriter
         .$executeRaw`exec xp_insertProjectClass ${input.mid}, ${input.title}, ${input.des}`;
-      const result: { last: number }[] = await ctx.prisma
+      const result: { last: number }[] = await ctx.prismaWriter
         .$queryRaw`select IDENT_CURRENT('Class') as last`;
       const currentCID = result[0].last;
 
-      const count = await ctx.prisma.cO.count({
+      const count = await ctx.prismaWriter.cO.count({
         where: { CID: currentCID },
       });
 
-      await ctx.prisma.object.create({
+      await ctx.prismaWriter.object.create({
         data: {
           CDes: JSON.stringify(input.args),
           EName: input.title,
@@ -59,7 +59,7 @@ export const projectRouter = createTRPCRouter({
   getLastProjectId: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const member = await ctx.prisma.member.findFirst({
+      const member = await ctx.prismaWriter.member.findFirst({
         select: {
           Account: true,
         },
@@ -70,7 +70,7 @@ export const projectRouter = createTRPCRouter({
 
       if (member) {
         const sqlStr = `select top 1 id from vd_project_${member.Account} order by id desc`;
-        const data: ProjectSchema[] = await ctx.prisma
+        const data: ProjectSchema[] = await ctx.prismaWriter
           .$queryRaw`exec sp_executesql ${sqlStr}`;
         return data.length > 0 ? data[0].id : null;
       }
@@ -80,7 +80,7 @@ export const projectRouter = createTRPCRouter({
   getAllProjects: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const member = await ctx.prisma.member.findFirst({
+      const member = await ctx.prismaWriter.member.findFirst({
         select: {
           Account: true,
         },
@@ -91,7 +91,7 @@ export const projectRouter = createTRPCRouter({
 
       if (member) {
         const sqlStr = `select * from vd_project_${member.Account} order by id desc`;
-        const data: ProjectSchema[] = await ctx.prisma
+        const data: ProjectSchema[] = await ctx.prismaWriter
           .$queryRaw`exec sp_executesql ${sqlStr}`;
         return data;
       }
@@ -101,7 +101,7 @@ export const projectRouter = createTRPCRouter({
   getProjectObservations: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const data = await ctx.prisma.inheritance.findMany({
+      const data = await ctx.prismaWriter.inheritance.findMany({
         select: {
           Class_Inheritance_CCIDToClass: true,
         },
@@ -117,7 +117,7 @@ export const projectRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input) return null;
 
-      const data = await ctx.prisma.cO.findMany({
+      const data = await ctx.prismaWriter.cO.findMany({
         select: { Object: true },
         where: { CID: input },
       });
@@ -126,7 +126,7 @@ export const projectRouter = createTRPCRouter({
   deleteProject: publicProcedure
     .input(z.number())
     .mutation(async ({ input, ctx }) => {
-      const observations = await ctx.prisma.inheritance.findMany({
+      const observations = await ctx.prismaWriter.inheritance.findMany({
         select: {
           CCID: true,
         },
@@ -136,34 +136,34 @@ export const projectRouter = createTRPCRouter({
       });
 
       for (let i = 0; i < observations.length; i++) {
-        const args = await ctx.prisma.cO.findMany({
+        const args = await ctx.prismaWriter.cO.findMany({
           select: { OID: true },
           where: { CID: observations[i].CCID },
         });
         const oidS = args.map((a) => a.OID);
-        await ctx.prisma.cO.deleteMany({
+        await ctx.prismaWriter.cO.deleteMany({
           where: { OID: { in: oidS } },
         });
-        await ctx.prisma.object.deleteMany({
+        await ctx.prismaWriter.object.deleteMany({
           where: { OID: { in: oidS } },
         });
       }
 
       const cidS = observations.map((o) => o.CCID);
 
-      await ctx.prisma.inheritance.deleteMany({
+      await ctx.prismaWriter.inheritance.deleteMany({
         where: { CCID: { in: cidS } },
       });
-      await ctx.prisma.class.deleteMany({
+      await ctx.prismaWriter.class.deleteMany({
         where: { CID: { in: cidS } },
       });
 
-      await ctx.prisma.inheritance.deleteMany({
+      await ctx.prismaWriter.inheritance.deleteMany({
         where: {
           CCID: input,
         },
       });
-      await ctx.prisma.class.delete({
+      await ctx.prismaWriter.class.delete({
         where: {
           CID: input,
         },

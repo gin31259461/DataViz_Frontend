@@ -1,7 +1,13 @@
-select * from Class
+SELECT *
+FROM Class
+ORDER
+BY cid DESC
 
 SELECT *
 FROM [Object]
+ORDER BY OID DESC
+
+
 UPDATE [Object] SET EDes = '{}' WHERE [Type] = 2
 
 SELECT *

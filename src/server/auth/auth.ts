@@ -5,7 +5,7 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { defaultSetting } from '../api/routers/member';
-import { prisma } from '../db';
+import { prismaWriter } from '../db';
 import { I3SPrismaAdapter } from './I3SPrismaAdapter';
 import WKESSOProvider from './WKESSOProvider';
 
@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     session: async ({ session, user }) => {
-      const member = await prisma.member.findUnique({
+      const member = await prismaWriter.member.findUnique({
         select: {
           Account: true,
         },
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
       };
     },
     signIn: async ({ user, account }) => {
-      const signedAccount = await prisma.account.findUnique({
+      const signedAccount = await prismaWriter.account.findUnique({
         select: {
           provider: true,
           providerAccountId: true,
@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
         },
       });
 
-      const signedMember = await prisma.member.findUnique({
+      const signedMember = await prismaWriter.member.findUnique({
         select: {
           MID: true,
           Account: true,
@@ -77,11 +77,11 @@ export const authOptions: NextAuthOptions = {
       });
 
       if (signedMember && signedMember.CID == null) {
-        await prisma.$executeRaw`exec [dbo].[xp_insertMemberClass] ${signedMember.MID}`;
+        await prismaWriter.$executeRaw`exec [dbo].[xp_insertMemberClass] ${signedMember.MID}`;
       }
 
       if (signedMember && !signedAccount && account) {
-        const obj = await prisma.object.create({
+        const obj = await prismaWriter.object.create({
           data: {
             Type: 2,
             CName: user.name,
@@ -99,7 +99,7 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
-        await prisma.account.create({
+        await prismaWriter.account.create({
           data: {
             MID: obj.OID,
             ...account,
@@ -113,7 +113,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
   },
-  adapter: I3SPrismaAdapter(prisma),
+  adapter: I3SPrismaAdapter(prismaWriter),
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,

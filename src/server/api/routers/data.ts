@@ -6,7 +6,7 @@ export const dataObjectRouter = createTRPCRouter({
   getMemberDataCount: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const count = await ctx.prisma.object.count({
+      const count = await ctx.prismaWriter.object.count({
         where: {
           OwnerMID: input,
           Type: 6,
@@ -24,7 +24,7 @@ export const dataObjectRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const data = await ctx.prisma.vd_Data.findMany({
+      const data = await ctx.prismaWriter.vd_Data.findMany({
         orderBy: {
           id: input.order as 'asc' | 'desc',
         },
@@ -41,7 +41,7 @@ export const dataObjectRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input) return null;
 
-      const data = await ctx.prisma.vd_Data.findFirst({
+      const data = await ctx.prismaWriter.vd_Data.findFirst({
         where: {
           id: input,
         },
@@ -51,7 +51,7 @@ export const dataObjectRouter = createTRPCRouter({
   getAllMemberData: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const result = await ctx.prisma.vd_Data.findMany({
+      const result = await ctx.prismaWriter.vd_Data.findMany({
         where: {
           ownerID: { equals: input },
         },
@@ -64,7 +64,7 @@ export const dataObjectRouter = createTRPCRouter({
       if (!input) return [];
 
       const sqlStr = `SELECT TOP 100 * FROM [RawDB].[dbo].[D${input}]`;
-      const data: Object[] = await ctx.prisma
+      const data: Object[] = await ctx.prismaWriter
         .$queryRaw`exec sp_executesql ${sqlStr}`;
       const convertedData = data.map((obj) => bigIntToString(obj));
       return convertedData;
@@ -75,7 +75,7 @@ export const dataObjectRouter = createTRPCRouter({
       if (!input) return [];
 
       const sqlStr = `SELECT * FROM [RawDB].[dbo].[D${input}]`;
-      const data: Object[] = await ctx.prisma
+      const data: Object[] = await ctx.prismaWriter
         .$queryRaw`exec sp_executesql ${sqlStr}`;
       const convertedData: { [index: string]: any }[] = data.map<object>(
         (obj) => bigIntToString(obj),
@@ -88,12 +88,12 @@ export const dataObjectRouter = createTRPCRouter({
       if (!input) return 0;
 
       const sqlStr = `SELECT count(*) AS count FROM [RawDB].[dbo].[D${input}]`;
-      const result: { count: number }[] = await ctx.prisma
+      const result: { count: number }[] = await ctx.prismaWriter
         .$queryRaw`exec sp_executesql ${sqlStr}`;
       return result[0].count;
     }),
   getCurrentObjectId: publicProcedure.query(async ({ ctx }) => {
-    const result: { last: number }[] = await ctx.prisma
+    const result: { last: number }[] = await ctx.prismaWriter
       .$queryRaw`select IDENT_CURRENT('Object') as last`;
     return result[0].last;
   }),
@@ -106,7 +106,7 @@ export const dataObjectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await ctx.prisma.object.create({
+      await ctx.prismaWriter.object.create({
         data: {
           Type: 6,
           CName: input.name,
@@ -128,14 +128,14 @@ export const dataObjectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await ctx.prisma.data.deleteMany({
+      await ctx.prismaWriter.data.deleteMany({
         where: {
           DID: {
             in: input.oidS,
           },
         },
       });
-      await ctx.prisma.object.deleteMany({
+      await ctx.prismaWriter.object.deleteMany({
         where: {
           OID: {
             in: input.oidS,
@@ -147,7 +147,7 @@ export const dataObjectRouter = createTRPCRouter({
 
       for (let oid of input.oidS) {
         const sqlStr = `drop table [RawDB].[dbo].[D${oid}]`;
-        await ctx.prisma.$executeRaw`exec sp_executesql ${sqlStr}`;
+        await ctx.prismaWriter.$executeRaw`exec sp_executesql ${sqlStr}`;
       }
     }),
 });

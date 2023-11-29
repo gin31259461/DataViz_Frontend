@@ -1,4 +1,5 @@
 import { bigIntToString } from '@/lib/toString';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
@@ -128,26 +129,41 @@ export const dataObjectRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await ctx.prismaWriter.data.deleteMany({
+      const dataUsedCount = await ctx.prismaReader.oRel.count({
         where: {
-          DID: {
+          OID2: {
             in: input.oidS,
           },
-        },
-      });
-      await ctx.prismaWriter.object.deleteMany({
-        where: {
-          OID: {
-            in: input.oidS,
-          },
-          OwnerMID: input.mid,
-          Type: 6,
         },
       });
 
-      for (let oid of input.oidS) {
-        const sqlStr = `drop table [RawDB].[dbo].[D${oid}]`;
-        await ctx.prismaWriter.$executeRaw`exec sp_executesql ${sqlStr}`;
+      if (dataUsedCount == 0) {
+        await ctx.prismaWriter.data.deleteMany({
+          where: {
+            DID: {
+              in: input.oidS,
+            },
+          },
+        });
+        await ctx.prismaWriter.object.deleteMany({
+          where: {
+            OID: {
+              in: input.oidS,
+            },
+            OwnerMID: input.mid,
+            Type: 6,
+          },
+        });
+
+        for (let oid of input.oidS) {
+          const sqlStr = `drop table [RawDB].[dbo].[D${oid}]`;
+          await ctx.prismaWriter.$executeRaw`exec sp_executesql ${sqlStr}`;
+        }
+      } else {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'There has some data are used in the project',
+        });
       }
     }),
 });

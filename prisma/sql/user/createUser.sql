@@ -38,10 +38,52 @@ ELSE
 EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = 'db_owner'
 GO
 
+-------------------------------------------------------------------------------
+-- Create apiw																													    	|
+-------------------------------------------------------------------------------
+USE DV
+GO
+
+-- add api writer login and add user to RawMD
+DECLARE @uid VARCHAR(20), @pwd VARCHAR(20), @db VARCHAR(20), @grpname VARCHAR(20)
+
+SELECT @uid = 'apiw', @pwd = '.apiw.', @db = 'DV', @grpname = 'db_owner'
+
+IF NOT EXISTS (
+		SELECT *
+		FROM master.dbo.syslogins
+		WHERE name = @uid
+		)
+BEGIN
+	EXEC sp_addlogin @uid, @pwd, @db
+END
+ELSE
+	PRINT 'the user was already existed'
+
+EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname;
+GO
+
+USE RawDB
+GO
+
+-- add role db_owner to api writer
+DECLARE @uid VARCHAR(20), @grpname VARCHAR(20)
+
+SELECT @uid = 'apiw', @grpname = 'db_owner'
+
+EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
+GO
+
+-------------------------------------------------------------------------------
+-- Create apir																													    	|
+-------------------------------------------------------------------------------
+USE DV
+GO
+
 -- add api reader login and add user to RawMD
 DECLARE @uid VARCHAR(20), @pwd VARCHAR(20), @db VARCHAR(20), @grpname VARCHAR(20)
 
-SELECT @uid = 'apiw', @pwd = '.apiw.', @db = 'DV', @grpname = 'db_datawriter'
+SELECT @uid = 'apir', @pwd = '.apir.', @db = 'DV', @grpname = 'db_datareader'
 
 IF NOT EXISTS (
 		SELECT *
@@ -63,7 +105,7 @@ GO
 -- add role db_datareader to api reader
 DECLARE @uid VARCHAR(20), @grpname VARCHAR(20)
 
-SELECT @uid = 'apir', @grpname = 'db_datawriter'
+SELECT @uid = 'apir', @grpname = 'db_datareader'
 
 EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
 GO
@@ -72,3 +114,28 @@ GO
 -- Alter rule											      																    	|
 -------------------------------------------------------------------------------
 ALTER ROLE db_owner ADD member dataviz
+
+-------------------------------------------------------------------------------
+-- Connect user to login													                    				|
+-------------------------------------------------------------------------------
+USE DV
+GO
+
+ALTER user apir
+	WITH LOGIN = apir;
+
+ALTER user apiw
+	WITH LOGIN = apiw;
+
+ALTER user dataviz
+	WITH LOGIN = dataviz;
+GO
+
+USE RawDB
+GO
+
+ALTER user apir
+	WITH LOGIN = apir;
+
+ALTER user apiw
+	WITH LOGIN = apiw;

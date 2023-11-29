@@ -27,6 +27,7 @@ export const projectRouter = createTRPCRouter({
         mid: z.number(),
         title: z.string(),
         des: z.string(),
+        dataId: z.number(),
         args: ArgZodSchema,
       }),
     )
@@ -46,7 +47,11 @@ export const projectRouter = createTRPCRouter({
           CDes: JSON.stringify(input.args),
           EName: input.title,
           EDes: input.des,
+          OwnerMID: input.mid,
           Type: 7,
+          ORel_ORel_OID1ToObject: {
+            create: { OID2: input.dataId },
+          },
           CO: {
             create: {
               CID: currentCID,
@@ -143,6 +148,9 @@ export const projectRouter = createTRPCRouter({
         const oidS = args.map((a) => a.OID);
         await ctx.prismaWriter.cO.deleteMany({
           where: { OID: { in: oidS } },
+        });
+        await ctx.prismaWriter.oRel.deleteMany({
+          where: { OID1: { in: oidS } },
         });
         await ctx.prismaWriter.object.deleteMany({
           where: { OID: { in: oidS } },

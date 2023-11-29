@@ -98,7 +98,13 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     trpc.dataObject.getTop100FromDataTable.useQuery(selectDataOID);
   const currentObjectId = trpc.dataObject.getCurrentObjectId.useQuery();
   const postData = trpc.dataObject.postData.useMutation();
-  const deleteData = trpc.dataObject.deleteData.useMutation();
+  const deleteData = trpc.dataObject.deleteData.useMutation({
+    onError: (error) => {
+      setOpenNewDataDialog(false);
+      setMessage(error.message);
+      setSubmitError(true);
+    },
+  });
 
   /** handlers */
   const handleEdit = (dataSetId: number) => {};
@@ -164,16 +170,18 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   };
 
   const handleDelete = async (deleteIDs: number[]) => {
-    await deleteData.mutateAsync({
-      mid: mid,
-      oidS: deleteIDs,
-    });
-    setMessage('Delete Successfully');
-    setDeleteSuccess(true);
-    setSelectDataOID(undefined);
-    setDeleteDataOID([]);
-    await someDataObject.refetch();
-    await memberDataCount.refetch();
+    try {
+      await deleteData.mutateAsync({
+        mid: mid,
+        oidS: deleteIDs,
+      });
+      setDeleteSuccess(true);
+      setMessage('Delete Successfully');
+      setSelectDataOID(undefined);
+      setDeleteDataOID([]);
+      await someDataObject.refetch();
+      await memberDataCount.refetch();
+    } catch (err) {}
   };
 
   const DataTable = useMemo(() => {

@@ -64,7 +64,7 @@ export const projectRouter = createTRPCRouter({
   getLastProjectId: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const member = await ctx.prismaWriter.member.findFirst({
+      const member = await ctx.prismaReader.member.findFirst({
         select: {
           Account: true,
         },
@@ -75,7 +75,7 @@ export const projectRouter = createTRPCRouter({
 
       if (member) {
         const sqlStr = `select top 1 id from vd_project_${member.Account} order by id desc`;
-        const data: ProjectSchema[] = await ctx.prismaWriter
+        const data: ProjectSchema[] = await ctx.prismaReader
           .$queryRaw`exec sp_executesql ${sqlStr}`;
         return data.length > 0 ? data[0].id : null;
       }
@@ -85,7 +85,7 @@ export const projectRouter = createTRPCRouter({
   getAllProjects: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const member = await ctx.prismaWriter.member.findFirst({
+      const member = await ctx.prismaReader.member.findFirst({
         select: {
           Account: true,
         },
@@ -96,7 +96,7 @@ export const projectRouter = createTRPCRouter({
 
       if (member) {
         const sqlStr = `select * from vd_project_${member.Account} order by id desc`;
-        const data: ProjectSchema[] = await ctx.prismaWriter
+        const data: ProjectSchema[] = await ctx.prismaReader
           .$queryRaw`exec sp_executesql ${sqlStr}`;
         return data;
       }
@@ -106,7 +106,7 @@ export const projectRouter = createTRPCRouter({
   getProjectObservations: publicProcedure
     .input(z.number())
     .query(async ({ input, ctx }) => {
-      const data = await ctx.prismaWriter.inheritance.findMany({
+      const data = await ctx.prismaReader.inheritance.findMany({
         select: {
           Class_Inheritance_CCIDToClass: true,
         },
@@ -122,7 +122,7 @@ export const projectRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input) return null;
 
-      const data = await ctx.prismaWriter.cO.findMany({
+      const data = await ctx.prismaReader.cO.findMany({
         select: { Object: true },
         where: { CID: input },
       });
@@ -131,7 +131,7 @@ export const projectRouter = createTRPCRouter({
   deleteProject: publicProcedure
     .input(z.number())
     .mutation(async ({ input, ctx }) => {
-      const observations = await ctx.prismaWriter.inheritance.findMany({
+      const observations = await ctx.prismaReader.inheritance.findMany({
         select: {
           CCID: true,
         },
@@ -141,7 +141,7 @@ export const projectRouter = createTRPCRouter({
       });
 
       for (let i = 0; i < observations.length; i++) {
-        const args = await ctx.prismaWriter.cO.findMany({
+        const args = await ctx.prismaReader.cO.findMany({
           select: { OID: true },
           where: { CID: observations[i].CCID },
         });

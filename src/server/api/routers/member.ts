@@ -47,7 +47,7 @@ export const userRouter = createTRPCRouter({
   isEmailUsed: publicProcedure
     .input(z.string())
     .query(async ({ input, ctx }) => {
-      const member = await ctx.prismaWriter.member.findUnique({
+      const member = await ctx.prismaReader.member.findUnique({
         select: {
           EMail: true,
         },
@@ -62,7 +62,7 @@ export const userRouter = createTRPCRouter({
   isUserNameUsed: publicProcedure
     .input(z.string())
     .query(async ({ input, ctx }) => {
-      const user = await ctx.prismaWriter.member.findUnique({
+      const user = await ctx.prismaReader.member.findUnique({
         select: {
           Account: true,
         },
@@ -108,7 +108,7 @@ export const userRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const account = await ctx.prismaWriter.account.findFirst({
+      const account = await ctx.prismaReader.account.findFirst({
         select: {
           providerAccountId: true,
         },
@@ -134,7 +134,7 @@ export const userRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input) return [];
 
-      const res = await ctx.prismaWriter.account.findMany({
+      const res = await ctx.prismaReader.account.findMany({
         select: {
           provider: true,
         },

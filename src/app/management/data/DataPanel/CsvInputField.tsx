@@ -1,5 +1,4 @@
-import { isValidCsvString } from '@/lib/checkValid';
-import { convertCsvToFile } from '@/lib/toFile';
+import { convertCsvToFile, isValidCsvString } from '@/utils/function';
 import {
   FormControlLabel,
   FormHelperText,

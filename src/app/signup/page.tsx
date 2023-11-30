@@ -2,7 +2,7 @@
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import { trpc } from '@/server/trpc';
-import { emailValidation } from '@/utils/emailValidation';
+import { emailValidation } from '@/utils/function';
 import {
   Box,
   Button,

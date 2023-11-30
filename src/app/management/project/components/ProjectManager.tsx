@@ -5,7 +5,7 @@ import IconCardButton from '@/components/Button/IconCardButton';
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import { ProjectSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
-import convertOpacityToHexString from '@/utils/opacityToHexString';
+import convertOpacityToHexString from '@/utils/function';
 import AddIcon from '@mui/icons-material/AddOutlined';
 import GridViewIcon from '@mui/icons-material/GridViewOutlined';
 import ListIcon from '@mui/icons-material/ListOutlined';

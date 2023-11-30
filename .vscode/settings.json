@@ -3,9 +3,13 @@
   "C_Cpp.intelliSenseEngineFallback": "enabled",
   "cSpell.words": [
     "Addchart",
+    "apir",
+    "apiw",
     "CCID",
+    "datasources",
     "executesql",
     "PCID",
+    "sqlserver",
     "tanstack",
     "visx"
   ]

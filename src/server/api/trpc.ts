@@ -3,14 +3,6 @@ import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import * as trpcNext from '@trpc/server/adapters/next';
 import { prismaReader, prismaWriter } from '../db';
 
-type Context = inferAsyncReturnType<typeof createContext>;
-
-export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
-  return createContext();
-};
-
-const t = initTRPC.context<Context>().create();
-
 export const createContext = async (
   opts?: trpcNext.CreateNextContextOptions,
 ) => {
@@ -24,6 +16,14 @@ export const createContext = async (
     prismaReader: prismaReader,
   };
 };
+
+type Context = inferAsyncReturnType<typeof createContext>;
+
+export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
+  return createContext();
+};
+
+const t = initTRPC.context<Context>().create();
 
 export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;

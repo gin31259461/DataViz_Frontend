@@ -2,7 +2,7 @@
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import '@/styles/command-modal.scss';
-import convertOpacityToHexString from '@/utils/opacityToHexString';
+import convertOpacityToHexString from '@/utils/function';
 import { styled, useTheme } from '@mui/material';
 import { Command } from 'cmdk';
 import {

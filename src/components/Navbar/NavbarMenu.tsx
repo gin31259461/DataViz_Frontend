@@ -1,6 +1,6 @@
 import { useSplitLineStyle } from '@/hooks/useStyles';
 import styleStore from '@/styles/store.module.scss';
-import { tokens } from '@/utils/theme';
+import { colorTokens } from '@/utils/color-tokens';
 import { Button, styled, useTheme } from '@mui/material';
 import Link from 'next/link';
 
@@ -16,7 +16,7 @@ export const NavbarMenu: React.FC<NavbarMenuProps> = ({
   children,
 }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = colorTokens(theme.palette.mode);
 
   return (
     <NavbarMenuContainer

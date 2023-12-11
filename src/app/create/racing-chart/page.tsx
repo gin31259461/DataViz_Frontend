@@ -5,14 +5,14 @@ import { useUserStore } from '@/hooks/store/useUserStore';
 import { trpc } from '@/server/trpc';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import AllCompleted from '../components/AllCompleted';
+import Complete from '../components/Complete';
 import CustomStepper, {
   CustomStepperContext,
   useCustomStepperAction,
 } from '../components/CustomStepper';
 import SelectData from '../components/SelectData';
-import Configuration from './components/Configuration';
-import PreviewRacingChart from './components/PreviewRacingChart';
+import Configuration from './Configuration';
+import PreviewRacingChart from './PreviewRacingChart';
 
 function CreateRacingBarChartPage() {
   const createArg = trpc.project.createArg.useMutation();
@@ -37,7 +37,7 @@ function CreateRacingBarChartPage() {
     <SelectData key={0} />,
     <Configuration key={1} />,
     <PreviewRacingChart key={2} />,
-    <AllCompleted key={3} />,
+    <Complete key={3} />,
   ];
   const router = useRouter();
 

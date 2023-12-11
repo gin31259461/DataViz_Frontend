@@ -4,7 +4,7 @@ import { authOptions } from '@/server/auth/auth';
 import { prismaReader } from '@/server/db';
 import { Container } from '@mui/material';
 import { getServerSession } from 'next-auth';
-import ProjectManager from './components/ProjectManager';
+import ProjectManager from './ProjectManager';
 
 async function getProject(mid: number) {
   const member = await prismaReader.member.findFirst({

@@ -6,8 +6,10 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Grid,
   Typography,
 } from '@mui/material';
+import imagePath from './image-path.json';
 
 interface GalleryCardProps {
   title: string;
@@ -15,7 +17,7 @@ interface GalleryCardProps {
   href: string;
 }
 
-export default function GalleryCard({ title, src, href }: GalleryCardProps) {
+const GalleryCard: React.FC<GalleryCardProps> = ({ title, src, href }) => {
   return (
     <Card
       sx={{
@@ -44,5 +46,24 @@ export default function GalleryCard({ title, src, href }: GalleryCardProps) {
         />
       </CardActionArea>
     </Card>
+  );
+};
+
+export default function Gallery() {
+  return (
+    <Grid container spacing={2} mt={2}>
+      {imagePath.map((o, i) => {
+        return (
+          <Grid key={i} item xs={12} sm={6} md={4}>
+            <GalleryCard
+              key={i}
+              title={o.title}
+              src={o.light_src}
+              href={o.href}
+            />
+          </Grid>
+        );
+      })}
+    </Grid>
   );
 }

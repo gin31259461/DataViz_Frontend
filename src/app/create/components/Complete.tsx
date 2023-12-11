@@ -3,7 +3,7 @@
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { Box, Typography } from '@mui/material';
 
-const AllCompleted = () => {
+const Complete = () => {
   return (
     <Box
       sx={{
@@ -20,4 +20,4 @@ const AllCompleted = () => {
   );
 };
 
-export default AllCompleted;
+export default Complete;

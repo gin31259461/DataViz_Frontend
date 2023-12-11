@@ -1,4 +1,4 @@
-import { tokens } from '@/utils/theme';
+import { colorTokens } from '@/utils/color-tokens';
 import { useTheme } from '@mui/material';
 import MUIAvatar from '@mui/material/Avatar';
 
@@ -19,7 +19,7 @@ const getInitials = (name: string) => {
 
 export default function Avatar({ src, alt, initials, size = 30 }: AvatarProps) {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = colorTokens(theme.palette.mode);
 
   if (src) {
     return <MUIAvatar src={src} alt={alt} sx={{ width: size, height: size }} />;

@@ -2,7 +2,7 @@
 
 import { useUserStore } from '@/hooks/store/useUserStore';
 import { trpc } from '@/server/trpc';
-import { tokens } from '@/utils/theme';
+import { colorTokens } from '@/utils/color-tokens';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -61,7 +61,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   const mid = useUserStore((state) => state.mid);
   const counts = 10;
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = colorTokens(theme.palette.mode);
 
   /** data state */
   const [selectDataOID, setSelectDataOID] = useState<number | undefined>(

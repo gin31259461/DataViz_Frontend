@@ -1,7 +1,7 @@
 'use client';
 
 import effect from '@/styles/effect.module.scss';
-import { tokens } from '@/utils/theme';
+import { colorTokens } from '@/utils/color-tokens';
 import { useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -10,7 +10,7 @@ export default function TypingText() {
   const [textFlag, setTextFlag] = useState(true);
   const [stopTypingFlag, setStopTypingFlag] = useState(false);
   const theme = useTheme();
-  const color = tokens(theme.palette.mode);
+  const color = colorTokens(theme.palette.mode);
 
   useEffect(() => {
     let intervalID: NodeJS.Timer;

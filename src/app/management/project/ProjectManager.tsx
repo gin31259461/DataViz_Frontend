@@ -28,7 +28,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import ContextMenu from '../../../../components/ContextMenu';
+import ContextMenu from '../../../components/ContextMenu';
 import ProjectCard from './ProjectCard';
 import ProjectList from './ProjectList';
 

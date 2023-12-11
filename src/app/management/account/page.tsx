@@ -9,7 +9,7 @@ import {
   AccountListItemContainer,
   AccountListItemLeft,
   AccountListItemRight,
-} from './components/AccountList';
+} from './AccountList';
 
 const AccountPage = async () => {
   const session = await getServerSession(authOptions);

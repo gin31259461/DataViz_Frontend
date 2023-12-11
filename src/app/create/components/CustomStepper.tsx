@@ -1,7 +1,7 @@
 'use client';
 
 import { useSplitLineStyle } from '@/hooks/useStyles';
-import { tokens } from '@/utils/theme';
+import { colorTokens } from '@/utils/color-tokens';
 import {
   Box,
   Button,
@@ -30,7 +30,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
 }) => {
   const stepContext = useContext(CustomStepperContext);
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = colorTokens(theme.palette.mode);
   const borderStyle = useSplitLineStyle();
 
   const stepStyle = {

@@ -1,5 +1,6 @@
 import { CommandModal } from '@/components/Modal/CommandModal';
 import Navbar from '@/components/Navbar';
+import { NavbarProvider } from '@/components/Navbar/NavbarProvider';
 import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
@@ -33,9 +34,11 @@ export default async function RootLayout({
         <TrpcProvider httpBatchLink={env.TRPC_CLIENT_HTTP_BATCH_LINK}>
           <Provider session={session}>
             <div>
-              <Navbar />
-              <CommandModal />
-              {children}
+              <NavbarProvider>
+                <Navbar />
+                <CommandModal />
+                {children}
+              </NavbarProvider>
             </div>
           </Provider>
         </TrpcProvider>

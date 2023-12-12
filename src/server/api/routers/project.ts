@@ -117,14 +117,14 @@ export const projectRouter = createTRPCRouter({
 
       return data.map((d) => d.Class_Inheritance_CCIDToClass);
     }),
-  getArgFromObservation: publicProcedure
-    .input(z.number().optional())
+  getArgsFromObservations: publicProcedure
+    .input(z.array(z.number()).optional())
     .query(async ({ input, ctx }) => {
       if (!input) return null;
 
       const data = await ctx.prismaReader.cO.findMany({
         select: { Object: true },
-        where: { CID: input },
+        where: { CID: { in: input } },
       });
       return data.map((d) => d.Object);
     }),

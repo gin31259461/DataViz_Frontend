@@ -19,7 +19,7 @@ import {
   ListItemText,
   useTheme,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface DashboardProps {
   children: React.ReactNode;
@@ -30,24 +30,8 @@ const closeWidth = 50;
 
 export default function Dashboard({ children }: DashboardProps) {
   const theme = useTheme();
-
   const [drawerWidth, setDrawerWidth] = useState(openWidth);
   const [open, setOpen] = useState(true);
-
-  const handleDrawerOpen = () => {
-    setDrawerWidth(openWidth);
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    if (!open) {
-      setDrawerWidth(closeWidth);
-    }
-  }, [open]);
 
   return (
     <Box sx={{ display: 'flex', position: 'relative' }}>
@@ -74,11 +58,21 @@ export default function Dashboard({ children }: DashboardProps) {
         <Divider />
         <div style={{ padding: 3 }}>
           {open ? (
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton
+              onClick={() => {
+                setDrawerWidth(closeWidth);
+                setOpen(false);
+              }}
+            >
               <ArrowBackIosNewRoundedIcon />
             </IconButton>
           ) : (
-            <IconButton onClick={handleDrawerOpen}>
+            <IconButton
+              onClick={() => {
+                setDrawerWidth(openWidth);
+                setOpen(true);
+              }}
+            >
               <ArrowForwardIosRoundedIcon />
             </IconButton>
           )}

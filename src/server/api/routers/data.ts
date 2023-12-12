@@ -70,7 +70,7 @@ export const dataObjectRouter = createTRPCRouter({
       const convertedData = data.map((obj) => bigIntToString(obj));
       return convertedData;
     }),
-  getAllFromDataTable: publicProcedure
+  getContentFromDataTable: publicProcedure
     .input(z.number().nullish())
     .query(async ({ input, ctx }) => {
       if (!input) return [];

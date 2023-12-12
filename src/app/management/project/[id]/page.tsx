@@ -5,39 +5,43 @@ import RacingBarChartEngine, {
   RacingBarChartArgs,
   RacingBarChartMapping,
 } from '@/components/ChartEngine/RacingBarChartEngine';
+import { NavbarContext } from '@/components/Navbar/NavbarProvider';
 import { DataArgsProps } from '@/hooks/store/useProjectStore';
 import { ArgSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
-import { Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import { useParams } from 'next/navigation';
+import { useContext } from 'react';
 
-//! this is a test page for open project
 function ProjectPage() {
+  const navbar = useContext(NavbarContext);
+  const currentIndex = 0;
   const projectId = parseInt(useParams().id as string);
   const observations = trpc.project.getProjectObservations.useQuery(projectId);
-  const argObjects = trpc.project.getArgFromObservation.useQuery(
-    observations.data && observations.data[0].CID,
+  const args = trpc.project.getArgsFromObservations.useQuery(
+    observations.data && observations.data.map((d) => d.CID),
   );
-  const CDes = argObjects.data && argObjects.data[0].CDes;
 
-  console.log('observations', observations.data);
-  console.log('args', argObjects.data);
+  const arg: ArgSchema = JSON.parse(
+    (args.data && args.data[currentIndex].CDes) ?? '{}',
+  );
 
-  const args: ArgSchema = JSON.parse(CDes ?? '{}');
-
-  const dataTable = trpc.dataObject.getAllFromDataTable.useQuery(args.dataId);
+  const dataContent = trpc.dataObject.getContentFromDataTable.useQuery(
+    arg.dataId,
+  );
 
   return (
     <Container sx={{ paddingTop: 10 }}>
-      {dataTable.data && args.dataArgs && args.chartArgs && (
+      {dataContent.data && args.data && (
         <RacingBarChartEngine
           data={convertToRacingBarChartData(
-            dataTable.data,
-            args.dataArgs as DataArgsProps<RacingBarChartMapping>,
+            dataContent.data,
+            arg.dataArgs as DataArgsProps<RacingBarChartMapping>,
           )}
-          args={args.chartArgs as RacingBarChartArgs}
+          args={arg.chartArgs as RacingBarChartArgs}
         />
       )}
+      <Button onClick={() => navbar.toggleOpen()}>Toggle navbar</Button>
     </Container>
   );
 }

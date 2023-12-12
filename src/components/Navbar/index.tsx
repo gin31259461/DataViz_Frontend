@@ -14,15 +14,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useContext, useState } from 'react';
 import Avatar from '../Avatar';
-import DataVizIcon from '../Icon/DataVizIcon';
 import Loader from '../Loading/Loader';
 import OpenCMDKButton, { CtrlK } from '../Modal/CommandModal/OpenCMDKButton';
 import { ConfirmModal } from '../Modal/ConfirmModal';
 import SignInModal from '../Modal/SignInModal';
 import AccountMenu from './AccountMenu';
+import DataVizIcon from './DataVizIcon';
 import { NavbarMenu, NavbarMenuButton, NavbarMenuItem } from './NavbarMenu';
+import { NavbarContext } from './NavbarProvider';
 
 export default function Navbar() {
+  const navbar = useContext(NavbarContext);
   const { data, status } = useSession();
   const theme = useTheme();
   const splitPathName = usePathname().split('/');
@@ -62,6 +64,7 @@ export default function Navbar() {
             ? 'rgb(20, 27, 45, 0.7)'
             : 'rgb(252, 252, 252, 0.8)',
         borderBottom: `${useSplitLineStyle()}`,
+        translate: navbar.open ? '0 0' : '0 -80px',
       }}
     >
       <div className={style['navbar-container']}>

@@ -5,7 +5,7 @@ import RacingBarChartEngine, {
   RacingBarChartArgs,
   RacingBarChartMapping,
 } from '@/components/ChartEngine/RacingBarChartEngine';
-import { NavbarContext } from '@/components/Navbar/NavbarProvider';
+import { NavbarContext } from '@/components/Navbar/Navbar.context';
 import { DataArgsProps } from '@/hooks/store/useProjectStore';
 import { ArgSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
@@ -15,6 +15,7 @@ import { useContext } from 'react';
 
 function ProjectPage() {
   const navbar = useContext(NavbarContext);
+
   const currentIndex = 0;
   const projectId = parseInt(useParams().id as string);
   const observations = trpc.project.getProjectObservations.useQuery(projectId);
@@ -41,7 +42,7 @@ function ProjectPage() {
           args={arg.chartArgs as RacingBarChartArgs}
         />
       )}
-      <Button onClick={() => navbar.toggleOpen()}>Toggle navbar</Button>
+      <Button onClick={() => navbar.toggleOpen()}>Toggle</Button>
     </Container>
   );
 }

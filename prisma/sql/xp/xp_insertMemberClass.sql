@@ -1,3 +1,7 @@
+/*
+This procedure is used to create a new member's space for the specified member.
+Included member's class and member's project class.
+*/
 USE [DV]
 GO
 

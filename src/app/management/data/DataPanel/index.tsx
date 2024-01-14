@@ -147,10 +147,10 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
 
       if (currentObjectId.data) {
         FormData.append(
-          'lastID',
+          'dataId',
           (Number(currentObjectId.data) + 1).toString(),
         );
-        await fetch(`${flaskServer}/api/upload`, {
+        await fetch(`${flaskServer}/api/file_upload`, {
           method: 'POST',
           body: FormData,
         });

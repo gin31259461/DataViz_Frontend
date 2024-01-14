@@ -5,11 +5,12 @@ import RacingBarChartEngine, {
   RacingBarChartArgs,
   RacingBarChartMapping,
 } from '@/components/ChartEngine/RacingBarChartEngine';
+import Loader from '@/components/Loading/Loader';
 import { NavbarContext } from '@/components/Navbar/Navbar.context';
 import { DataArgsProps } from '@/hooks/store/useProjectStore';
 import { ArgSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
-import { Button, Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useContext } from 'react';
 
@@ -32,17 +33,28 @@ function ProjectPage() {
   );
 
   return (
-    <Container sx={{ paddingTop: 10 }}>
-      {dataContent.data && args.data && (
-        <RacingBarChartEngine
-          data={convertToRacingBarChartData(
-            dataContent.data,
-            arg.dataArgs as DataArgsProps<RacingBarChartMapping>,
-          )}
-          args={arg.chartArgs as RacingBarChartArgs}
-        />
+    <Container
+      sx={{ paddingTop: 10, gap: 3, display: 'flex', flexDirection: 'column' }}
+    >
+      {dataContent.data && args.data ? (
+        <>
+          <Typography variant="h3" sx={{ textAlign: 'center' }}>
+            {args.data[currentIndex].EName}
+          </Typography>
+          <RacingBarChartEngine
+            data={convertToRacingBarChartData(
+              dataContent.data,
+              arg.dataArgs as DataArgsProps<RacingBarChartMapping>,
+            )}
+            args={arg.chartArgs as RacingBarChartArgs}
+          />
+          {/* <Button onClick={() => navbar.toggleOpen()}>Toggle</Button> */}
+          <Typography variant="h6">Description:</Typography>
+          <Typography>{args.data[currentIndex].EDes}</Typography>
+        </>
+      ) : (
+        <Loader />
       )}
-      <Button onClick={() => navbar.toggleOpen()}>Toggle</Button>
     </Container>
   );
 }

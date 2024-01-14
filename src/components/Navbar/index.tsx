@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Avatar from '../Avatar';
 import Loader from '../Loading/Loader';
 import OpenCMDKButton, { CtrlK } from '../Modal/CommandModal/OpenCMDKButton';
@@ -54,15 +54,6 @@ export default function Navbar() {
     if (status === 'unauthenticated') setSignInModalOpen(true);
     else if (status === 'authenticated') setSignOutModalOpen(true);
   };
-
-  useEffect(() => {
-    if (
-      splitPathName.length >= 2 &&
-      splitPathName[splitPathName.length - 2] == 'project'
-    ) {
-      if (navbar.open == true) navbar.toggleOpen();
-    } else if (navbar.open == false) navbar.toggleOpen();
-  }, [splitPathName, navbar]);
 
   return (
     <div

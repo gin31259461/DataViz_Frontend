@@ -38,7 +38,7 @@ const RacingBarGroup = forwardRef(function ForwardRacingBarGroup(
     leave: {
       y: yScale.range()[1] + barGap * (transitionData.length - 1),
       width: 0,
-      value: 0,
+      // value: 0,
     },
     keys: (d) => d.name,
     ref: api,

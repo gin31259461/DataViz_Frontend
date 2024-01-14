@@ -1,3 +1,6 @@
+/*
+This procedure is used to create a view for the specified member's project class.
+*/
 USE [DV]
 GO
 
@@ -18,7 +21,7 @@ BEGIN
   PRINT (@account)
 
   SELECT @sql = '
-    CREATE OR ALTER VIEW vd_project_' + @account +
+    CREATE OR ALTER VIEW dbo.vd_project_' + @account +
     '
     AS
     SELECT

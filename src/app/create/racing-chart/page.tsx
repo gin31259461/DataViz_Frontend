@@ -4,13 +4,12 @@ import { useProjectStore } from '@/hooks/store/useProjectStore';
 import { useUserStore } from '@/hooks/store/useUserStore';
 import { trpc } from '@/server/trpc';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import ChooseData from '../components/ChooseData';
 import Complete from '../components/Complete';
-import CustomStepper, {
+import Stepper, {
   CustomStepperContext,
   useCustomStepperAction,
-} from '../components/CustomStepper';
-import SelectData from '../components/SelectData';
+} from '../components/Stepper';
 import Configuration from './Configuration';
 import PreviewRacingChart from './PreviewRacingChart';
 
@@ -23,7 +22,6 @@ function CreateRacingBarChartPage() {
   const chartType = useProjectStore((state) => state.chartType);
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const dataArgs = useProjectStore((state) => state.dataArgs);
-  const [confirm, setConfirm] = useState(false);
   const lastProjectId = trpc.project.getLastProjectId.useQuery(mid);
 
   const steps = [
@@ -34,7 +32,7 @@ function CreateRacingBarChartPage() {
   ];
   const stepperValue = useCustomStepperAction(steps.length);
   const components = [
-    <SelectData key={0} />,
+    <ChooseData key={0} />,
     <Configuration key={1} />,
     <PreviewRacingChart key={2} />,
     <Complete key={3} />,
@@ -68,15 +66,9 @@ function CreateRacingBarChartPage() {
     }
   };
 
-  useEffect(() => {
-    if (confirm) {
-      router.push(`/management/project/${lastProjectId.data}`);
-    }
-  }, [router, confirm, lastProjectId]);
-
   return (
     <CustomStepperContext.Provider value={stepperValue}>
-      <CustomStepper
+      <Stepper
         steps={steps}
         components={components}
         backButtonDisabled={backButtonDisabled}
@@ -84,7 +76,7 @@ function CreateRacingBarChartPage() {
         callback={async () => {
           await onConfirm();
           await lastProjectId.refetch();
-          setConfirm(true);
+          router.push(`/management/project/${lastProjectId.data}`);
         }}
       />
     </CustomStepperContext.Provider>

@@ -21,8 +21,6 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ title, src, href }) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
-        height: 345,
         border: useSplitLineStyle(),
       }}
     >

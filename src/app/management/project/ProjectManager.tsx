@@ -106,6 +106,13 @@ export default function ProjectManager({ projects }: ProjectManagerProps) {
                 description=""
                 onClick={() => router.push('/create/racing-chart')}
               ></CardButton>
+
+              <CardButton
+                title="New live analysis project"
+                icon={<TimelineIcon color="info" />}
+                description=""
+                onClick={() => router.push('/create/live-analysis')}
+              ></CardButton>
               {/* ---------- project options end ----------  */}
             </DialogContent>
           </Dialog>
@@ -166,7 +173,6 @@ export default function ProjectManager({ projects }: ProjectManagerProps) {
               <Grid key={project.id} item xs={12} sm={6} md={4}>
                 <ContextMenu
                   onDelete={async () => await onDelete(project.id)}
-                  maxWidth={345}
                   id={project.id}
                 >
                   <div onMouseDown={() => setActiveID(project.id)}>

@@ -6,14 +6,14 @@ import {
   Box,
   Button,
   Grid,
+  Stepper as MuiStepper,
   Step,
   StepLabel,
-  Stepper,
   useTheme,
 } from '@mui/material';
 import { createContext, useContext, useMemo, useState } from 'react';
 
-interface CustomStepperProps {
+interface StepperProps {
   steps: string[];
   components: React.ReactNode[];
   backButtonDisabled: () => boolean;
@@ -21,7 +21,7 @@ interface CustomStepperProps {
   callback: () => Promise<void>;
 }
 
-const CustomStepper: React.FC<CustomStepperProps> = ({
+const Stepper: React.FC<StepperProps> = ({
   steps,
   components,
   backButtonDisabled,
@@ -63,7 +63,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
         }}
       >
         <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Stepper
+          <MuiStepper
             activeStep={stepContext.activeStep}
             orientation="horizontal"
             sx={{ ...stepStyle, width: '100%' }}
@@ -73,7 +73,7 @@ const CustomStepper: React.FC<CustomStepperProps> = ({
                 <StepLabel>{label}</StepLabel>
               </Step>
             ))}
-          </Stepper>
+          </MuiStepper>
         </Grid>
         <Grid container>
           <Box
@@ -162,4 +162,4 @@ export const useCustomStepperAction = (stepLength: number) => {
   return value;
 };
 
-export default CustomStepper;
+export default Stepper;

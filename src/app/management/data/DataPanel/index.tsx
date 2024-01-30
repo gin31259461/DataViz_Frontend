@@ -106,25 +106,6 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     },
   });
 
-  /** handlers */
-  const handleEdit = (dataSetId: number) => {};
-
-  const handlePageChange = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    page: number,
-  ) => {
-    setPage(page);
-  };
-
-  const handleDataSetClick = (oid: number) => {
-    setSelectDataOID(oid);
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
   const handleSort = useCallback(
     (property: keyof DataSchema) => {
       setOrderDirection((prev) => {
@@ -135,36 +116,35 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     [orderBy],
   );
 
-  const submitForm = async (FormData: FormData) => {
+  const submitForm = async (formData: FormData) => {
     try {
       await postData.mutateAsync({
         mid: mid,
-        name: FormData.get('name')?.toString() ?? '',
-        des: FormData.get('des')?.toString() ?? '',
+        name: formData.get('name')?.toString() ?? '',
+        des: formData.get('des')?.toString() ?? '',
       });
 
       await currentObjectId.refetch();
 
       if (currentObjectId.data) {
-        FormData.append(
+        formData.append(
           'dataId',
           (Number(currentObjectId.data) + 1).toString(),
         );
         await fetch(`${flaskServer}/api/file_upload`, {
           method: 'POST',
-          body: FormData,
+          body: formData,
+        }).then(async (res) => {
+          const data: { message: string } = await res.json();
+          setMessage(data.message);
+          setSubmitSuccess(true);
         });
-        setSubmitSuccess(true);
-        setMessage('Upload Successfully');
-      } else {
-        setSubmitSuccess(false);
-        setMessage('Upload error, please try again later');
       }
     } catch (error) {
       setSubmitError(true);
-      setMessage('Upload error, please try again later');
-      console.log(error);
+      setMessage('upload error, please try again later');
     }
+
     await someDataObject.refetch();
     await memberDataCount.refetch();
   };
@@ -176,12 +156,13 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
         oidS: deleteIDs,
       });
       setDeleteSuccess(true);
-      setMessage('Delete Successfully');
+      setMessage('delete data done');
       setSelectDataOID(undefined);
       setDeleteDataOID([]);
-      await someDataObject.refetch();
-      await memberDataCount.refetch();
     } catch (err) {}
+
+    await someDataObject.refetch();
+    await memberDataCount.refetch();
   };
 
   const DataTable = useMemo(() => {
@@ -223,10 +204,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                 color: colors.greenAccent[500],
               }}
             >
-              <TableCell
-                align="left"
-                sx={{ color: 'inherit', maxWidth: '10.5%' }}
-              >
+              <TableCell align="left" sx={{ color: 'inherit' }}>
                 <div style={{ display: 'flex' }}>
                   ID
                   <TableSortLabel
@@ -236,7 +214,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                   ></TableSortLabel>
                 </div>
               </TableCell>
-              <TableCell sx={{ color: 'inherit', maxWidth: '37.5%' }}>
+              <TableCell sx={{ color: 'inherit' }}>
                 <div style={{ display: 'flex' }}>
                   Name
                   <TableSortLabel
@@ -246,7 +224,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                   ></TableSortLabel>
                 </div>
               </TableCell>
-              <TableCell sx={{ color: 'inherit', maxWidth: '25%' }}>
+              <TableCell sx={{ color: 'inherit' }}>
                 <div style={{ display: 'flex' }}>
                   Last Updated
                   <TableSortLabel
@@ -256,10 +234,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                   ></TableSortLabel>
                 </div>
               </TableCell>
-              <TableCell
-                align="right"
-                sx={{ color: 'inherit', maxWidth: '25%' }}
-              >
+              <TableCell align="right" sx={{ color: 'inherit' }}>
                 {deleteDataOID.length > 0 && (
                   <ConfirmDeleteButton
                     onConfirm={handleDelete}
@@ -307,12 +282,17 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
                     }}
                   ></Checkbox>
                   <Tooltip title={'Edit data'}>
-                    <IconButton onClick={() => handleEdit(dataSet.id)}>
+                    <IconButton onClick={() => {}}>
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={'View data'}>
-                    <IconButton onClick={() => handleDataSetClick(dataSet.id)}>
+                    <IconButton
+                      onClick={() => {
+                        setSelectDataOID(dataSet.id);
+                        setOpenDialog(true);
+                      }}
+                    >
                       <VisibilityIcon />
                     </IconButton>
                   </Tooltip>
@@ -323,7 +303,12 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                onPageChange={handlePageChange}
+                onPageChange={(
+                  event: React.MouseEvent<HTMLButtonElement> | null,
+                  page: number,
+                ) => {
+                  setPage(page);
+                }}
                 rowsPerPageOptions={[]}
                 count={memberDataCount.data ?? 0}
                 rowsPerPage={counts}
@@ -341,7 +326,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
         }
         dataInfo={'Preview top 100 rows'}
         open={openDialog}
-        onClose={handleCloseDialog}
+        onClose={() => setOpenDialog(false)}
       >
         {dataTable.isLoading ? (
           <LinearProgress color="info" sx={{ marginTop: 2 }} />

@@ -20,18 +20,21 @@ export default function ProjectCard({ project, active }: ProjectCardProps) {
   return (
     <Card
       sx={{
-        maxWidth: 345,
         border: active
           ? '2px solid ' + theme.palette.info.main
           : theme.palette.background.paper,
       }}
     >
-      <CardActionArea>
+      <CardActionArea sx={{ height: 145 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {project.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            sx={{ height: 100, textOverflow: 'ellipsis' }}
+            variant="body2"
+            color="text.secondary"
+          >
             {project.des}
           </Typography>
         </CardContent>

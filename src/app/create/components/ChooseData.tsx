@@ -11,7 +11,7 @@ import { useEffect, useMemo } from 'react';
 import AutoCompleteSelect from '../../../components/Select/AutoCompleteSelect';
 import ObjectTable from '../../../components/Table/ObjectTable';
 
-export default function SelectData() {
+export default function ChooseData() {
   const mid = useUserStore((state) => state.mid);
   const allMemberData = trpc.dataObject.getAllMemberData.useQuery(mid);
 

@@ -1,6 +1,6 @@
 import Dashboard from '@/components/dashboard';
 import { env } from '@/env.mjs';
-import { DataPanel } from './datapanel';
+import { DataPanel } from './data-panel';
 
 export default function DataPage() {
   return (

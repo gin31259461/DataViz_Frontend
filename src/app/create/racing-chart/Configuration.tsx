@@ -1,5 +1,8 @@
-import { RacingBarChartMapping } from '@/components/ChartEngine/RacingBarChartEngine';
-import { DataArgsProps, useProjectStore } from '@/hooks/store/useProjectStore';
+import { RacingBarChartMapping } from '@/components/chart-engine/racing-bar-chart-engine';
+import {
+  DataArgsProps,
+  useProjectStore,
+} from '@/hooks/store/use-project-store';
 import { trpc } from '@/server/trpc';
 import AbcIcon from '@mui/icons-material/Abc';
 import CategoryIcon from '@mui/icons-material/Category';

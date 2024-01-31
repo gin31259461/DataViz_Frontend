@@ -1,5 +1,5 @@
 import { Grid, Link, Typography } from '@mui/material';
-import FooterContainer from './FooterContainer';
+import FooterContainer from './footer-container';
 import { FacebookIcon, GitHubIcon } from './Icon';
 
 export default function Footer() {

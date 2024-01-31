@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserStore } from '@/hooks/store/useUserStore';
+import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
 import { colorTokens } from '@/utils/color-tokens';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,18 +25,18 @@ import {
 } from '@mui/material';
 import dynamic from 'next/dynamic';
 import React, { useCallback, useMemo, useState } from 'react';
-import CardButton from '../../../../components/Button/CardButton';
+import CardButton from '../../../../components/button/card-button';
 
 const ObjectTable = dynamic(
-  () => import('../../../../components/Table/ObjectTable'),
+  () => import('../../../../components/table/object-table'),
 );
-const ShowDataDialog = dynamic(() => import('./ShowDataModal'));
-const DataFormDialog = dynamic(() => import('./DataFormModal'));
+const ShowDataDialog = dynamic(() => import('./show-data-modal'));
+const DataFormDialog = dynamic(() => import('./data-form-dialog'));
 const MessageSnackbar = dynamic(
-  () => import('../../../../components/MessageSnackbar'),
+  () => import('../../../../components/message-snackbar'),
 );
 const ConfirmDeleteButton = dynamic(
-  () => import('../../../../components/Button/ConfirmDeleteButton'),
+  () => import('../../../../components/button/confirm-delete-button'),
 );
 
 interface DataSchema {
@@ -172,7 +172,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
   }, [dataTable]);
 
   return (
-    <Grid container>
+    <Grid>
       <Grid container padding={2}>
         <CardButton
           title="New data"

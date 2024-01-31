@@ -1,17 +1,17 @@
 'use client';
 
-import { useProjectStore } from '@/hooks/store/useProjectStore';
-import { useUserStore } from '@/hooks/store/useUserStore';
+import { useProjectStore } from '@/hooks/store/use-project-store';
+import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
 import { useRouter } from 'next/navigation';
-import ChooseData from '../components/ChooseData';
-import Complete from '../components/Complete';
+import ChooseData from '../_components/choose-data';
+import Complete from '../_components/complete';
 import Stepper, {
   CustomStepperContext,
   useCustomStepperAction,
-} from '../components/Stepper';
-import Configuration from './Configuration';
-import PreviewRacingChart from './PreviewRacingChart';
+} from '../_components/stepper';
+import Configuration from './configuration';
+import PreviewRacingChart from './preview-racing-chart';
 
 function CreateRacingBarChartPage() {
   const createArg = trpc.project.createArg.useMutation();

@@ -1,0 +1,15 @@
+'use client';
+
+import { NavbarContext, useNavbar } from './navbar.context';
+
+export const NavbarProvider: React.FC<{ children: React.ReactNode }> = (
+  props,
+) => {
+  const { ctx } = useNavbar();
+
+  return (
+    <NavbarContext.Provider value={ctx}>
+      {props.children}
+    </NavbarContext.Provider>
+  );
+};

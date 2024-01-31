@@ -1,12 +1,12 @@
-import { CommandModal } from '@/components/Modal/CommandModal';
-import Navbar from '@/components/Navbar';
-import { NavbarProvider } from '@/components/Navbar/NavbarProvider';
+import { CommandModal } from '@/components/modal/command-modal';
+import Navbar from '@/components/navbar';
+import { NavbarProvider } from '@/components/navbar/navbar-provider';
 import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
 import { getServerSession, Session } from 'next-auth';
-import { Provider } from '../components/Provider';
-import { TrpcProvider } from '../components/Provider/TrpcProvider';
+import { Provider } from '../components/provider';
+import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';
 
 export const metadata = {

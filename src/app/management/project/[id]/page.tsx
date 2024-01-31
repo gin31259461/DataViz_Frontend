@@ -4,10 +4,10 @@ import RacingBarChartEngine, {
   convertToRacingBarChartData,
   RacingBarChartArgs,
   RacingBarChartMapping,
-} from '@/components/ChartEngine/RacingBarChartEngine';
-import Loader from '@/components/Loading/Loader';
-import { NavbarContext } from '@/components/Navbar/Navbar.context';
-import { DataArgsProps } from '@/hooks/store/useProjectStore';
+} from '@/components/chart-engine/racing-bar-chart-engine';
+import Loader from '@/components/loading/loader';
+import { NavbarContext } from '@/components/navbar/navbar.context';
+import { DataArgsProps } from '@/hooks/store/use-project-store';
 import { ArgSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
 import { Container, Typography } from '@mui/material';

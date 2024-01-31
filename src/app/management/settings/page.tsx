@@ -1,4 +1,4 @@
-import Dashboard from '@/components/Dashboard';
+import Dashboard from '@/components/dashboard';
 import { Container, Grid, Typography } from '@mui/material';
 
 export default function SettingsPage() {

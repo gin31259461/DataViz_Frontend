@@ -1,14 +1,11 @@
-import Dashboard from '@/components/Dashboard';
+import Dashboard from '@/components/dashboard';
 import { env } from '@/env.mjs';
-import { Container } from '@mui/material';
-import { DataPanel } from './DataPanel';
+import { DataPanel } from './datapanel';
 
 export default function DataPage() {
   return (
     <Dashboard>
-      <Container>
-        <DataPanel flaskServer={env.FLASK_URL}></DataPanel>
-      </Container>
+      <DataPanel flaskServer={env.FLASK_URL}></DataPanel>
     </Dashboard>
   );
 }

@@ -5,8 +5,8 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import { prismaWriter } from '../db';
-import { I3SPrismaAdapter } from './I3SPrismaAdapter';
-import WKESSOProvider from './WKESSOProvider';
+import { I3SPrismaAdapter } from './i3s-prisma-adapter';
+import WKESSOProvider from './wke-sso-provider';
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {

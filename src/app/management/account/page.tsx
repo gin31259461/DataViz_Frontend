@@ -1,6 +1,6 @@
-import Dashboard from '@/components/Dashboard';
+import Dashboard from '@/components/dashboard';
 import { authOptions } from '@/server/auth/auth';
-import { Button, Container, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import {
@@ -9,15 +9,16 @@ import {
   AccountListItemContainer,
   AccountListItemLeft,
   AccountListItemRight,
-} from './AccountList';
+} from './account-list';
 
 const AccountPage = async () => {
   const session = await getServerSession(authOptions);
+
   return (
     <Dashboard>
-      <Container
+      <Box
         sx={{
-          marginTop: 2,
+          padding: 2,
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
@@ -83,7 +84,7 @@ const AccountPage = async () => {
             },
           )}
         </div>
-      </Container>
+      </Box>
     </Dashboard>
   );
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useSplitLineStyle } from '@/hooks/useStyles';
+import { useSplitLineStyle } from '@/hooks/use-styles';
 import {
   Card,
   CardActionArea,

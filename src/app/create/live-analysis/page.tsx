@@ -1,5 +1,7 @@
-import ChooseData from '../components/ChooseData';
-import ExploreData from '../components/ExploreData';
+import ChooseData from '../_components/choose-data';
+import ExploreData from '../_components/explore-data';
+import PathAnalysis from './_components/path-analysis';
+import ProcessAnalysis from './_components/process-analysis';
 import {
   getDataInfo,
   getPathAnalysis,
@@ -7,8 +9,6 @@ import {
   PathAnalysisRequestParams,
   ProcessAnalysisRequestParams,
 } from './action';
-import PathAnalysis from './components/PathAnalysis';
-import ProcessAnalysis from './components/ProcessAnalysis';
 import StepperProvider from './provider';
 
 async function LiveAnalysisPage() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserStore } from '@/hooks/store/useUserStore';
+import { useUserStore } from '@/hooks/store/use-user-store';
 import { ColorModeContext, useMode } from '@/utils/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Session } from 'next-auth';
@@ -9,7 +9,7 @@ import React from 'react';
 import {
   CommandModalContext,
   useCommandModal,
-} from '../Modal/CommandModal/Provider';
+} from '../modal/command-modal/provider';
 
 interface ProviderProps {
   children: React.ReactNode;

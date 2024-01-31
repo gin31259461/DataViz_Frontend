@@ -1,6 +1,6 @@
 'use client';
 
-import { useSplitLineStyle } from '@/hooks/useStyles';
+import { useSplitLineStyle } from '@/hooks/use-styles';
 import style from '@/styles/navbar.module.scss';
 import { ColorModeContext } from '@/utils/theme';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
@@ -13,15 +13,15 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useContext, useState } from 'react';
-import Avatar from '../Avatar';
-import Loader from '../Loading/Loader';
-import OpenCMDKButton, { CtrlK } from '../Modal/CommandModal/OpenCMDKButton';
-import { ConfirmModal } from '../Modal/ConfirmModal';
-import SignInModal from '../Modal/SignInModal';
-import AccountMenu from './AccountMenu';
-import DataVizIcon from './DataVizIcon';
-import { NavbarContext } from './Navbar.context';
-import { NavbarMenu, NavbarMenuButton, NavbarMenuItem } from './NavbarMenu';
+import Avatar from '../avatar';
+import Loader from '../loading/loader';
+import OpenCMDKButton, { CtrlK } from '../modal/command-modal/open-cmdk-button';
+import { ConfirmModal } from '../modal/confirm-modal';
+import SignInModal from '../modal/signin-modal';
+import AccountMenu from './account-menu';
+import DataVizIcon from './data-viz-icon';
+import { NavbarMenu, NavbarMenuButton, NavbarMenuItem } from './navbar-menu';
+import { NavbarContext } from './navbar.context';
 
 export default function Navbar() {
   const navbar = useContext(NavbarContext);
@@ -40,14 +40,6 @@ export default function Navbar() {
 
   const AvatarClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const AvatarMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuOpen = () => {
-    setMenuOpen((prev) => !prev);
   };
 
   const handleLoginOut = () => {
@@ -94,12 +86,6 @@ export default function Navbar() {
         <div className={style['navMenu']}>
           <div className={style['navMenuFirst']}>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <NavbarMenuButton
-                // active={splitPathName.length >= 2 && splitPathName[2] === 'profile' ? true : false}
-                href="/"
-              >
-                Chart library
-              </NavbarMenuButton>
               {status == 'authenticated' && (
                 <>
                   <NavbarMenuButton
@@ -115,7 +101,7 @@ export default function Navbar() {
                   <NavbarMenuButton
                     active={
                       splitPathName.length >= 2 &&
-                      splitPathName[2] === 'infographic'
+                      splitPathName[2] === 'project'
                         ? true
                         : false
                     }
@@ -181,7 +167,9 @@ export default function Navbar() {
 
             <IconButton
               className={style['navMenuListButton']}
-              onClick={handleMenuOpen}
+              onClick={() => {
+                setMenuOpen((prev) => !prev);
+              }}
             >
               {menuOpen ? (
                 <CloseOutlinedIcon fontSize={'medium'}></CloseOutlinedIcon>
@@ -203,7 +191,9 @@ export default function Navbar() {
             <AccountMenu
               anchorEl={anchorEl}
               open={anchorEl ? true : false}
-              handleClose={AvatarMenuClose}
+              handleClose={() => {
+                setAnchorEl(null);
+              }}
               avatar={<Avatar src={data?.user.image ?? undefined} />}
               userName={data?.user.name}
               authenticated={status === 'authenticated' ? true : false}
@@ -219,7 +209,6 @@ export default function Navbar() {
         className={menuOpen ? style['navMenuOpen'] : style['navMenuClose']}
         onClose={handleClose}
       >
-        <NavbarMenuItem href="/">Chart library</NavbarMenuItem>
         {status == 'authenticated' && (
           <>
             <NavbarMenuItem href="/management/data">Data</NavbarMenuItem>

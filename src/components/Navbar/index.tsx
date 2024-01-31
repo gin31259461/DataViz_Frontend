@@ -17,7 +17,7 @@ import Avatar from '../avatar';
 import Loader from '../loading/loader';
 import OpenCMDKButton, { CtrlK } from '../modal/command-modal/open-cmdk-button';
 import { ConfirmModal } from '../modal/confirm-modal';
-import SignInModal from '../modal/signin-modal';
+import SignInModal from '../modal/login-modal';
 import AccountMenu from './account-menu';
 import DataVizIcon from './data-viz-icon';
 import { NavbarMenu, NavbarMenuButton, NavbarMenuItem } from './navbar-menu';

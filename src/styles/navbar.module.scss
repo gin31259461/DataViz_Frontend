@@ -36,25 +36,25 @@
   text-decoration: none;
 }
 
-.navMenu {
+.nav-menu {
   display: flex;
   align-items: center;
   margin-left: 64px;
 
-  .navMenuFirst {
+  .nav-menu-1 {
     @media only screen and (max-width: 1050px) {
       display: none;
     }
   }
 
-  .navMenuSecond {
+  .nav-menu-2 {
     position: absolute;
     display: flex;
     align-items: center;
     gap: 8px;
     right: 0;
 
-    .navMenuSecond-1 {
+    .nav-menu-2-1 {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -83,7 +83,7 @@
       }
     }
 
-    .navMenuListButton {
+    .nav-menu-list-button {
       display: none;
 
       @media only screen and (max-width: 1050px) {
@@ -93,12 +93,12 @@
   }
 }
 
-.navMenuOpen {
+.nav-menu-open {
   transform: translateY(0);
   opacity: 1;
 }
 
-.navMenuClose {
+.nav-menu-close {
   transform: translateY(-500px);
   opacity: 0;
 }

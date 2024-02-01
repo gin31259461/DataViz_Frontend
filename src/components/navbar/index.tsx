@@ -2,49 +2,34 @@
 
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import style from '@/styles/navbar.module.scss';
-import { ColorModeContext } from '@/utils/theme';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import { Button, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useContext, useState } from 'react';
-import Avatar from '../avatar';
-import Loader from '../loading/loader';
-import OpenCMDKButton, { CtrlK } from '../modal/command-modal/open-cmdk-button';
-import { ConfirmModal } from '../modal/confirm-modal';
-import SignInModal from '../modal/login-modal';
-import AccountMenu from './account-menu';
 import DataVizIcon from './data-viz-icon';
 import { NavbarMenu, NavbarMenuButton, NavbarMenuItem } from './navbar-menu';
 import { NavbarContext } from './navbar.context';
 
-export default function Navbar() {
+interface NavbarProps {
+  dropDownMenuItemList: string[];
+  dropDownMenuItemHref: string[];
+  navbarMenuItemList: string[];
+  navbarMenuItemHref: string[];
+  rightSideSubMenu: React.ReactNode;
+  children: React.ReactNode;
+}
+
+export default function Navbar(props: NavbarProps) {
   const navbar = useContext(NavbarContext);
-  const { data, status } = useSession();
   const theme = useTheme();
   const splitPathName = usePathname().split('/');
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [signInModalOpen, setSignInModalOpen] = useState(false);
-  const [signOutModalOpen, setSignOutModalOpen] = useState(false);
-  const colorMode = useContext(ColorModeContext);
 
   const handleClose = () => {
     setMenuOpen(false);
-  };
-
-  const AvatarClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleLoginOut = () => {
-    if (status === 'unauthenticated') setSignInModalOpen(true);
-    else if (status === 'authenticated') setSignOutModalOpen(true);
   };
 
   return (
@@ -82,91 +67,37 @@ export default function Navbar() {
           </Link>
         </h2>
 
-        {/*---------- Navbar menu separator ----------*/}
-        <div className={style['navMenu']}>
-          <div className={style['navMenuFirst']}>
+        <div className={style['nav-menu']}>
+          <div className={style['nav-menu-1']}>
             <div style={{ display: 'flex', gap: '8px' }}>
-              {status == 'authenticated' && (
-                <>
-                  <NavbarMenuButton
-                    active={
-                      splitPathName.length >= 2 && splitPathName[2] === 'data'
-                        ? true
-                        : false
-                    }
-                    href="/management/data"
-                  >
-                    Data
-                  </NavbarMenuButton>
-                  <NavbarMenuButton
-                    active={
-                      splitPathName.length >= 2 &&
-                      splitPathName[2] === 'project'
-                        ? true
-                        : false
-                    }
-                    href="/management/project"
-                  >
-                    Project
-                  </NavbarMenuButton>
-                  <NavbarMenuButton
-                    active={
-                      splitPathName.length >= 2 &&
-                      splitPathName[2] === 'settings'
-                        ? true
-                        : false
-                    }
-                    href="/management/settings"
-                  >
-                    Settings
-                  </NavbarMenuButton>
-                </>
-              )}
+              {props.navbarMenuItemList.length ==
+                props.navbarMenuItemHref.length &&
+                props.navbarMenuItemList.map((item, i) => {
+                  const pathnames = props.navbarMenuItemHref[i].split('/');
+                  return (
+                    <NavbarMenuButton
+                      key={i}
+                      active={
+                        splitPathName[splitPathName.length - 1] ==
+                        pathnames[pathnames.length - 1]
+                      }
+                      href={props.navbarMenuItemHref[i]}
+                    >
+                      {item}
+                    </NavbarMenuButton>
+                  );
+                })}
             </div>
           </div>
 
-          <div className={style['navMenuSecond']}>
-            <div className={style['navMenuSecond-1']}>
-              <Button
-                sx={{
-                  border: useSplitLineStyle(),
-                  textTransform: 'none',
-                }}
-                color="primary"
-              >
-                Feedback
-              </Button>
-              {status === 'unauthenticated' && (
-                <Button
-                  sx={{
-                    textTransform: 'none',
-                  }}
-                  color="primary"
-                  variant="contained"
-                  onClick={handleLoginOut}
-                >
-                  Login
-                </Button>
-              )}
-              <OpenCMDKButton />
+          <div className={style['nav-menu-2']}>
+            <div className={style['nav-menu-2-1']}>
+              {props.rightSideSubMenu}
             </div>
-
-            <CtrlK className={style['CMDK']} />
-
-            <IconButton onClick={() => colorMode.toggleColorMode()}>
-              {theme.palette.mode === 'dark' ? (
-                <DarkModeOutlinedIcon
-                  fontSize={'medium'}
-                ></DarkModeOutlinedIcon>
-              ) : (
-                <LightModeOutlinedIcon
-                  fontSize={'medium'}
-                ></LightModeOutlinedIcon>
-              )}
-            </IconButton>
+            {props.children}
 
             <IconButton
-              className={style['navMenuListButton']}
+              className={style['nav-menu-list-button']}
               onClick={() => {
                 setMenuOpen((prev) => !prev);
               }}
@@ -177,54 +108,23 @@ export default function Navbar() {
                 <MenuOutlinedIcon fontSize={'medium'}></MenuOutlinedIcon>
               )}
             </IconButton>
-
-            <IconButton
-              sx={{
-                width: 36,
-                height: 36,
-              }}
-              onClick={AvatarClick}
-            >
-              <Avatar src={data?.user.image ?? undefined} />
-            </IconButton>
-
-            <AccountMenu
-              anchorEl={anchorEl}
-              open={anchorEl ? true : false}
-              handleClose={() => {
-                setAnchorEl(null);
-              }}
-              avatar={<Avatar src={data?.user.image ?? undefined} />}
-              userName={data?.user.name}
-              authenticated={status === 'authenticated' ? true : false}
-              handleLoginOut={handleLoginOut}
-            ></AccountMenu>
           </div>
         </div>
       </div>
-      {/*---------- Navbar menu separator ----------*/}
 
-      {/*---------- Menu list open separator ----------*/}
       <NavbarMenu
-        className={menuOpen ? style['navMenuOpen'] : style['navMenuClose']}
+        className={menuOpen ? style['nav-menu-open'] : style['nav-menu-close']}
         onClose={handleClose}
       >
-        {status == 'authenticated' && (
-          <>
-            <NavbarMenuItem href="/management/data">Data</NavbarMenuItem>
-            <NavbarMenuItem href="/management/project">Project</NavbarMenuItem>
-            <NavbarMenuItem href="/management/settings">
-              Settings
-            </NavbarMenuItem>
-          </>
-        )}
-        <NavbarMenuItem href="/">Feedback</NavbarMenuItem>
-
-        {status === 'unauthenticated' && (
-          <NavbarMenuItem onClick={() => setSignInModalOpen(true)}>
-            Login
-          </NavbarMenuItem>
-        )}
+        {props.dropDownMenuItemList.length ==
+          props.dropDownMenuItemHref.length &&
+          props.dropDownMenuItemList.map((item, i) => {
+            return (
+              <NavbarMenuItem href={props.dropDownMenuItemHref[i]} key={i}>
+                {item}
+              </NavbarMenuItem>
+            );
+          })}
       </NavbarMenu>
 
       {menuOpen && (
@@ -235,27 +135,6 @@ export default function Navbar() {
           }}
         ></div>
       )}
-      {/*---------- Menu list open separator ----------*/}
-
-      {/*---------- SignIn SignOut separator ----------*/}
-      <SignInModal
-        open={signInModalOpen}
-        onClose={() => {
-          setSignInModalOpen(false);
-        }}
-      ></SignInModal>
-
-      <ConfirmModal
-        open={signOutModalOpen}
-        onClose={() => setSignOutModalOpen(false)}
-        onConfirm={async () => await signOut()}
-        title="Logout"
-      >
-        Are you sure to logout?
-      </ConfirmModal>
-      {/*---------- SignIn SignOut separator ----------*/}
-
-      {status === 'loading' && <Loader />}
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { CommandModal } from '@/components/modal/command-modal';
-import Navbar from '@/components/navbar';
 import { NavbarProvider } from '@/components/navbar/navbar-provider';
 import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
@@ -8,6 +7,7 @@ import { getServerSession, Session } from 'next-auth';
 import { Provider } from '../components/provider';
 import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';
+import LayoutNavbar from './layout-navbar';
 
 export const metadata = {
   title: 'DataViz',
@@ -35,7 +35,7 @@ export default async function RootLayout({
           <Provider session={session}>
             <div>
               <NavbarProvider>
-                <Navbar />
+                <LayoutNavbar />
                 <CommandModal />
                 {children}
               </NavbarProvider>

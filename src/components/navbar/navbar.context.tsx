@@ -31,7 +31,7 @@ export const NavbarContext = createContext<NavbarContextProps>({
     const ctx = useContext(NavbarContext)
  * @returns navbar context
  */
-export const useNavbar = () => {
+export const useNavbarContext = () => {
   const [open, setOpen] = useState(true);
 
   const value = useMemo(() => {

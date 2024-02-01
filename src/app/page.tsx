@@ -1,10 +1,10 @@
-import Footer from '@/components/footer';
+import Footer from '@/app/footer';
 import { colorTokens } from '@/utils/color-tokens';
 import { Box, Container, Divider, Grid, Typography } from '@mui/material';
-import Gallery from './home/gallery';
-import TypingText from './home/typing-text';
+import Gallery from './gallery';
+import TypingText from './typing-text';
 
-export default function Home() {
+export default function HomePage() {
   const color = colorTokens('dark');
 
   return (

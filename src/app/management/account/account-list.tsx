@@ -92,7 +92,6 @@ export const AccountListItemLeft = styled('div')({
   gap: 8,
   alignItems: 'center',
   flexGrow: 1,
-  maxWidth: '200px',
   width: '20%',
 });
 
@@ -100,14 +99,12 @@ export const AccountListItemCenter = styled('div')({
   display: 'flex',
   alignItems: 'center',
   flexGrow: 1,
-  maxWidth: '600px',
-  width: '50%',
+  width: '20%',
 });
 
 export const AccountListItemRight = styled('div')({
   display: 'flex',
   alignItems: 'center',
   flexGrow: 1,
-  maxWidth: '400px',
   width: '30%',
 });

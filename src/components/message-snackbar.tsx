@@ -16,7 +16,7 @@ interface MessageSnackbarProps extends Omit<SnackbarProps, 'open'> {
 export default function MessageSnackbar({
   open,
   onClose,
-  message = 'Upload Success',
+  message = '',
   status = 'info',
   ...props
 }: MessageSnackbarProps) {

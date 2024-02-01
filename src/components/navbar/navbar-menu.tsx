@@ -124,7 +124,7 @@ export const NavbarMenuShortcutItem: React.FC<NavbarMenuShortcutItemProps> = ({
 
 interface NavbarMenuButtonProps {
   children: React.ReactNode;
-  href: string;
+  href: string | undefined;
   active?: boolean;
 }
 

@@ -1,8 +1,8 @@
-import Dashboard from '@/components/dashboard';
 import { ProjectSchema } from '@/server/api/routers/project';
 import { authOptions } from '@/server/auth/auth';
 import { prismaReader } from '@/server/db';
 import { getServerSession } from 'next-auth';
+import ManagementDashBoard from '../management-dashboard';
 import ProjectManager from './project-manager';
 
 async function getProjects() {
@@ -33,8 +33,8 @@ async function getProjects() {
 
 export default async function ProjectPage() {
   return (
-    <Dashboard>
+    <ManagementDashBoard>
       <ProjectManager getProjects={getProjects} />
-    </Dashboard>
+    </ManagementDashBoard>
   );
 }

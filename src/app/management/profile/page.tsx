@@ -1,12 +1,9 @@
-import Dashboard from '@/components/dashboard';
-import { Container } from '@mui/material';
+import ManagementDashBoard from '../management-dashboard';
 
 export default function ProfilePage() {
   return (
-    <Dashboard>
-      <Container>
-        <div>Profile</div>
-      </Container>
-    </Dashboard>
+    <ManagementDashBoard>
+      <div>Profile</div>
+    </ManagementDashBoard>
   );
 }

@@ -1,16 +1,14 @@
-import Dashboard from '@/components/dashboard';
-import { Container, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import ManagementDashBoard from '../management-dashboard';
 
 export default function SettingsPage() {
   return (
-    <Dashboard>
-      <Container>
-        <Grid container sx={{ paddingTop: 5 }}>
-          <Grid container>
-            <Typography variant="h4">Preference setting</Typography>
-          </Grid>
+    <ManagementDashBoard>
+      <Grid container sx={{ paddingTop: 5 }}>
+        <Grid container>
+          <Typography variant="h4">Preference setting</Typography>
         </Grid>
-      </Container>
-    </Dashboard>
+      </Grid>
+    </ManagementDashBoard>
   );
 }

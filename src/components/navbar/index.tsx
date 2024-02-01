@@ -70,23 +70,22 @@ export default function Navbar(props: NavbarProps) {
         <div className={style['nav-menu']}>
           <div className={style['nav-menu-1']}>
             <div style={{ display: 'flex', gap: '8px' }}>
-              {props.navbarMenuItemList.length ==
-                props.navbarMenuItemHref.length &&
-                props.navbarMenuItemList.map((item, i) => {
-                  const pathnames = props.navbarMenuItemHref[i].split('/');
-                  return (
-                    <NavbarMenuButton
-                      key={i}
-                      active={
-                        splitPathName[splitPathName.length - 1] ==
-                        pathnames[pathnames.length - 1]
-                      }
-                      href={props.navbarMenuItemHref[i]}
-                    >
-                      {item}
-                    </NavbarMenuButton>
-                  );
-                })}
+              {props.navbarMenuItemList.map((item, i) => {
+                const href = props.navbarMenuItemHref.at(i) ?? '/';
+                const pathnames = href.split('/');
+                return (
+                  <NavbarMenuButton
+                    key={i}
+                    active={
+                      splitPathName[splitPathName.length - 1] ==
+                      pathnames[pathnames.length - 1]
+                    }
+                    href={props.navbarMenuItemHref.at(i)}
+                  >
+                    {item}
+                  </NavbarMenuButton>
+                );
+              })}
             </div>
           </div>
 
@@ -116,15 +115,13 @@ export default function Navbar(props: NavbarProps) {
         className={menuOpen ? style['nav-menu-open'] : style['nav-menu-close']}
         onClose={handleClose}
       >
-        {props.dropDownMenuItemList.length ==
-          props.dropDownMenuItemHref.length &&
-          props.dropDownMenuItemList.map((item, i) => {
-            return (
-              <NavbarMenuItem href={props.dropDownMenuItemHref[i]} key={i}>
-                {item}
-              </NavbarMenuItem>
-            );
-          })}
+        {props.dropDownMenuItemList.map((item, i) => {
+          return (
+            <NavbarMenuItem href={props.dropDownMenuItemHref.at(i)} key={i}>
+              {item}
+            </NavbarMenuItem>
+          );
+        })}
       </NavbarMenu>
 
       {menuOpen && (

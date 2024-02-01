@@ -3,7 +3,8 @@
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import ChooseData from '../_components/choose-data';
 import Complete from '../_components/complete';
 import Stepper, {
@@ -23,6 +24,7 @@ function CreateRacingBarChartPage() {
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const dataArgs = useProjectStore((state) => state.dataArgs);
   const lastProjectId = trpc.project.getLastProjectId.useQuery(mid);
+  const [done, setDone] = useState(false);
 
   const steps = [
     'Select data',
@@ -37,7 +39,6 @@ function CreateRacingBarChartPage() {
     <PreviewRacingChart key={2} />,
     <Complete key={3} />,
   ];
-  const router = useRouter();
 
   const backButtonDisabled = () => {
     if (stepperValue.activeStep !== 0) return false;
@@ -63,8 +64,18 @@ function CreateRacingBarChartPage() {
           dataArgs: dataArgs ?? {},
         },
       });
+
+      await lastProjectId.refetch();
     }
   };
+
+  useEffect(() => {
+    if (done) {
+      setDone(false);
+
+      redirect(`/management/project/${lastProjectId.data}`);
+    }
+  }, [done, lastProjectId]);
 
   return (
     <CustomStepperContext.Provider value={stepperValue}>
@@ -75,8 +86,7 @@ function CreateRacingBarChartPage() {
         nextButtonDisabled={nextButtonDisabled}
         callback={async () => {
           await onConfirm();
-          await lastProjectId.refetch();
-          router.push(`/management/project/${lastProjectId.data}`);
+          setDone(true);
         }}
       />
     </CustomStepperContext.Provider>

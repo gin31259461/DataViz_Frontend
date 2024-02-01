@@ -1,8 +1,8 @@
-import Dashboard from '@/components/dashboard';
 import { authOptions } from '@/server/auth/auth';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
+import ManagementDashBoard from '../management-dashboard';
 import {
   AccountListItem,
   AccountListItemCenter,
@@ -15,7 +15,7 @@ const AccountPage = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <Dashboard>
+    <ManagementDashBoard>
       <Box
         sx={{
           padding: 2,
@@ -56,8 +56,6 @@ const AccountPage = async () => {
                 Change Password
               </Button>
             </AccountListItemLeft>
-            <AccountListItemCenter></AccountListItemCenter>
-            <AccountListItemRight></AccountListItemRight>
           </AccountListItemContainer>
           <Divider />
         </div>
@@ -73,7 +71,7 @@ const AccountPage = async () => {
                         src={`/assets/icons/${provider}.ico`}
                         height={30}
                         width={30}
-                        alt="google"
+                        alt={provider}
                       ></Image>
                     }
                     provider={provider}
@@ -85,7 +83,7 @@ const AccountPage = async () => {
           )}
         </div>
       </Box>
-    </Dashboard>
+    </ManagementDashBoard>
   );
 };
 

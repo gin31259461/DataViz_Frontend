@@ -1,12 +1,6 @@
 'use client';
 
 import style from '@/styles/dashboard.module.scss';
-import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
-import DatasetRoundedIcon from '@mui/icons-material/DatasetRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
 import {
   ListItemButton,
   ListItemIcon,
@@ -16,53 +10,40 @@ import {
 } from '@mui/material';
 
 const ListItemIconStyled = styled(ListItemIcon)({
-  minWidth: 2,
+  // minWidth: 2,
 });
 
-function TopBoard() {
+interface TopBoardProps {
+  items: string[];
+  icons: React.ReactNode[];
+  href: string[];
+}
+
+function TopBoard(props: TopBoardProps) {
   const theme = useTheme();
   return (
     <div
       className={style['top-board']}
-      style={{ backgroundColor: theme.palette.background.paper }}
+      style={{
+        backgroundColor: theme.palette.background.paper,
+      }}
     >
-      <div style={{ display: 'flex', padding: 3 }}>
-        <ListItemButton href="/management/data">
-          <ListItemIconStyled>
-            <DatasetRoundedIcon />
-          </ListItemIconStyled>
-          <ListItemText primary="Data" />
-        </ListItemButton>
-        <ListItemButton href="/management/project">
-          <ListItemIconStyled>
-            <ShowChartRoundedIcon />
-          </ListItemIconStyled>
-          <ListItemText primary="Project" sx={{ whiteSpace: 'nowrap' }} />
-        </ListItemButton>
-        <ListItemButton href="/management/profile">
-          <ListItemIconStyled>
-            <AccountBoxRoundedIcon />
-          </ListItemIconStyled>
-          <ListItemText primary="Profile" />
-        </ListItemButton>
-        <ListItemButton href="/management/account">
-          <ListItemIconStyled>
-            <ManageAccountsRoundedIcon />
-          </ListItemIconStyled>
-          <ListItemText primary="Account" />
-        </ListItemButton>
-        <ListItemButton href="/management/settings">
-          <ListItemIconStyled>
-            <SettingsRoundedIcon />
-          </ListItemIconStyled>
-          <ListItemText primary="Settings"></ListItemText>
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIconStyled>
-            <LogoutRoundedIcon />
-          </ListItemIconStyled>
-          <ListItemText primary="Logout" />
-        </ListItemButton>
+      <div
+        style={{
+          display: 'flex',
+          padding: 3,
+        }}
+      >
+        {props.items.map((item, i) => {
+          return (
+            <ListItemButton key={i} href={props.href.at(i) ?? '/'}>
+              <ListItemIconStyled>
+                {props.icons.at(i) ?? <></>}
+              </ListItemIconStyled>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          );
+        })}
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ interface PathAnalysisProps {
 
 function PathAnalysis(props: PathAnalysisProps) {
   const [paths, setPaths] = useState<any>(null);
+
   const reqData = {
     dataId: '769',
     target: '信用卡交易金額[新台幣]',
@@ -25,12 +26,12 @@ function PathAnalysis(props: PathAnalysisProps) {
   };
 
   useEffect(() => {
-    const getPathAnalysis = async (reqData: PathAnalysisRequestParams) => {
+    const getData = async () => {
       const paths = await props.getPathAnalysis(reqData);
       console.log(paths);
     };
 
-    getPathAnalysis(reqData);
+    getData();
   }, [props]);
   return <div>PathAnalysis</div>;
 }

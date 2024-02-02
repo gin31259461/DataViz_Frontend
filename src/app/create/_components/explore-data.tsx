@@ -14,12 +14,13 @@ function ExploreData(props: ExploreDataProps) {
   console.log(dataInfo);
 
   useEffect(() => {
-    const getDataInfo = async (dataId: string) => {
+    const getData = async (dataId: string) => {
       const dataInfo = await props.getDataInfo(dataId);
       setDataInfo(dataInfo);
     };
+
     if (selectedDataOID) {
-      getDataInfo(selectedDataOID.toString());
+      getData(selectedDataOID.toString());
     }
   }, [selectedDataOID, props]);
 

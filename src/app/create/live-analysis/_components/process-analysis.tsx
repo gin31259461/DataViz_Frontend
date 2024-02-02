@@ -24,12 +24,12 @@ function ProcessAnalysis(props: ProcessAnalysisProps) {
   };
 
   useEffect(() => {
-    const getPathAnalysis = async (reqData: ProcessAnalysisRequestParams) => {
+    const getData = async () => {
       const process = await props.getProcessAnalysis(reqData);
       console.log(process);
     };
 
-    getPathAnalysis(reqData);
+    getData();
   }, [props]);
 
   return <div>ProcessAnalysis</div>;

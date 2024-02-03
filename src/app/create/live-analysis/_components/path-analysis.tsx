@@ -3,7 +3,7 @@
 import LinearProgressPending from '@/components/loading/linear-progress-pending';
 import { Container } from '@mui/material';
 import { useEffect, useState, useTransition } from 'react';
-import { PathAnalysisRequestParams } from '../action';
+import { getPathAnalysis, PathAnalysisRequestParams } from '../action';
 
 const reqData = {
   dataId: '769',
@@ -20,25 +20,22 @@ const reqData = {
   },
 };
 
-interface PathAnalysisProps {
-  getPathAnalysis: (reqData: PathAnalysisRequestParams) => Promise<void>;
-}
-
-function PathAnalysis(props: PathAnalysisProps) {
+function PathAnalysis() {
   const [paths, setPaths] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPending, startAnalysis] = useTransition();
-  const getPathAnalysis = props.getPathAnalysis;
 
   useEffect(() => {
     startAnalysis(async () => {
       const paths = await getPathAnalysis(reqData);
+      setIsLoading(false);
       setPaths(paths);
-      console.log(paths);
     });
-  }, [getPathAnalysis]);
+  }, []);
+
   return (
     <Container>
-      <LinearProgressPending isPending={isPending} />
+      <LinearProgressPending isPending={isPending || isLoading} />
     </Container>
   );
 }

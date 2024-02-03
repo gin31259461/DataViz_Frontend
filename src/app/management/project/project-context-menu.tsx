@@ -1,13 +1,14 @@
 import { Menu, MenuItem, PopoverPosition } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ConfirmModal } from './modal/confirm-modal';
+import { ConfirmModal } from '../../../components/modal/confirm-modal';
 
 interface ContextMenuProps {
   id: number;
   children: React.ReactNode;
   onDelete: () => Promise<void>;
   maxWidth?: number | string;
+  path?: string;
 }
 
 export default function ContextMenu({
@@ -15,6 +16,7 @@ export default function ContextMenu({
   maxWidth,
   id,
   onDelete,
+  path,
 }: ContextMenuProps) {
   const [anchorPosition, setAnchorPosition] = useState<
     PopoverPosition | undefined
@@ -50,9 +52,7 @@ export default function ContextMenu({
         open={Boolean(anchorPosition)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onClick={() => router.push(`/management/project/${id}`)}>
-          Open
-        </MenuItem>
+        <MenuItem onClick={() => router.push(`${path}/${id}`)}>Open</MenuItem>
         <MenuItem onClick={handleMenuItemClick}>Rename</MenuItem>
         <MenuItem onClick={() => setDeleteModalOpen(true)}>Delete</MenuItem>
         <ConfirmModal

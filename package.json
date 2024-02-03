@@ -6,7 +6,7 @@
   "scripts": {
     "start": "next start",
     "container-dev": "WATCHPACK_POLLING=true next dev -H 127.0.0.1",
-    "dev": "next dev -H 10.22.22.97 --turbo",
+    "dev": "next dev -H 10.22.22.97",
     "build": "next build",
     "lint": "next lint",
     "lint:fix": "eslint --ext .ts,.tsx,.js --fix ./src",

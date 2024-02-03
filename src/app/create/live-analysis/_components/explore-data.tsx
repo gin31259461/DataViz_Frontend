@@ -4,29 +4,27 @@ import LinearProgressPending from '@/components/loading/linear-progress-pending'
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { Container } from '@mui/material';
 import { useEffect, useState, useTransition } from 'react';
+import { getDataInfo } from '../action';
 
-interface ExploreDataProps {
-  getDataInfo: (dataId: string) => Promise<void>;
-}
-
-function ExploreData(props: ExploreDataProps) {
+function ExploreData() {
   const [dataInfo, setDataInfo] = useState<any>(null);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const [isPending, startFetchDataInfo] = useTransition();
-  const getDataInfo = props.getDataInfo;
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (selectedDataOID) {
       startFetchDataInfo(async () => {
         const dataInfo = await getDataInfo(selectedDataOID.toString());
+        setIsLoading(false);
         setDataInfo(dataInfo);
       });
     }
-  }, [selectedDataOID, getDataInfo]);
+  }, [selectedDataOID]);
 
   return (
     <Container>
-      <LinearProgressPending isPending={isPending} />
+      <LinearProgressPending isPending={isPending || isLoading} />
     </Container>
   );
 }

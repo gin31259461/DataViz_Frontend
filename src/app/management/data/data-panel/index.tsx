@@ -1,5 +1,6 @@
 'use client';
 
+import LinearProgressPending from '@/components/loading/linear-progress-pending';
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
 import { colorTokens } from '@/utils/color-tokens';
@@ -181,11 +182,11 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
           onClick={() => setOpenNewDataDialog(true)}
         ></CardButton>
         <Grid container marginTop={2} height={2}>
-          {someDataObject.isLoading && (
-            <Box sx={{ width: '100%' }}>
-              <LinearProgress color="info" />
-            </Box>
-          )}
+          <Box sx={{ width: '100%' }}>
+            <LinearProgressPending
+              isPending={someDataObject.isFetching || someDataObject.isLoading}
+            />
+          </Box>
         </Grid>
       </Grid>
 

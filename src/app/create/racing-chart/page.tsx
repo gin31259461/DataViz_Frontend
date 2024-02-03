@@ -3,7 +3,7 @@
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChooseData from '../_components/choose-data';
 import Complete from '../_components/complete';
@@ -11,10 +11,12 @@ import Stepper, {
   CustomStepperContext,
   useCustomStepperAction,
 } from '../_components/stepper';
+import { revalidateProject } from './action';
 import Configuration from './configuration';
 import PreviewRacingChart from './preview-racing-chart';
 
 function CreateRacingBarChartPage() {
+  const router = useRouter();
   const createArg = trpc.project.createArg.useMutation();
   const mid = useUserStore((state) => state.mid);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
@@ -72,10 +74,10 @@ function CreateRacingBarChartPage() {
   useEffect(() => {
     if (done) {
       setDone(false);
-
-      redirect(`/management/project/${lastProjectId.data}`);
+      revalidateProject();
+      redirect(`/management/project/racing-chart/${lastProjectId.data}`);
     }
-  }, [done, lastProjectId]);
+  }, [done, lastProjectId, router]);
 
   return (
     <CustomStepperContext.Provider value={stepperValue}>

@@ -2,7 +2,6 @@ import ChooseData from '../_components/choose-data';
 import ExploreData from './_components/explore-data';
 import PathAnalysis from './_components/path-analysis';
 import ProcessAnalysis from './_components/process-analysis';
-import { getDataInfo, getPathAnalysis, getProcessAnalysis } from './action';
 import StepperProvider from './provider';
 
 async function LiveAnalysisPage() {
@@ -16,9 +15,9 @@ async function LiveAnalysisPage() {
   ];
   const components = [
     <ChooseData key={0} />,
-    <ExploreData key={1} getDataInfo={getDataInfo} />,
-    <PathAnalysis key={2} getPathAnalysis={getPathAnalysis} />,
-    <ProcessAnalysis key={3} getProcessAnalysis={getProcessAnalysis} />,
+    <ExploreData key={1} />,
+    <PathAnalysis key={2} />,
+    <ProcessAnalysis key={3} />,
   ];
 
   return (

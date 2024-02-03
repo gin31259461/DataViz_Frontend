@@ -1,3 +1,5 @@
+'use server';
+
 import { env } from '@/env.mjs';
 
 export const getDataInfo = async (dataId: string) => {

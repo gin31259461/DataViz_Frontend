@@ -2,7 +2,7 @@
 
 import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
-import Loader from '@/components/loading/loader';
+import LinearProgressPending from '@/components/loading/linear-progress-pending';
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { ProjectSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
@@ -27,52 +27,63 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import ContextMenu from '../../../components/context-menu';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from 'react';
+import { getProjects } from './action';
 import ProjectCard from './project-card';
+import ContextMenu from './project-context-menu';
 import ProjectList from './project-list';
 
 type ViewMode = 'grid' | 'list';
 type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 
-interface ProjectManagerProps {
-  getProjects: () => Promise<ProjectSchema[]>;
-}
-
-export default function ProjectManager(props: ProjectManagerProps) {
-  const [projects, setProjects] = useState<ProjectSchema[]>([]);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [sortTarget, setSortTarget] = useState<SortTarget>('name');
-  const [activeID, setActiveID] = useState<number | null>(null);
+export default function ProjectManager() {
   const theme = useTheme();
   const router = useRouter();
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [activeID, setActiveID] = useState<number | null>(null);
+  const [sortTarget, setSortTarget] = useState<SortTarget>('name');
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
   const deleteProject = trpc.project.deleteProject.useMutation();
-
-  useEffect(() => {
-    const getProjects = async () => {
-      const projects = await props.getProjects();
-      setProjects(projects);
-    };
-    getProjects();
-  }, [props]);
+  const [projects, setProjects] = useState<ProjectSchema[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isPending, startFetchProjects] = useTransition();
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);
   };
 
-  const onDelete = async (cid: number) => {
-    await deleteProject.mutateAsync(cid);
-    router.refresh();
-  };
+  useEffect(() => {
+    if (isLoading) {
+      startFetchProjects(async () => {
+        const projects = await getProjects();
+        setIsLoading(false);
+        setProjects(projects);
+      });
+    }
+  }, [isLoading]);
 
-  const ProjectCards = () => {
+  const onDelete = useCallback(
+    async (cid: number) => {
+      await deleteProject.mutateAsync(cid);
+      setIsLoading(true);
+    },
+    [deleteProject],
+  );
+
+  const ProjectCards = useMemo(() => {
     return (
       <>
         {projects.map((project) => (
           <Grid key={project.id} item xs={12} sm={6} md={4}>
             <ContextMenu
               onDelete={async () => await onDelete(project.id)}
+              path="/management/project/racing-chart"
               id={project.id}
             >
               <div onMouseDown={() => setActiveID(project.id)}>
@@ -86,9 +97,9 @@ export default function ProjectManager(props: ProjectManagerProps) {
         ))}
       </>
     );
-  };
+  }, [projects, activeID, onDelete]);
 
-  const ProjectItems = () => {
+  const ProjectItems = useMemo(() => {
     return (
       <>
         {projects.map((project) => {
@@ -139,7 +150,7 @@ export default function ProjectManager(props: ProjectManagerProps) {
         })}
       </>
     );
-  };
+  }, [projects, activeID, onDelete, theme.palette]);
 
   return (
     <Box padding={2}>
@@ -157,7 +168,6 @@ export default function ProjectManager(props: ProjectManagerProps) {
           borderBottom: `${useSplitLineStyle()}`,
         }}
       >
-        {/* ---------- create project start ----------  */}
         <Grid container gap={2}>
           <Grid container>
             <CardButton
@@ -181,7 +191,6 @@ export default function ProjectManager(props: ProjectManagerProps) {
                 gap: 1,
               }}
             >
-              {/* ---------- project options start ----------  */}
               <CardButton
                 title="New racing chart project"
                 icon={<TimelineIcon color="info" />}
@@ -195,11 +204,9 @@ export default function ProjectManager(props: ProjectManagerProps) {
                 description=""
                 onClick={() => router.push('/create/live-analysis')}
               ></CardButton>
-              {/* ---------- project options end ----------  */}
             </DialogContent>
           </Dialog>
         </Grid>
-        {/* ---------- create project end ----------  */}
 
         <Grid
           container
@@ -248,21 +255,17 @@ export default function ProjectManager(props: ProjectManagerProps) {
         </Grid>
       </Box>
 
-      {projects.length > 0 ? (
-        <div>
-          {viewMode === 'grid' ? (
-            <Grid container spacing={2} mt={2}>
-              <ProjectCards />
-            </Grid>
-          ) : (
-            <ProjectList>
-              <ProjectItems />
-            </ProjectList>
-          )}
-        </div>
-      ) : (
-        <Loader />
-      )}
+      <LinearProgressPending isPending={isPending || isLoading} />
+
+      <div>
+        {viewMode === 'grid' ? (
+          <Grid container spacing={2} mt={2}>
+            {ProjectCards}
+          </Grid>
+        ) : (
+          <ProjectList>{ProjectItems}</ProjectList>
+        )}
+      </div>
     </Box>
   );
 }

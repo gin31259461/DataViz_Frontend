@@ -1,5 +1,5 @@
 import ChooseData from '../_components/choose-data';
-import ExploreData from '../_components/explore-data';
+import ExploreData from './_components/explore-data';
 import PathAnalysis from './_components/path-analysis';
 import ProcessAnalysis from './_components/process-analysis';
 import { getDataInfo, getPathAnalysis, getProcessAnalysis } from './action';

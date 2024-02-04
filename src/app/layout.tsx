@@ -4,6 +4,7 @@ import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
 import { getServerSession, Session } from 'next-auth';
+import Link from 'next/link';
 import { Provider } from '../components/provider';
 import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';
@@ -20,12 +21,13 @@ export const metadata = {
   // 'og:description':
 };
 
-export default async function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode;
+  auth: React.ReactNode;
   session: Session;
-}) {
+}
+
+export default async function RootLayout(props: RootLayoutProps) {
   const session = await getServerSession(authOptions);
 
   return (
@@ -37,8 +39,9 @@ export default async function RootLayout({
               <NavbarProvider>
                 <LayoutNavbar />
                 <CommandModal />
-                {children}
+                {props.children}
               </NavbarProvider>
+              <div>{props.auth}</div>
             </div>
           </Provider>
         </TrpcProvider>

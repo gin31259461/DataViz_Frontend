@@ -4,7 +4,6 @@ import OpenCMDKButton, {
   CtrlK,
 } from '@/components/modal/command-modal/open-cmdk-button';
 import { ConfirmModal } from '@/components/modal/confirm-modal';
-import SignInModal from '@/components/modal/login-modal';
 import Navbar from '@/components/navbar';
 import AccountMenu from '@/components/navbar/account-menu';
 import Avatar from '@/components/navbar/avatar';
@@ -15,6 +14,7 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Button, IconButton, useTheme } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 
 const dropDownMenuItemList = ['Data', 'Project', 'Settings'];
@@ -33,8 +33,8 @@ const navbarMenuItemHref = [
 
 export default function LayoutNavbar() {
   const theme = useTheme();
+  const router = useRouter();
   const { data, status } = useSession();
-  const [signInModalOpen, setSignInModalOpen] = useState(false);
   const [signOutModalOpen, setSignOutModalOpen] = useState(false);
   const colorMode = useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -44,8 +44,7 @@ export default function LayoutNavbar() {
   };
 
   const handleLoginOut = () => {
-    if (status === 'unauthenticated') setSignInModalOpen(true);
-    else if (status === 'authenticated') setSignOutModalOpen(true);
+    if (status === 'authenticated') setSignOutModalOpen(true);
   };
 
   return (
@@ -73,7 +72,7 @@ export default function LayoutNavbar() {
                 }}
                 color="primary"
                 variant="contained"
-                onClick={handleLoginOut}
+                onClick={() => router.push('/login')}
               >
                 Login
               </Button>
@@ -114,13 +113,6 @@ export default function LayoutNavbar() {
           handleLoginOut={handleLoginOut}
         ></AccountMenu>
       </Navbar>
-
-      <SignInModal
-        open={signInModalOpen}
-        onClose={() => {
-          setSignInModalOpen(false);
-        }}
-      ></SignInModal>
 
       <ConfirmModal
         open={signOutModalOpen}

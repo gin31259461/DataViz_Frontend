@@ -1,7 +1,6 @@
-import { SeriesPoint } from '@visx/shape/lib/types';
-
 export type TooltipData = {
-  bar: SeriesPoint<any>;
+  value: number;
+  tick: string;
   key: string;
   index: number;
   height: number;

@@ -1,5 +1,10 @@
 import { BarGroup as VisxBarGroup } from '@visx/shape';
-import { Accessor, AnyScaleBand, PositionScale } from '@visx/shape/lib/types';
+import {
+  Accessor,
+  AnyScaleBand,
+  PositionScale,
+  BarGroup as VisxBarGroupType,
+} from '@visx/shape/lib/types';
 
 interface BarGroupProps {
   data: any;
@@ -10,6 +15,7 @@ interface BarGroupProps {
   x1Scale: AnyScaleBand;
   yScale: PositionScale;
   colorScale: (key: string, index: number) => string;
+  children: (barGroups: VisxBarGroupType<string>[]) => React.ReactNode;
 }
 
 export const BarGroup = (props: BarGroupProps) => {
@@ -23,6 +29,8 @@ export const BarGroup = (props: BarGroupProps) => {
       x1Scale={props.x1Scale}
       yScale={props.yScale}
       color={props.colorScale}
-    ></VisxBarGroup>
+    >
+      {props.children}
+    </VisxBarGroup>
   );
 };

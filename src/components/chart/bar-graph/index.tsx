@@ -1,5 +1,6 @@
 'use client';
 
+import { omit } from '@/utils/obj';
 import { useTheme } from '@mui/material';
 import { localPoint } from '@visx/event';
 import { Grid } from '@visx/grid';
@@ -167,8 +168,13 @@ export default function BarGraph(props: BarGraphProps) {
                         // is what containerRef is set to in this example.
                         const eventSvgCoords = localPoint(event);
                         const left = bar.x + bar.width / 2;
+                        const omitData = omit(bar, 'bar');
                         showTooltip({
-                          tooltipData: bar,
+                          tooltipData: {
+                            ...omitData,
+                            value: bar.bar.data[bar.key],
+                            tick: getX(props.data[bar.index]),
+                          },
                           tooltipTop: eventSvgCoords?.y,
                           tooltipLeft: left,
                         });
@@ -188,7 +194,47 @@ export default function BarGraph(props: BarGraphProps) {
               x1Scale={x1Scale}
               yScale={yScale}
               colorScale={colorScale}
-            />
+            >
+              {(barGroups) =>
+                barGroups.map((barGroup) =>
+                  barGroup.bars.map((bar) => (
+                    <rect
+                      key={`bar-stack-${barGroup.index}-${bar.index}`}
+                      x={barGroup.x0 + bar.x}
+                      y={bar.y}
+                      height={bar.height}
+                      width={bar.width}
+                      fill={bar.color}
+                      onClick={() => {
+                        if (props.events)
+                          alert(`clicked: ${JSON.stringify(bar)}`);
+                      }}
+                      onMouseLeave={() => {
+                        tooltipTimeout = window.setTimeout(() => {
+                          hideTooltip();
+                        }, 300);
+                      }}
+                      onMouseMove={(event) => {
+                        if (tooltipTimeout) clearTimeout(tooltipTimeout);
+                        // TooltipInPortal expects coordinates to be relative to containerRef
+                        // localPoint returns coordinates relative to the nearest SVG, which
+                        // is what containerRef is set to in this example.
+                        const eventSvgCoords = localPoint(event);
+                        const left = barGroup.x0 + bar.x + bar.width / 2;
+                        showTooltip({
+                          tooltipData: {
+                            ...bar,
+                            tick: getX(props.data[barGroup.index]),
+                          },
+                          tooltipTop: eventSvgCoords?.y,
+                          tooltipLeft: left,
+                        });
+                      }}
+                    />
+                  )),
+                )
+              }
+            </BarGroup>
           )}
         </Group>
         <Group>
@@ -206,9 +252,9 @@ export default function BarGraph(props: BarGraphProps) {
           <div style={{ color: colorScale(tooltipData.key) }}>
             <strong>{tooltipData.key}</strong>
           </div>
-          <div>{tooltipData.bar.data[tooltipData.key]}℉</div>
+          <div>{tooltipData.value}</div>
           <div>
-            <small>{getX(tooltipData.bar.data)}</small>
+            <small>{tooltipData.tick}</small>
           </div>
         </TooltipInPortal>
       )}

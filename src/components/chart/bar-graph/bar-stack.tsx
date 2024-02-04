@@ -12,7 +12,7 @@ interface BarStackProps {
   xScale: PositionScale;
   yScale: PositionScale;
   colorScale: any;
-  children: (batStacks: VisxBarStackType<any, any>[]) => React.ReactNode;
+  children: (batStacks: VisxBarStackType<any, string>[]) => React.ReactNode;
 }
 
 export const BarStack = (props: BarStackProps) => {

@@ -53,6 +53,9 @@ dependencies:
   '@visx/drag':
     specifier: ^3.3.0
     version: 3.3.0(react@18.2.0)
+  '@visx/event':
+    specifier: ^3.3.0
+    version: 3.3.0
   '@visx/grid':
     specifier: ^3.3.0
     version: 3.5.0(react@18.2.0)

@@ -32,6 +32,7 @@
     "@types/d3-scale-chromatic": "^3.0.1",
     "@visx/axis": "^3.4.0",
     "@visx/drag": "^3.3.0",
+    "@visx/event": "^3.3.0",
     "@visx/grid": "^3.3.0",
     "@visx/group": "^3.3.0",
     "@visx/legend": "^3.3.0",

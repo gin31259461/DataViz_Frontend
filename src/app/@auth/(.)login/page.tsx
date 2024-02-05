@@ -1,5 +1,5 @@
 import LoginModal from './login-modal';
 
-export default function LoginPage() {
+export default async function LoginPage() {
   return <LoginModal />;
 }

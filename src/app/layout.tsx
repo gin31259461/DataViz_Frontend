@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Provider } from '../components/provider';
 import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';
-import LayoutNavbar from './layout-navbar';
+import LayoutNavbar from './_components/layout-navbar';
 
 export const metadata = {
   title: 'DataViz',

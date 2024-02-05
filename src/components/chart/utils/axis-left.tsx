@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/material';
-import { AxisBottom as VisxAxisBottom } from '@visx/axis';
+import { AxisLeft as VisxAxisLeft } from '@visx/axis';
 import { Group } from '@visx/group';
 import { PositionScale } from '@visx/shape/lib/types';
 
-interface AxisBottomProps {
+interface AxisLeftProps {
   top: number;
   left: number;
   scale: PositionScale;
@@ -11,18 +11,19 @@ interface AxisBottomProps {
 
 const strokeWidth = 1;
 
-export const AxisBottom = (props: AxisBottomProps) => {
+export const AxisLeft = ({ scale, top, left }: AxisLeftProps) => {
   const theme = useTheme();
 
   return (
     <Group>
-      <VisxAxisBottom
-        top={props.top}
-        left={props.left}
-        scale={props.scale}
+      <VisxAxisLeft
+        top={top}
+        left={left}
+        scale={scale}
         tickLabelProps={() => ({
-          textAnchor: 'middle',
-          // dy: '-0.25em',
+          textAnchor: 'end',
+          dx: '-0.25em',
+          dy: '0.25em',
           fontSize: 12,
           fill: theme.palette.text.primary,
         })}

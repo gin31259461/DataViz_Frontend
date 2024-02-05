@@ -4,7 +4,11 @@ import BarGraph, {
   BarGraphDataInstance,
   BarGraphMode,
 } from '@/components/chart/bar-graph';
-import { Button, Container } from '@mui/material';
+import CircleGraph, {
+  CircleGraphDataInstance,
+  CircleGraphMode,
+} from '@/components/chart/circle-graph';
+import { Box, Button, Container, styled } from '@mui/material';
 import { useState } from 'react';
 
 const data: BarGraphDataInstance[] = [
@@ -13,31 +17,60 @@ const data: BarGraphDataInstance[] = [
   { x: 'test3', group: { '1': 40, '2': 50, '3': 60 } },
 ];
 
+const data2: CircleGraphDataInstance[] = [
+  { label: 'test1', value: 10, name: 'test' },
+  { label: 'test2', value: 20, name: 'test' },
+  { label: 'test3', value: 30, name: 'test' },
+];
+
+const StyledBox = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 600,
+});
+
 export default function TestPage() {
-  const [mode, setMode] = useState<BarGraphMode>('stack');
+  const [barMode, setBarMode] = useState<BarGraphMode>('stack');
+  const [circleMode, setCircleMode] = useState<CircleGraphMode>('pie');
 
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 600,
-      }}
-    >
-      <div>
-        <BarGraph width={500} height={300} data={data} mode={mode} />
-      </div>
-      <div>
-        <Button
-          color="info"
-          onClick={() =>
-            setMode((prev) => (prev == 'group' ? 'stack' : 'group'))
-          }
-        >
-          {mode}
-        </Button>
-      </div>
+    <Container>
+      <StyledBox>
+        <div>
+          <BarGraph width={500} height={300} data={data} mode={barMode} />
+        </div>
+        <div>
+          <Button
+            color="info"
+            onClick={() =>
+              setBarMode((prev) => (prev == 'group' ? 'stack' : 'group'))
+            }
+          >
+            {barMode}
+          </Button>
+        </div>
+      </StyledBox>
+      <StyledBox>
+        <div>
+          <CircleGraph
+            width={500}
+            height={500}
+            data={data2}
+            mode={circleMode}
+          />
+        </div>
+        <div>
+          <Button
+            color="info"
+            onClick={() =>
+              setCircleMode((prev) => (prev == 'pie' ? 'donut' : 'pie'))
+            }
+          >
+            {circleMode}
+          </Button>
+        </div>
+      </StyledBox>
     </Container>
   );
 }

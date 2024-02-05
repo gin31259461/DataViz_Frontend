@@ -1,8 +1,8 @@
-import Footer from '@/app/footer';
+import Footer from '@/app/_components/footer';
 import { colorTokens } from '@/utils/color-tokens';
 import { Box, Container, Divider, Grid, Typography } from '@mui/material';
-import Gallery from './gallery';
-import TypingText from './typing-text';
+import { Gallery } from './_components/gallery';
+import TypingText from './_components/typing-text';
 
 export default function HomePage() {
   const color = colorTokens('dark');
@@ -63,7 +63,7 @@ export default function HomePage() {
               textAlign: 'center',
             }}
           >
-            Chart Library
+            Chart gallery
           </Typography>
           <Gallery />
         </div>

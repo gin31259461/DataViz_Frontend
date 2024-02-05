@@ -5,7 +5,7 @@ import { DialogActions, IconButton } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { useRouter } from 'next/navigation';
-import Login from '../../login';
+import Login from '../../_components/login';
 
 const LoginModal = () => {
   const router = useRouter();

@@ -30,10 +30,10 @@ interface CircleGraphProps {
   events?: boolean;
   animate?: boolean;
   margin?: {
-    top: number;
-    bottom: number;
-    left: number;
-    right: number;
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
   };
 }
 
@@ -64,6 +64,11 @@ export default function CircleGraph({
   } = useTooltip<CircleGraphTooltipData>();
 
   if (width === undefined || height === undefined) return null;
+
+  if (!margin.left) margin.left = defaultMargin.left;
+  if (!margin.right) margin.right = defaultMargin.right;
+  if (!margin.top) margin.top = defaultMargin.top;
+  if (!margin.bottom) margin.bottom = defaultMargin.bottom;
 
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;

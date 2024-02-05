@@ -6,25 +6,25 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 
-interface ConfirmModalProps {
+type ConfirmModalProps = {
   open: boolean;
   title: string;
-  children: React.ReactNode;
   onClose: () => void;
   onConfirm: () => Promise<void>;
   onCancel?: () => void;
-}
+  children: React.ReactNode;
+};
 
-export const ConfirmModal: React.FC<ConfirmModalProps> = ({
+export const ConfirmModal = ({
   onConfirm,
   onCancel,
   open,
   title,
   children,
   onClose,
-}) => {
+}: ConfirmModalProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleClose = () => {
@@ -36,6 +36,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     handleClose();
     setLoading(false);
   };
+
   const handleCancel = () => {
     if (onCancel) {
       onCancel();

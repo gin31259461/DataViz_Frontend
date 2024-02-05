@@ -117,7 +117,9 @@ export default function LayoutNavbar() {
       <ConfirmModal
         open={signOutModalOpen}
         onClose={() => setSignOutModalOpen(false)}
-        onConfirm={async () => await signOut()}
+        onConfirm={async () => {
+          signOut({ callbackUrl: '/' });
+        }}
         title="Logout"
       >
         Are you sure to logout?

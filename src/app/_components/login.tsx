@@ -16,7 +16,7 @@ export default function Login() {
     theme.palette.mode === 'dark' ? 'contained' : 'outlined';
 
   const handleSignIn = (provider: string) => {
-    signIn(provider);
+    signIn(provider, { callbackUrl: '/management/data' });
   };
 
   useEffect(() => {

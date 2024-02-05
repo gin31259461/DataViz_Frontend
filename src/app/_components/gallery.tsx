@@ -1,9 +1,13 @@
 'use client';
 
+import AreaGraph, {
+  AreaGraphDataInstance,
+} from '@/components/chart/area-graph';
 import BarGraph, { BarGraphDataInstance } from '@/components/chart/bar-graph';
 import CircleGraph, {
   CircleGraphDataInstance,
 } from '@/components/chart/circle-graph';
+import WordCloud from '@/components/chart/word-cloud';
 import {
   Card,
   CardActionArea,
@@ -25,6 +29,24 @@ const circleGraphData: CircleGraphDataInstance[] = [
   { label: '台中市', value: 240 },
   { label: '新北市', value: 150 },
 ];
+
+const areaGraphData: AreaGraphDataInstance[] = [
+  { date: '2023/1/1', value: 10 },
+  { date: '2023/1/2', value: 20 },
+  { date: '2023/1/3', value: 30 },
+  { date: '2023/1/4', value: 60 },
+  { date: '2023/1/5', value: 20 },
+  { date: '2023/1/6', value: 30 },
+  { date: '2023/1/7', value: 40 },
+  { date: '2023/1/8', value: 20 },
+  { date: '2023/1/9', value: 100 },
+  { date: '2023/1/10', value: 50 },
+  { date: '2023/1/11', value: 20 },
+  { date: '2023/1/12', value: 30 },
+];
+
+const wordData =
+  'WKE Web Knowledge Extraction Lab. WKE focuses on developing Web information systems (WIS) for various domain requirements. By integrating systems and modules about web/text mining methods developed in WKE, WIS can be enhanced to advanced intelligent information systems';
 
 type GalleryCardProps = {
   title: string;
@@ -68,15 +90,20 @@ const GalleryCard = ({
 
 export const Gallery = () => {
   const height = 300;
-  const cardRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     if (cardRef.current) {
       const element = cardRef.current as HTMLDivElement;
       setWidth(element.offsetWidth);
+
+      window.addEventListener('resize', () => {
+        const element = cardRef.current as HTMLDivElement;
+        setWidth(element.offsetWidth);
+      });
     }
-  }, [cardRef]);
+  }, []);
 
   return (
     <Grid container spacing={2} mt={2}>
@@ -139,6 +166,25 @@ export const Gallery = () => {
           data={circleGraphData}
           mode="donut"
         />
+      </GalleryCard>
+      <GalleryCard title="Line graph" childrenMinHeight={height}>
+        <AreaGraph
+          width={width}
+          height={height}
+          data={areaGraphData}
+          mode="line"
+        />
+      </GalleryCard>
+      <GalleryCard title="Area graph" childrenMinHeight={height}>
+        <AreaGraph
+          width={width}
+          height={height}
+          data={areaGraphData}
+          mode="area"
+        />
+      </GalleryCard>
+      <GalleryCard title="Word cloud" childrenMinHeight={height}>
+        <WordCloud width={width} height={height} data={wordData} />
       </GalleryCard>
     </Grid>
   );

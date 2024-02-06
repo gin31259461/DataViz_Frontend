@@ -6,17 +6,13 @@ import RacingBarChartEngine, {
   RacingBarChartMapping,
 } from '@/components/chart-engine/racing-bar-chart-engine';
 import Loader from '@/components/loading/loader';
-import { NavbarContext } from '@/components/navbar/navbar.context';
 import { DataArgsProps } from '@/hooks/store/use-project-store';
 import { ArgSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
 import { Container, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
-import { useContext } from 'react';
 
 function ProjectPage() {
-  const navbar = useContext(NavbarContext);
-
   const currentIndex = 0;
   const projectId = parseInt(useParams().id as string);
   const observations = trpc.project.getProjectObservations.useQuery(projectId);

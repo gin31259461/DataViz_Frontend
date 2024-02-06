@@ -91,6 +91,7 @@ function RacingBarChartEngine(props: {
             fallback={<LoadingWithTitle title="Generating racing bar chart" />}
           >
             <RacingBarChart
+              {...props.args}
               keyframes={keyframes}
               numOfBars={props.args.numOfBars}
               width={chartContainerOffset.width}

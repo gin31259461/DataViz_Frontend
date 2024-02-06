@@ -7,8 +7,7 @@ type LinePathProps = {
   y: (d: AreaGraphDataInstance) => number;
   stroke: string;
   strokeWidth?: number;
-  curve: any;
-};
+} & Pick<React.ComponentProps<typeof VisxLinePath>, 'curve'>;
 
 export const LinePath = ({
   data,

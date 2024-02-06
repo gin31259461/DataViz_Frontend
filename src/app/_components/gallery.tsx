@@ -14,6 +14,7 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import { RefObject, useEffect, useRef, useState } from 'react';
@@ -55,48 +56,17 @@ type GalleryCardProps = {
   children: React.ReactNode;
 };
 
-const GalleryCard = ({
-  title,
-  children,
-  childrenMinHeight,
-  refObject,
-}: GalleryCardProps) => {
-  return (
-    <Grid component={'div'} item xs={12} sm={6} md={4}>
-      <Card>
-        <CardActionArea>
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              sx={{ height: 5 }}
-            >
-              {title}
-            </Typography>
-          </CardContent>
-          <CardMedia
-            component="div"
-            ref={refObject}
-            sx={{ minHeight: childrenMinHeight, margin: 2 }}
-          >
-            {children}
-          </CardMedia>
-        </CardActionArea>
-      </Card>
-    </Grid>
-  );
-};
-
 export const Gallery = () => {
   const height = 300;
   const cardRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState<number | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (cardRef.current) {
       const element = cardRef.current as HTMLDivElement;
       setWidth(element.offsetWidth);
+      setLoading(false);
 
       window.addEventListener('resize', () => {
         const element = cardRef.current as HTMLDivElement;
@@ -104,6 +74,43 @@ export const Gallery = () => {
       });
     }
   }, []);
+
+  const GalleryCard = ({
+    title,
+    children,
+    childrenMinHeight,
+    refObject,
+  }: GalleryCardProps) => {
+    return (
+      <Grid component={'div'} item xs={12} sm={6} md={4}>
+        <Card>
+          <CardActionArea>
+            <CardContent>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ height: 5 }}
+              >
+                {title}
+              </Typography>
+            </CardContent>
+            <CardMedia
+              component="div"
+              ref={refObject}
+              sx={{ minHeight: childrenMinHeight, margin: 2 }}
+            >
+              {loading ? (
+                <Skeleton variant="rounded" height={childrenMinHeight} />
+              ) : (
+                children
+              )}
+            </CardMedia>
+          </CardActionArea>
+        </Card>
+      </Grid>
+    );
+  };
 
   return (
     <Grid container spacing={2} mt={2}>

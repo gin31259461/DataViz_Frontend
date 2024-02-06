@@ -5,6 +5,7 @@ const ProjectZodSchema = z.object({
   id: z.number(),
   title: z.string(),
   des: z.string(),
+  type: z.string(),
   path: z.string(),
   since: z.date(),
   lastModifiedDT: z.date(),
@@ -28,12 +29,13 @@ export const projectRouter = createTRPCRouter({
         title: z.string(),
         des: z.string(),
         dataId: z.number(),
+        type: z.string(),
         args: ArgZodSchema,
       }),
     )
     .mutation(async ({ input, ctx }) => {
       await ctx.prismaWriter
-        .$executeRaw`exec xp_insertProjectClass ${input.mid}, ${input.title}, ${input.des}`;
+        .$executeRaw`exec xp_insertProjectClass ${input.mid}, ${input.title}, ${input.des}, ${input.type}`;
       const result: { last: number }[] = await ctx.prismaWriter
         .$queryRaw`select IDENT_CURRENT('Class') as last`;
       const currentCID = result[0].last;

@@ -30,7 +30,8 @@ BEGIN
       C.EDes as des,
       C.IDPath as path,
       C.Since as since,
-      C.LastModifiedDT as lastModifiedDT
+      C.LastModifiedDT as lastModifiedDT,
+	  C.CDes as type
     FROM [dbo].[Inheritance] I, [dbo].[Class] C
     WHERE I.PCID = (
         SELECT CID

@@ -27,14 +27,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useTransition,
-} from 'react';
-import { getProjects } from './action';
+import { useCallback, useEffect, useState, useTransition } from 'react';
+import { getProjects } from '../action';
 import ProjectCard from './project-card';
 import ContextMenu from './project-context-menu';
 import ProjectList from './project-list';
@@ -42,7 +36,7 @@ import ProjectList from './project-list';
 type ViewMode = 'grid' | 'list';
 type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 
-export default function ProjectManager() {
+export default function ProjectContainer() {
   const theme = useTheme();
   const router = useRouter();
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -50,23 +44,13 @@ export default function ProjectManager() {
   const [sortTarget, setSortTarget] = useState<SortTarget>('name');
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
   const deleteProject = trpc.project.deleteProject.useMutation();
-  const [projects, setProjects] = useState<ProjectSchema[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isPending, startFetchProjects] = useTransition();
+  const [projects, setProjects] = useState<ProjectSchema[]>([]);
+  const [isPending, startFetchProject] = useTransition();
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);
   };
-
-  useEffect(() => {
-    if (isLoading) {
-      startFetchProjects(async () => {
-        const projects = await getProjects();
-        setIsLoading(false);
-        setProjects(projects);
-      });
-    }
-  }, [isLoading]);
 
   const onDelete = useCallback(
     async (cid: number) => {
@@ -76,96 +60,26 @@ export default function ProjectManager() {
     [deleteProject],
   );
 
-  const ProjectCards = useMemo(() => {
-    return (
-      <>
-        {projects.map((project) => (
-          <Grid key={project.id} item xs={12} sm={6} md={4}>
-            <ContextMenu
-              onDelete={async () => await onDelete(project.id)}
-              path="/management/project/racing-chart"
-              id={project.id}
-            >
-              <div onMouseDown={() => setActiveID(project.id)}>
-                <ProjectCard
-                  active={activeID === project.id ? true : false}
-                  project={project}
-                />
-              </div>
-            </ContextMenu>
-          </Grid>
-        ))}
-      </>
-    );
-  }, [projects, activeID, onDelete]);
-
-  const ProjectItems = useMemo(() => {
-    return (
-      <>
-        {projects.map((project) => {
-          return (
-            <TableRow
-              key={project.id}
-              sx={{
-                '&:hover': {
-                  backgroundColor:
-                    activeID === project.id
-                      ? 'none'
-                      : theme.palette.action.hover,
-                },
-                backgroundColor:
-                  activeID === project.id
-                    ? theme.palette.info.main + convertOpacityToHexString(15)
-                    : 'none',
-              }}
-            >
-              <TableCell padding="none">
-                <ContextMenu
-                  onDelete={async () => await onDelete(project.id)}
-                  id={project.id}
-                >
-                  <div
-                    style={{ height: 50, padding: 16 }}
-                    onMouseDown={() => setActiveID(project.id)}
-                  >
-                    {project.title}
-                  </div>
-                </ContextMenu>
-              </TableCell>
-              <TableCell padding="none">
-                <ContextMenu
-                  onDelete={async () => await onDelete(project.id)}
-                  id={project.id}
-                >
-                  <div
-                    style={{ height: 50, padding: 16 }}
-                    onMouseDown={() => setActiveID(project.id)}
-                  >
-                    {project.lastModifiedDT.toDateString()}
-                  </div>
-                </ContextMenu>
-              </TableCell>
-            </TableRow>
-          );
-        })}
-      </>
-    );
-  }, [projects, activeID, onDelete, theme.palette]);
+  useEffect(() => {
+    if (isLoading) {
+      startFetchProject(async () => {
+        const projects = await getProjects();
+        setProjects(projects);
+        setIsLoading(false);
+      });
+    }
+  }, [isLoading]);
 
   return (
     <Box padding={2}>
       <Box
         sx={{
-          position: 'sticky',
-          backdropFilter: 'blur(3px)',
-          top: 60,
-          zIndex: 10,
-          height: 210,
-          backgroundColor:
-            theme.palette.mode === 'dark'
-              ? 'rgb(20, 27, 45, 0.7)'
-              : 'rgb(252, 252, 252, 0.8)',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: theme.palette.background.default,
           borderBottom: `${useSplitLineStyle()}`,
+          paddingBottom: 2,
+          gap: 2,
         }}
       >
         <Grid container gap={2}>
@@ -210,9 +124,9 @@ export default function ProjectManager() {
 
         <Grid
           container
+          height={50}
           justifyContent="flex-end"
           alignItems={'flex-end'}
-          marginTop={3}
         >
           <div style={{ marginRight: 10 }}>
             <FormControl variant="standard">
@@ -260,10 +174,80 @@ export default function ProjectManager() {
       <div>
         {viewMode === 'grid' ? (
           <Grid container spacing={2} mt={2}>
-            {ProjectCards}
+            {projects.map((project) => {
+              let pathname: string = '';
+              if (project.type === 'racing-chart') {
+                pathname = '/racing-chart';
+              }
+
+              return (
+                <Grid key={project.id} item xs={12} sm={6} md={4}>
+                  <ContextMenu
+                    onDelete={async () => await onDelete(project.id)}
+                    path={`/management/project${pathname}`}
+                    id={project.id}
+                  >
+                    <div onMouseDown={() => setActiveID(project.id)}>
+                      <ProjectCard
+                        active={activeID === project.id ? true : false}
+                        project={project}
+                      />
+                    </div>
+                  </ContextMenu>
+                </Grid>
+              );
+            })}
           </Grid>
         ) : (
-          <ProjectList>{ProjectItems}</ProjectList>
+          <ProjectList>
+            {projects.map((project) => {
+              return (
+                <TableRow
+                  key={project.id}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor:
+                        activeID === project.id
+                          ? 'none'
+                          : theme.palette.action.hover,
+                    },
+                    backgroundColor:
+                      activeID === project.id
+                        ? theme.palette.info.main +
+                          convertOpacityToHexString(15)
+                        : 'none',
+                  }}
+                >
+                  <TableCell padding="none">
+                    <ContextMenu
+                      onDelete={async () => await onDelete(project.id)}
+                      id={project.id}
+                    >
+                      <div
+                        style={{ height: 50, padding: 16 }}
+                        onMouseDown={() => setActiveID(project.id)}
+                      >
+                        {project.title}
+                      </div>
+                    </ContextMenu>
+                  </TableCell>
+                  <TableCell padding="none">
+                    <ContextMenu
+                      onDelete={async () => await onDelete(project.id)}
+                      id={project.id}
+                    >
+                      <div
+                        style={{ height: 50, padding: 16 }}
+                        onMouseDown={() => setActiveID(project.id)}
+                      >
+                        {project.lastModifiedDT.toDateString()}
+                      </div>
+                    </ContextMenu>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </ProjectList>
         )}
       </div>
     </Box>

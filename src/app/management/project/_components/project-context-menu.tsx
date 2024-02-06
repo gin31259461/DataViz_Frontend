@@ -1,7 +1,7 @@
 import { Menu, MenuItem, PopoverPosition } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ConfirmModal } from '../../../components/modal/confirm-modal';
+import { ConfirmModal } from '../../../../components/modal/confirm-modal';
 
 interface ContextMenuProps {
   id: number;

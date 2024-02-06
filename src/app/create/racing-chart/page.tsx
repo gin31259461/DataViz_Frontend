@@ -58,6 +58,7 @@ function CreateRacingBarChartPage() {
         title: title,
         des: des,
         mid: mid,
+        type: 'racing-chart',
         dataId: selectedDataOID,
         args: {
           dataId: selectedDataOID,

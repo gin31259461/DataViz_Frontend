@@ -1,10 +1,10 @@
 import ManagementDashBoard from '../management-dashboard';
-import ProjectManager from './project-manager';
+import ProjectContainer from './_components/project-manager';
 
 export default async function ProjectPage() {
   return (
     <ManagementDashBoard>
-      <ProjectManager />
+      <ProjectContainer />
     </ManagementDashBoard>
   );
 }

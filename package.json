@@ -10,8 +10,8 @@
     "build": "next build",
     "lint": "next lint",
     "lint:fix": "eslint --ext .ts,.tsx,.js --fix ./src",
-    "db-push": "prisma db push",
-    "db-pull": "prisma db pull",
+    "db-push": "dotenv -e .env.local  prisma db push",
+    "db-pull": "dotenv -e .env.local prisma db pull",
     "db-gen": "prisma generate",
     "format": "prettier --write ./src/"
   },
@@ -67,6 +67,7 @@
     "@types/react": "18.2.39",
     "@types/react-dom": "18.0.11",
     "@types/react-table": "^7.7.17",
+    "dotenv-cli": "^7.3.0",
     "eslint": "8.34.0",
     "eslint-config-next": "13.4.1",
     "eslint-config-prettier": "^8.10.0",

@@ -3,6 +3,18 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 
+const DataZodSchema = z.object({
+  id: z.number(),
+  ownerID: z.nullable(z.number()),
+  name: z.nullable(z.string()),
+  description: z.nullable(z.string()),
+  since: z.nullable(z.string()),
+  lastModified: z.nullable(z.string()),
+  frequency: z.number(),
+});
+
+export type DataSchema = z.infer<typeof DataZodSchema>;
+
 export const dataObjectRouter = createTRPCRouter({
   getMemberDataCount: publicProcedure
     .input(z.number())
@@ -25,7 +37,7 @@ export const dataObjectRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const data = await ctx.prismaReader.vd_Data.findMany({
+      const data: DataSchema[] = await ctx.prismaReader.vd_Data.findMany({
         orderBy: {
           id: input.order as 'asc' | 'desc',
         },

@@ -1,6 +1,5 @@
 'use client';
 
-import LinearProgressPending from '@/components/loading/linear-progress-pending';
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
 import { colorTokens } from '@/utils/color-tokens';
@@ -8,11 +7,11 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
-  Box,
   Checkbox,
   Grid,
   IconButton,
   LinearProgress,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -57,7 +56,7 @@ interface DataPanelProps {
   flaskServer: string;
 }
 
-export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
+export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
   /** constants  */
   const mid = useUserStore((state) => state.mid);
   const counts = 10;
@@ -95,6 +94,7 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
     counts: counts,
     mid: mid,
   });
+
   const dataTable =
     trpc.dataObject.getTop100FromDataTable.useQuery(selectDataOID);
   const currentObjectId = trpc.dataObject.getCurrentObjectId.useQuery();
@@ -181,22 +181,12 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
           icon={<AddIcon />}
           onClick={() => setOpenNewDataDialog(true)}
         ></CardButton>
-        <Grid container marginTop={2} height={2}>
-          <Box sx={{ width: '100%' }}>
-            <LinearProgressPending
-              isPending={someDataObject.isFetching || someDataObject.isLoading}
-            />
-          </Box>
-        </Grid>
       </Grid>
 
       <Grid container padding={2}>
         <Table>
           <TableHead
             sx={{
-              position: 'sticky',
-              top: 60,
-              zIndex: 5,
               backgroundColor: theme.palette.background.default,
             }}
           >
@@ -247,59 +237,83 @@ export const DataPanel: React.FC<DataPanelProps> = ({ flaskServer }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {someDataObject.data?.map((dataSet) => (
-              <TableRow
-                key={dataSet.id}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                }}
-              >
-                <TableCell>{dataSet.id}</TableCell>
-                <TableCell>{dataSet.name}</TableCell>
-                <TableCell>{dataSet.lastModified}</TableCell>
-                <TableCell align="right">
-                  <Checkbox
-                    checked={
-                      deleteDataOID.findIndex((value) => value == dataSet.id) >=
-                      0
-                    }
-                    color="info"
-                    onChange={(e, checked) => {
-                      if (checked) {
-                        setDeleteDataOID([...deleteDataOID, dataSet.id]);
-                      } else {
-                        setDeleteDataOID(
-                          deleteDataOID.filter(
-                            (v, i) =>
-                              i !=
-                              deleteDataOID.findIndex(
-                                (value) => value == dataSet.id,
-                              ),
-                          ),
-                        );
-                      }
+            {someDataObject.isLoading ||
+            someDataObject.isFetching ||
+            !someDataObject.data
+              ? new Array(counts).fill(0).map((_, i) => {
+                  return (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <Skeleton />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton />
+                      </TableCell>
+                      <TableCell
+                        sx={{ display: 'flex', justifyContent: 'right' }}
+                      >
+                        <Skeleton width={'40%'} />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              : someDataObject.data.map((dataSet) => (
+                  <TableRow
+                    key={dataSet.id}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor: theme.palette.action.hover,
+                      },
                     }}
-                  ></Checkbox>
-                  <Tooltip title={'Edit data'}>
-                    <IconButton onClick={() => {}}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={'View data'}>
-                    <IconButton
-                      onClick={() => {
-                        setSelectDataOID(dataSet.id);
-                        setOpenDialog(true);
-                      }}
-                    >
-                      <VisibilityIcon />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
+                  >
+                    <TableCell>{dataSet.id}</TableCell>
+                    <TableCell>{dataSet.name}</TableCell>
+                    <TableCell>{dataSet.lastModified}</TableCell>
+                    <TableCell align="right">
+                      <Checkbox
+                        checked={
+                          deleteDataOID.findIndex(
+                            (value) => value == dataSet.id,
+                          ) >= 0
+                        }
+                        color="info"
+                        onChange={(e, checked) => {
+                          if (checked) {
+                            setDeleteDataOID([...deleteDataOID, dataSet.id]);
+                          } else {
+                            setDeleteDataOID(
+                              deleteDataOID.filter(
+                                (v, i) =>
+                                  i !=
+                                  deleteDataOID.findIndex(
+                                    (value) => value == dataSet.id,
+                                  ),
+                              ),
+                            );
+                          }
+                        }}
+                      ></Checkbox>
+                      <Tooltip title={'Edit data'}>
+                        <IconButton onClick={() => {}}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title={'View data'}>
+                        <IconButton
+                          onClick={() => {
+                            setSelectDataOID(dataSet.id);
+                            setOpenDialog(true);
+                          }}
+                        >
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
           <TableFooter>
             <TableRow>

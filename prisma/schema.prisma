@@ -679,5 +679,4 @@ view vd_Data {
   since        String? @db.VarChar(30)
   lastModified String? @db.VarChar(30)
   frequency    Int
-  md5          Bytes?  @db.Binary(16)
 }

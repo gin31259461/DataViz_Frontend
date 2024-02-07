@@ -17,7 +17,7 @@ export default function ProjectList({ children }: ProjectListProps) {
 
   return (
     <Table sx={{ position: 'relative' }}>
-      <TableHead id="project-list-table">
+      <TableHead>
         <TableRow>
           <CustomTableCell
             sx={{
@@ -40,7 +40,4 @@ export default function ProjectList({ children }: ProjectListProps) {
   );
 }
 
-const CustomTableCell = styled(TableCell)({
-  position: 'sticky',
-  top: 270,
-});
+const CustomTableCell = styled(TableCell)({});

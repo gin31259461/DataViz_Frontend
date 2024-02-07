@@ -10,11 +10,16 @@ import {
 } from '@mui/material';
 
 interface ProjectCardProps {
-  project: ProjectSchema;
-  active: boolean;
+  project?: ProjectSchema;
+  active?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function ProjectCard({ project, active }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  active = false,
+  children,
+}: ProjectCardProps) {
   const theme = useTheme();
 
   return (
@@ -28,14 +33,14 @@ export default function ProjectCard({ project, active }: ProjectCardProps) {
       <CardActionArea sx={{ height: 145 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {project.title}
+            {project ? project.title : children}
           </Typography>
           <Typography
             sx={{ height: 100, textOverflow: 'ellipsis' }}
             variant="body2"
             color="text.secondary"
           >
-            {project.des}
+            {project ? project.des : children}
           </Typography>
         </CardContent>
       </CardActionArea>

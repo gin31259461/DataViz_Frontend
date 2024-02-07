@@ -1,11 +1,11 @@
 import { env } from '@/env.mjs';
 import ManagementDashBoard from '../management-dashboard';
-import { DataPanel } from './data-panel';
+import { DataContainer } from './data-container';
 
 export default function DataPage() {
   return (
     <ManagementDashBoard>
-      <DataPanel flaskServer={env.FLASK_URL}></DataPanel>
+      <DataContainer flaskServer={env.FLASK_URL}></DataContainer>
     </ManagementDashBoard>
   );
 }

@@ -2,7 +2,6 @@
 
 import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
-import LinearProgressPending from '@/components/loading/linear-progress-pending';
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { ProjectSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
@@ -22,6 +21,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Skeleton,
   TableCell,
   TableRow,
   useTheme,
@@ -46,6 +46,7 @@ export default function ProjectContainer() {
   const deleteProject = trpc.project.deleteProject.useMutation();
   const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState<ProjectSchema[]>([]);
+
   const [isPending, startFetchProject] = useTransition();
 
   const handleSortChange = (event: SelectChangeEvent) => {
@@ -169,34 +170,42 @@ export default function ProjectContainer() {
         </Grid>
       </Box>
 
-      <LinearProgressPending isPending={isPending || isLoading} />
-
       <div>
         {viewMode === 'grid' ? (
           <Grid container spacing={2} mt={2}>
-            {projects.map((project) => {
-              let pathname: string = '';
-              if (project.type === 'racing-chart') {
-                pathname = '/racing-chart';
-              }
+            {isPending || isLoading
+              ? new Array(12).fill(0).map((_, i) => {
+                  return (
+                    <Grid key={i} item xs={12} sm={6} md={4}>
+                      <ProjectCard>
+                        <Skeleton />
+                      </ProjectCard>
+                    </Grid>
+                  );
+                })
+              : projects.map((project) => {
+                  let pathname: string = '';
+                  if (project.type === 'racing-chart') {
+                    pathname = '/racing-chart';
+                  }
 
-              return (
-                <Grid key={project.id} item xs={12} sm={6} md={4}>
-                  <ContextMenu
-                    onDelete={async () => await onDelete(project.id)}
-                    path={`/management/project${pathname}`}
-                    id={project.id}
-                  >
-                    <div onMouseDown={() => setActiveID(project.id)}>
-                      <ProjectCard
-                        active={activeID === project.id ? true : false}
-                        project={project}
-                      />
-                    </div>
-                  </ContextMenu>
-                </Grid>
-              );
-            })}
+                  return (
+                    <Grid key={project.id} item xs={12} sm={6} md={4}>
+                      <ContextMenu
+                        onDelete={async () => await onDelete(project.id)}
+                        path={`/management/project${pathname}`}
+                        id={project.id}
+                      >
+                        <div onMouseDown={() => setActiveID(project.id)}>
+                          <ProjectCard
+                            active={activeID === project.id ? true : false}
+                            project={project}
+                          />
+                        </div>
+                      </ContextMenu>
+                    </Grid>
+                  );
+                })}
           </Grid>
         ) : (
           <ProjectList>

@@ -56,47 +56,40 @@ interface DataPanelProps {
   flaskServer: string;
 }
 
+const counts = 10;
+
 export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
   /** constants  */
   const mid = useUserStore((state) => state.mid);
-  const counts = 10;
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
 
-  /** data state */
   const [selectDataOID, setSelectDataOID] = useState<number | undefined>(
     undefined,
   );
   const [deleteDataOID, setDeleteDataOID] = useState<number[]>([]);
 
-  /** page state */
   const [page, setPage] = useState(0);
-
-  /** order state */
   const [orderBy, setOrderBy] = useState('id');
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('desc');
-
-  /** dialog state */
   const [openDialog, setOpenDialog] = useState(false);
   const [openNewDataDialog, setOpenNewDataDialog] = useState(false);
-
-  /** post state */
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [message, setMessage] = useState('');
 
   const start = page * counts;
+
   const memberDataCount = trpc.dataObject.getMemberDataCount.useQuery(mid);
-  const someDataObject = trpc.dataObject.getSomeMemberData.useQuery({
+  const someDataObject = trpc.dataObject.getManyMemberData.useQuery({
     order: orderDirection,
     start: start + 1,
     counts: counts,
     mid: mid,
   });
-
   const dataTable =
-    trpc.dataObject.getTop100FromDataTable.useQuery(selectDataOID);
+    trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectDataOID);
   const currentObjectId = trpc.dataObject.getCurrentObjectId.useQuery();
   const postData = trpc.dataObject.postData.useMutation();
   const deleteData = trpc.dataObject.deleteData.useMutation({

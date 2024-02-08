@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 interface UserState {
-  mid: number;
+  mid: number | undefined;
   setMID: (mid: number) => void;
 }
 
 export const useUserStore = create<UserState>()((set) => ({
-  mid: 0,
+  mid: undefined,
   setMID: (mid: number) => set({ mid: mid }),
 }));

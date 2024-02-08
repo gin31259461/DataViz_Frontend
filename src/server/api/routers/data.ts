@@ -17,8 +17,10 @@ export type DataSchema = z.infer<typeof DataZodSchema>;
 
 export const dataObjectRouter = createTRPCRouter({
   getMemberDataCount: publicProcedure
-    .input(z.number())
+    .input(z.number().optional())
     .query(async ({ input, ctx }) => {
+      if (!input) return 0;
+
       const count = await ctx.prismaReader.object.count({
         where: {
           OwnerMID: input,
@@ -27,16 +29,18 @@ export const dataObjectRouter = createTRPCRouter({
       });
       return count;
     }),
-  getSomeMemberData: publicProcedure
+  getManyMemberData: publicProcedure
     .input(
       z.object({
         order: z.string(),
         start: z.number(),
         counts: z.number(),
-        mid: z.number(),
+        mid: z.number().optional(),
       }),
     )
     .query(async ({ input, ctx }) => {
+      if (!input) return [];
+
       const data: DataSchema[] = await ctx.prismaReader.vd_Data.findMany({
         orderBy: {
           id: input.order as 'asc' | 'desc',
@@ -49,7 +53,7 @@ export const dataObjectRouter = createTRPCRouter({
       });
       return data;
     }),
-  getOneMemberData: publicProcedure
+  getFirstMemberData: publicProcedure
     .input(z.number().nullish())
     .query(async ({ input, ctx }) => {
       if (!input) return null;
@@ -62,8 +66,10 @@ export const dataObjectRouter = createTRPCRouter({
       return data;
     }),
   getAllMemberData: publicProcedure
-    .input(z.number())
+    .input(z.number().optional())
     .query(async ({ input, ctx }) => {
+      if (!input) return [];
+
       const result = await ctx.prismaReader.vd_Data.findMany({
         where: {
           ownerID: { equals: input },
@@ -71,7 +77,7 @@ export const dataObjectRouter = createTRPCRouter({
       });
       return result;
     }),
-  getTop100FromDataTable: publicProcedure
+  getTop100ContentFromDataTable: publicProcedure
     .input(z.number().nullish())
     .query(async ({ input, ctx }) => {
       if (!input) return [];
@@ -95,7 +101,7 @@ export const dataObjectRouter = createTRPCRouter({
       );
       return convertedData;
     }),
-  getRowsCountFromDataTable: publicProcedure
+  getCountFromDataTable: publicProcedure
     .input(z.number().nullish())
     .query(async ({ input, ctx }) => {
       if (!input) return 0;
@@ -113,12 +119,14 @@ export const dataObjectRouter = createTRPCRouter({
   postData: publicProcedure
     .input(
       z.object({
-        mid: z.number(),
+        mid: z.number().optional(),
         name: z.string(),
         des: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      if (!input.mid) return;
+
       await ctx.prismaWriter.object.create({
         data: {
           Type: 6,
@@ -136,11 +144,13 @@ export const dataObjectRouter = createTRPCRouter({
   deleteData: publicProcedure
     .input(
       z.object({
-        mid: z.number(),
+        mid: z.number().optional(),
         oidS: z.array(z.number()),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      if (!input.mid) return;
+
       const dataUsedCount = await ctx.prismaReader.oRel.count({
         where: {
           OID2: {

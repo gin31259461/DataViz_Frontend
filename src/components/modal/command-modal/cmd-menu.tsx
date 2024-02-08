@@ -102,14 +102,14 @@ export const ProjectGroup = () => {
 
 export const SearchProjectPage = () => {
   const mid = useUserStore((state) => state.mid);
-  const allProjects = trpc.project.getAllProjects.useQuery(mid);
+  const projects = trpc.project.getAllProject.useQuery(mid);
   const ControlCommandModal = useContext(CommandModalContext);
   const router = useRouter();
 
   return (
     <Command.Group>
-      {allProjects.data &&
-        allProjects.data.map((project) => {
+      {projects.data &&
+        projects.data.map((project) => {
           return (
             <CommandModalItem
               key={project.id}

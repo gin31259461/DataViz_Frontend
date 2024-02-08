@@ -7,8 +7,8 @@ const ProjectZodSchema = z.object({
   des: z.string(),
   type: z.string(),
   path: z.string(),
-  since: z.date(),
-  lastModifiedDT: z.date(),
+  since: z.string(),
+  lastModifiedDT: z.string(),
 });
 
 const ArgZodSchema = z.object({
@@ -64,8 +64,10 @@ export const projectRouter = createTRPCRouter({
       });
     }),
   getLastProjectId: publicProcedure
-    .input(z.number())
+    .input(z.number().optional())
     .query(async ({ input, ctx }) => {
+      if (!input) return null;
+
       const member = await ctx.prismaReader.member.findFirst({
         select: {
           Account: true,
@@ -84,9 +86,13 @@ export const projectRouter = createTRPCRouter({
 
       return null;
     }),
-  getAllProjects: publicProcedure
-    .input(z.number())
+  getAllProject: publicProcedure
+    .input(z.number().optional())
     .query(async ({ input, ctx }) => {
+      let data: ProjectSchema[] = [];
+
+      if (!input) return data;
+
       const member = await ctx.prismaReader.member.findFirst({
         select: {
           Account: true,
@@ -98,12 +104,10 @@ export const projectRouter = createTRPCRouter({
 
       if (member) {
         const sqlStr = `select * from vd_project_${member.Account} order by id desc`;
-        const data: ProjectSchema[] = await ctx.prismaReader
-          .$queryRaw`exec sp_executesql ${sqlStr}`;
-        return data;
+        data = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
       }
 
-      return null;
+      return data;
     }),
   getProjectObservations: publicProcedure
     .input(z.number())

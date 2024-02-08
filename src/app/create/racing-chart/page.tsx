@@ -53,7 +53,7 @@ function CreateRacingBarChartPage() {
   };
 
   const onConfirm = async () => {
-    if (selectedDataOID) {
+    if (selectedDataOID && mid) {
       await createArg.mutateAsync({
         title: title,
         des: des,

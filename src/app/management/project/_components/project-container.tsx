@@ -3,7 +3,6 @@
 import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
 import { useSplitLineStyle } from '@/hooks/use-styles';
-import { ProjectSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
 import convertOpacityToHexString from '@/utils/function';
 import AddIcon from '@mui/icons-material/AddOutlined';
@@ -26,9 +25,9 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState, useTransition } from 'react';
-import { getProjects } from '../action';
+import { useCallback, useState } from 'react';
 import ProjectCard from './project-card';
 import ContextMenu from './project-context-menu';
 import ProjectList from './project-list';
@@ -39,15 +38,17 @@ type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 export default function ProjectContainer() {
   const theme = useTheme();
   const router = useRouter();
+  const session = useSession();
+
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [activeID, setActiveID] = useState<number | null>(null);
   const [sortTarget, setSortTarget] = useState<SortTarget>('name');
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
-  const deleteProject = trpc.project.deleteProject.useMutation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [projects, setProjects] = useState<ProjectSchema[]>([]);
 
-  const [isPending, startFetchProject] = useTransition();
+  const deleteProject = trpc.project.deleteProject.useMutation();
+  const projects = trpc.project.getAllProject.useQuery(
+    session.data ? parseInt(session.data.user.id) : undefined,
+  );
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);
@@ -56,20 +57,10 @@ export default function ProjectContainer() {
   const onDelete = useCallback(
     async (cid: number) => {
       await deleteProject.mutateAsync(cid);
-      setIsLoading(true);
+      await projects.refetch();
     },
-    [deleteProject],
+    [deleteProject, projects],
   );
-
-  useEffect(() => {
-    if (isLoading) {
-      startFetchProject(async () => {
-        const projects = await getProjects();
-        setProjects(projects);
-        setIsLoading(false);
-      });
-    }
-  }, [isLoading]);
 
   return (
     <Box padding={2}>
@@ -173,7 +164,7 @@ export default function ProjectContainer() {
       <div>
         {viewMode === 'grid' ? (
           <Grid container spacing={2} mt={2}>
-            {isPending || isLoading
+            {projects.isLoading || projects.isFetching
               ? new Array(12).fill(0).map((_, i) => {
                   return (
                     <Grid key={i} item xs={12} sm={6} md={4}>
@@ -183,7 +174,8 @@ export default function ProjectContainer() {
                     </Grid>
                   );
                 })
-              : projects.map((project) => {
+              : projects.data &&
+                projects.data.map((project) => {
                   let pathname: string = '';
                   if (project.type === 'racing-chart') {
                     pathname = '/racing-chart';
@@ -209,53 +201,54 @@ export default function ProjectContainer() {
           </Grid>
         ) : (
           <ProjectList>
-            {projects.map((project) => {
-              return (
-                <TableRow
-                  key={project.id}
-                  sx={{
-                    '&:hover': {
+            {projects.data &&
+              projects.data.map((project) => {
+                return (
+                  <TableRow
+                    key={project.id}
+                    sx={{
+                      '&:hover': {
+                        backgroundColor:
+                          activeID === project.id
+                            ? 'none'
+                            : theme.palette.action.hover,
+                      },
                       backgroundColor:
                         activeID === project.id
-                          ? 'none'
-                          : theme.palette.action.hover,
-                    },
-                    backgroundColor:
-                      activeID === project.id
-                        ? theme.palette.info.main +
-                          convertOpacityToHexString(15)
-                        : 'none',
-                  }}
-                >
-                  <TableCell padding="none">
-                    <ContextMenu
-                      onDelete={async () => await onDelete(project.id)}
-                      id={project.id}
-                    >
-                      <div
-                        style={{ height: 50, padding: 16 }}
-                        onMouseDown={() => setActiveID(project.id)}
+                          ? theme.palette.info.main +
+                            convertOpacityToHexString(15)
+                          : 'none',
+                    }}
+                  >
+                    <TableCell padding="none">
+                      <ContextMenu
+                        onDelete={async () => await onDelete(project.id)}
+                        id={project.id}
                       >
-                        {project.title}
-                      </div>
-                    </ContextMenu>
-                  </TableCell>
-                  <TableCell padding="none">
-                    <ContextMenu
-                      onDelete={async () => await onDelete(project.id)}
-                      id={project.id}
-                    >
-                      <div
-                        style={{ height: 50, padding: 16 }}
-                        onMouseDown={() => setActiveID(project.id)}
+                        <div
+                          style={{ height: 50, padding: 16 }}
+                          onMouseDown={() => setActiveID(project.id)}
+                        >
+                          {project.title}
+                        </div>
+                      </ContextMenu>
+                    </TableCell>
+                    <TableCell padding="none">
+                      <ContextMenu
+                        onDelete={async () => await onDelete(project.id)}
+                        id={project.id}
                       >
-                        {project.lastModifiedDT.toDateString()}
-                      </div>
-                    </ContextMenu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                        <div
+                          style={{ height: 50, padding: 16 }}
+                          onMouseDown={() => setActiveID(project.id)}
+                        >
+                          {new Date(project.lastModifiedDT).toDateString()}
+                        </div>
+                      </ContextMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </ProjectList>
         )}
       </div>

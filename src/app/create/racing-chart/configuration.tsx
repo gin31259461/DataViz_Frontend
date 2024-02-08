@@ -96,9 +96,9 @@ function Configuration() {
   const setDes = useProjectStore((state) => state.setDes);
   const setChartType = useProjectStore((state) => state.setChartType);
   const rowsCountFromDataTable =
-    trpc.dataObject.getRowsCountFromDataTable.useQuery(selectedDataOID);
+    trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
   const oneMemberData =
-    trpc.dataObject.getOneMemberData.useQuery(selectedDataOID);
+    trpc.dataObject.getFirstMemberData.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (!dataArgs) {

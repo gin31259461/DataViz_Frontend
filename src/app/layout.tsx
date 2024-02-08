@@ -4,7 +4,6 @@ import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
 import { getServerSession, Session } from 'next-auth';
-import Link from 'next/link';
 import { Provider } from '../components/provider';
 import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';

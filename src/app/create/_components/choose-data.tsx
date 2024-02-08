@@ -25,9 +25,9 @@ export default function ChooseData() {
   const clearProjectStore = useProjectStore((state) => state.clear);
 
   const top100FromDataTable =
-    trpc.dataObject.getTop100FromDataTable.useQuery(selectedDataOID);
+    trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectedDataOID);
   const rowsCountFromDataTable =
-    trpc.dataObject.getRowsCountFromDataTable.useQuery(selectedDataOID);
+    trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (top100FromDataTable.data && top100FromDataTable.data.length > 0) {

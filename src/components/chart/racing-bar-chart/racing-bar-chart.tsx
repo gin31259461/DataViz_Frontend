@@ -41,7 +41,7 @@ export interface AnimationStateProps {
 
 const RacingBarChart = forwardRef(function ForwardRacingBarChart(
   { numOfBars, width, height, margin, keyframes, onStart, onStop, barGap }: RacingBarChartProps,
-  ref,
+  ref
 ) {
   const theme = useTheme();
 
@@ -51,7 +51,7 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
     playing: false,
   });
 
-  const updateFrameRef = useRef<NodeJS.Timeout | null>(null);
+  const updateFrameRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // when replay, increment the key to rerender the chart.
   useEffect(() => {
     if (playing && !updateFrameRef.current) {
@@ -76,7 +76,7 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
 
   useImperativeHandle(ref, () => ({
     replay: () => {
-      clearTimeout(updateFrameRef.current as NodeJS.Timeout);
+      clearTimeout(updateFrameRef.current as ReturnType<typeof setTimeout>);
       updateFrameRef.current = null;
       setAnimation(({ animationKey, ...others }) => ({
         ...others,
@@ -146,7 +146,7 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
           .map((_, idx) => idx),
         range: [0, yMax],
       }),
-    [numOfBars, yMax],
+    [numOfBars, yMax]
   );
 
   const timeScale = useMemo(
@@ -157,7 +157,7 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
           .map((_, i) => i),
         range: [0, xMax],
       }),
-    [keyframes, xMax],
+    [keyframes, xMax]
   );
 
   const nameList = useMemo(() => {
@@ -206,7 +206,7 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
           </VisxText>
           <RacingAxisBottom
             onAnimationChange={(frameIdx) => {
-              setAnimation(({ animationKey, playing, ...others }) => ({
+              setAnimation(({ animationKey, ...others }) => ({
                 ...others,
                 frameIdx: frameIdx,
                 animationKey: animationKey,
@@ -214,7 +214,7 @@ const RacingBarChart = forwardRef(function ForwardRacingBarChart(
               }));
 
               setTimeout(() => {
-                setAnimation(({ animationKey, playing, ...others }) => ({
+                setAnimation(({ animationKey, ...others }) => ({
                   ...others,
                   frameIdx: frameIdx,
                   animationKey: animationKey,

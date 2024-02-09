@@ -1,8 +1,13 @@
 'use client';
 
+import { ReactNode } from 'react';
 import { NavbarContext, useNavbarContext } from './navbar.context';
 
-export const NavbarProvider: React.FC<{ children: React.ReactNode }> = (props) => {
+interface NavbarProviderProps {
+  children: ReactNode;
+}
+
+export const NavbarProvider = (props: NavbarProviderProps) => {
   const { ctx } = useNavbarContext();
 
   return <NavbarContext.Provider value={ctx}>{props.children}</NavbarContext.Provider>;

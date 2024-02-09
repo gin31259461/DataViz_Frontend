@@ -2,7 +2,9 @@ import { env } from '@/env.mjs';
 import { Prisma, PrismaClient } from '@prisma/client';
 
 declare global {
+  // eslint-disable-next-line no-var
   var prismaWriter: PrismaClient | undefined;
+  // eslint-disable-next-line no-var
   var prismaReader: PrismaClient | undefined;
 }
 

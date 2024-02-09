@@ -2,11 +2,12 @@
 
 import { ProjectSchema } from '@/server/api/routers/project';
 import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface ProjectCardProps {
   project?: ProjectSchema;
   active?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export default function ProjectCard({ project, active = false, children }: ProjectCardProps) {

@@ -2,20 +2,16 @@
 
 import { styled, useTheme } from '@mui/material';
 import { Command } from 'cmdk';
+import { ReactNode } from 'react';
 
 interface CommandModalItemProps {
-  children: React.ReactNode;
+  children: ReactNode;
   shortcut?: string;
   onSelect?: (value: string) => void;
   value?: string;
 }
 
-export const CommandModalItem: React.FC<CommandModalItemProps> = ({
-  children,
-  shortcut,
-  onSelect = () => {},
-  value,
-}) => {
+export const CommandModalItem = ({ children, shortcut, onSelect = () => {}, value }: CommandModalItemProps) => {
   const theme = useTheme();
 
   const StyledCommandItem = styled(Command.Item)({

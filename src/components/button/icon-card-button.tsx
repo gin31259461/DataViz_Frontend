@@ -1,9 +1,10 @@
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { Box, Card, CardActionArea, CardContent, Tooltip } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface IconCardButtonProps {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   onClick?: () => void;
 }
 export default function IconCardButton({ children, title, onClick }: IconCardButtonProps) {

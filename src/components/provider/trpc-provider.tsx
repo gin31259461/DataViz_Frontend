@@ -3,14 +3,14 @@
 import { trpc } from '@/server/trpc';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 interface TrpcProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
   httpBatchLink: string;
 }
 
-export const TrpcProvider: React.FC<TrpcProviderProps> = (props) => {
+export const TrpcProvider = (props: TrpcProviderProps) => {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -19,7 +19,7 @@ export const TrpcProvider: React.FC<TrpcProviderProps> = (props) => {
           url: props.httpBatchLink,
         }),
       ],
-    }),
+    })
   );
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>

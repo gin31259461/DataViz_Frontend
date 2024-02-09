@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { useState, useTransition } from 'react';
+import { ReactNode, useState } from 'react';
 
 type ConfirmModalProps = {
   open: boolean;
@@ -7,7 +7,7 @@ type ConfirmModalProps = {
   onClose: () => void;
   onConfirm: () => Promise<void>;
   onCancel?: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const ConfirmModal = ({ onConfirm, onCancel, open, title, children, onClose }: ConfirmModalProps) => {

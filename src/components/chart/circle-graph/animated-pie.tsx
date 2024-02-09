@@ -1,4 +1,5 @@
 import { PieArcDatum, ProvidedProps } from '@visx/shape/lib/shapes/Pie';
+import { MouseEvent as ReactMouseEvent } from 'react';
 import { animated, to, useTransition } from 'react-spring';
 
 // react-spring transition definitions
@@ -23,16 +24,16 @@ type AnimatedPieProps<Datum> = ProvidedProps<Datum> & {
   getColor: (d: PieArcDatum<Datum>) => string;
   onClickDatum: (d: PieArcDatum<Datum>) => void;
   onMouseMove: (
-    event: React.MouseEvent<SVGPathElement, MouseEvent>,
+    event: ReactMouseEvent<SVGPathElement, MouseEvent>,
     d: PieArcDatum<Datum>,
     cx: number,
-    cy: number,
+    cy: number
   ) => void;
   onMouseLeave: (
-    event: React.MouseEvent<SVGPathElement, MouseEvent>,
+    event: ReactMouseEvent<SVGPathElement, MouseEvent>,
     d: PieArcDatum<Datum>,
     cx: number,
-    cy: number,
+    cy: number
   ) => void;
   delay?: number;
 };
@@ -68,7 +69,7 @@ export function AnimatedPie<Datum>({
               ...arc,
               startAngle,
               endAngle,
-            }),
+            })
           )}
           fill={getColor(arc)}
           onClick={() => onClickDatum(arc)}

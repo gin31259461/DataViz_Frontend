@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface ShowDataModalProps {
   open: boolean;
@@ -7,7 +8,7 @@ interface ShowDataModalProps {
   title: string | null | undefined;
   description: string | null | undefined;
   dataInfo: string | null | undefined;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function ShowDataModal({ open, onClose, title, description, dataInfo, children }: ShowDataModalProps) {

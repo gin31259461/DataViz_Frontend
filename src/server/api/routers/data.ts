@@ -34,7 +34,7 @@ export const dataObjectRouter = createTRPCRouter({
         start: z.number(),
         counts: z.number(),
         mid: z.number().optional(),
-      }),
+      })
     )
     .query(async ({ input, ctx }) => {
       if (!input) return [];
@@ -75,7 +75,7 @@ export const dataObjectRouter = createTRPCRouter({
     if (!input) return [];
 
     const sqlStr = `SELECT TOP 100 * FROM [RawDB].[dbo].[D${input}]`;
-    const data: Object[] = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
+    const data: object[] = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
     const convertedData = data.map((obj) => bigIntToString(obj));
     return convertedData;
   }),
@@ -83,7 +83,7 @@ export const dataObjectRouter = createTRPCRouter({
     if (!input) return [];
 
     const sqlStr = `SELECT * FROM [RawDB].[dbo].[D${input}]`;
-    const data: Object[] = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
+    const data: object[] = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
     const convertedData: { [index: string]: any }[] = data.map<object>((obj) => bigIntToString(obj));
     return convertedData;
   }),
@@ -104,7 +104,7 @@ export const dataObjectRouter = createTRPCRouter({
         mid: z.number().optional(),
         name: z.string(),
         des: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       if (!input.mid) return;
@@ -128,7 +128,7 @@ export const dataObjectRouter = createTRPCRouter({
       z.object({
         mid: z.number().optional(),
         oidS: z.array(z.number()),
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       if (!input.mid) return;
@@ -141,7 +141,7 @@ export const dataObjectRouter = createTRPCRouter({
         },
       });
 
-      if (dataUsedCount == 0) {
+      if (dataUsedCount === 0) {
         await ctx.prismaWriter.data.deleteMany({
           where: {
             DID: {
@@ -159,7 +159,7 @@ export const dataObjectRouter = createTRPCRouter({
           },
         });
 
-        for (let oid of input.oidS) {
+        for (const oid of input.oidS) {
           const sqlStr = `drop table [RawDB].[dbo].[D${oid}]`;
           await ctx.prismaWriter.$executeRaw`exec sp_executesql ${sqlStr}`;
         }

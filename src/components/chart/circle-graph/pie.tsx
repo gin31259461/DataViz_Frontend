@@ -1,4 +1,5 @@
 import VisxPie, { ProvidedProps } from '@visx/shape/lib/shapes/Pie';
+import { ReactNode } from 'react';
 import { CircleGraphDataInstance } from '.';
 
 interface PieProps {
@@ -9,7 +10,7 @@ interface PieProps {
   innerRadius?: number;
   cornerRadius?: number;
   padAngle?: number;
-  children?: (provided: ProvidedProps<CircleGraphDataInstance>) => React.ReactNode;
+  children?: (provided: ProvidedProps<CircleGraphDataInstance>) => ReactNode;
 }
 
 export const Pie = ({

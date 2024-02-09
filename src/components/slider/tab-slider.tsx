@@ -1,22 +1,22 @@
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { Box, Paper, Slide, Tab, Tabs } from '@mui/material';
-import { useState } from 'react';
+import { ReactNode, SyntheticEvent, useState } from 'react';
 
 export type TabItem = {
   label: string;
-  content: React.ReactNode;
+  content: ReactNode;
 };
 
 interface TabProps {
   tabs: TabItem[];
 }
 
-const TabSlider: React.FC<TabProps> = ({ tabs }) => {
+const TabSlider = ({ tabs }: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'up' | 'down'>('left');
   const borderStyle = useSplitLineStyle();
 
-  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChangeTab = (event: SyntheticEvent, newValue: number) => {
     if (activeTab > newValue) setSlideDirection('right');
     else if (activeTab < newValue) setSlideDirection('left');
     setActiveTab(newValue);
@@ -52,7 +52,7 @@ const TabSlider: React.FC<TabProps> = ({ tabs }) => {
               overflow: 'hidden',
             }}
           >
-            <Slide direction={slideDirection} in={activeTab == i} mountOnEnter unmountOnExit timeout={500}>
+            <Slide direction={slideDirection} in={activeTab === i} mountOnEnter unmountOnExit timeout={500}>
               <Box
                 sx={{
                   maxWidth: '100%',

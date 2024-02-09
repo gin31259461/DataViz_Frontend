@@ -28,7 +28,7 @@ export const AccountZodSchema = z.record(z.unknown()).and(
     userId: z.string().optional(),
     provider: z.string(),
     type: z.union([z.literal('oauth'), z.literal('email'), z.literal('credentials')]),
-  }),
+  })
 );
 
 const SettingZodSchema = z.object({
@@ -74,7 +74,7 @@ export const userRouter = createTRPCRouter({
           email: z.string(),
           MID: z.number(),
         })
-        .optional(),
+        .optional()
     )
     .mutation(async ({ input, ctx }) => {
       if (!input) return;
@@ -97,7 +97,7 @@ export const userRouter = createTRPCRouter({
       z.object({
         MID: z.number(),
         provider: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       const account = await ctx.prismaReader.account.findFirst({

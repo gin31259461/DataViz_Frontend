@@ -4,9 +4,10 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Divider, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { ReactElement } from 'react';
 
 export interface AccountMenuProps {
-  avatar: React.ReactElement;
+  avatar: ReactElement;
   userName: string | undefined | null;
   anchorEl: HTMLElement | null;
   open: boolean;

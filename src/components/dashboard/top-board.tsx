@@ -2,6 +2,7 @@
 
 import style from '@/styles/dashboard.module.scss';
 import { ListItemButton, ListItemIcon, ListItemText, styled, useTheme } from '@mui/material';
+import { ReactNode } from 'react';
 
 const ListItemIconStyled = styled(ListItemIcon)({
   // minWidth: 2,
@@ -9,7 +10,7 @@ const ListItemIconStyled = styled(ListItemIcon)({
 
 interface TopBoardProps {
   items: string[];
-  icons: React.ReactNode[];
+  icons: ReactNode[];
   href: string[];
 }
 

@@ -4,14 +4,14 @@ import { trpc } from '@/server/trpc';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { BuiltInProviderType } from 'next-auth/providers';
 import { LiteralUnion, signIn, useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface AccountListItemProps {
   provider: string;
-  startIcon?: React.ReactNode;
+  startIcon?: ReactNode;
 }
 
-export const AccountListItem: React.FC<AccountListItemProps> = (props) => {
+export const AccountListItem = (props: AccountListItemProps) => {
   const { data } = useSession();
   const [loading, setLoading] = useState(false);
   const [activeProvider, setActiveProvider] = useState<LiteralUnion<BuiltInProviderType> | undefined>(undefined);

@@ -3,17 +3,17 @@
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { colorTokens } from '@/utils/color-tokens';
 import { Box, Button, Grid, Stepper as MuiStepper, Step, StepLabel, useTheme } from '@mui/material';
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 
 interface StepperProps {
   steps: string[];
-  components: React.ReactNode[];
+  components: ReactNode[];
   backButtonDisabled: () => boolean;
   nextButtonDisabled: () => boolean;
   callback: () => Promise<void>;
 }
 
-const Stepper: React.FC<StepperProps> = ({ steps, components, backButtonDisabled, nextButtonDisabled, callback }) => {
+const Stepper = ({ steps, components, backButtonDisabled, nextButtonDisabled, callback }: StepperProps) => {
   const stepContext = useContext(CustomStepperContext);
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
@@ -129,8 +129,8 @@ export const useCustomStepperAction = (stepLength: number) => {
     return {
       activeStep: activeStep,
       changeActiveStep: (action) => {
-        if (action == 'next') setActiveStep((prev) => (prev < stepLength - 1 ? prev + 1 : prev));
-        else if (action == 'prev') setActiveStep((prev) => (prev > 0 ? prev - 1 : prev));
+        if (action === 'next') setActiveStep((prev) => (prev < stepLength - 1 ? prev + 1 : prev));
+        else if (action === 'prev') setActiveStep((prev) => (prev > 0 ? prev - 1 : prev));
       },
     };
   }, [activeStep, stepLength]);

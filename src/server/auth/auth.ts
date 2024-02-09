@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
-    signIn: async ({ user, account }) => {
+    signIn: async () => {
       // TODO: 登入的時候會先呼叫這個 function，如果 return true 代表執行登入動作，現在需要處理 email 重複的狀況。
       // const signedAccount = await prismaWriter.account.findUnique({
       //   select: {

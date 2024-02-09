@@ -86,7 +86,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
       });
       setOrderBy(property);
     },
-    [orderBy],
+    [orderBy]
   );
 
   const submitForm = async (formData: FormData) => {
@@ -120,16 +120,14 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
   };
 
   const handleDelete = async (deleteIDs: number[]) => {
-    try {
-      await deleteData.mutateAsync({
-        mid: mid,
-        oidS: deleteIDs,
-      });
-      setDeleteSuccess(true);
-      setMessage('delete data done');
-      setSelectDataOID(undefined);
-      setDeleteDataOID([]);
-    } catch (err) {}
+    await deleteData.mutateAsync({
+      mid: mid,
+      oidS: deleteIDs,
+    });
+    setDeleteSuccess(true);
+    setMessage('delete data done');
+    setSelectDataOID(undefined);
+    setDeleteDataOID([]);
 
     await someDataObject.refetch();
     await memberDataCount.refetch();
@@ -235,7 +233,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
                     <TableCell>{dataSet.lastModified}</TableCell>
                     <TableCell align="right">
                       <Checkbox
-                        checked={deleteDataOID.findIndex((value) => value == dataSet.id) >= 0}
+                        checked={deleteDataOID.findIndex((value) => value === dataSet.id) >= 0}
                         color="info"
                         onChange={(e, checked) => {
                           if (checked) {
@@ -243,8 +241,8 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
                           } else {
                             setDeleteDataOID(
                               deleteDataOID.filter(
-                                (v, i) => i != deleteDataOID.findIndex((value) => value == dataSet.id),
-                              ),
+                                (v, i) => i !== deleteDataOID.findIndex((value) => value === dataSet.id)
+                              )
                             );
                           }
                         }}

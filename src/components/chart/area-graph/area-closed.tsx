@@ -1,5 +1,6 @@
 import { AreaClosed as VisxAreaClosed } from '@visx/shape';
 import { PositionScale } from '@visx/shape/lib/types';
+import { ComponentProps } from 'react';
 import { AreaGraphDataInstance } from '.';
 
 type AreaClosedProps = {
@@ -10,7 +11,7 @@ type AreaClosedProps = {
   strokeWidth?: number;
   stroke: string;
   fill?: string;
-} & Pick<React.ComponentProps<typeof VisxAreaClosed>, 'curve'>;
+} & Pick<ComponentProps<typeof VisxAreaClosed>, 'curve'>;
 
 export const AreaClosed = ({ data, x, y, yScale, strokeWidth = 1, stroke, fill = 'none', curve }: AreaClosedProps) => {
   return (

@@ -14,6 +14,7 @@ import {
 } from '@visx/tooltip';
 import { bisector, extent, max } from '@visx/vendor/d3-array';
 import { timeFormat } from '@visx/vendor/d3-time-format';
+import { MouseEvent, TouchEvent } from 'react';
 import { AxisBottom } from '../utils/axis-bottom';
 import { AxisLeft } from '../utils/axis-left';
 import { AreaClosed } from './area-closed';
@@ -97,7 +98,7 @@ export default function AreaGraph({
   if (!fillColor) fillColor = theme.palette.info.main;
 
   // tooltip handler
-  const handleTooltip = (event: React.TouchEvent<SVGRectElement> | React.MouseEvent<SVGRectElement>) => {
+  const handleTooltip = (event: TouchEvent<SVGRectElement> | MouseEvent<SVGRectElement>) => {
     const { x } = localPoint(event) || { x: 0 };
     const x0 = dateScale.invert(x);
     const index = bisectDate(data, x0, 1);

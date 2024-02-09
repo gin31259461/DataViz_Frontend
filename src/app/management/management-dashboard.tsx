@@ -4,6 +4,7 @@ import DatasetRoundedIcon from '@mui/icons-material/DatasetRounded';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
+import { ReactNode } from 'react';
 
 const items = ['Data', 'Project', 'Profile', 'Account', 'Settings'];
 const icons = [
@@ -22,7 +23,7 @@ const href = [
 ];
 
 interface ManagementDashBoardProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function ManagementDashBoard(props: ManagementDashBoardProps) {

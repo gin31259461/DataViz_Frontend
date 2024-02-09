@@ -129,7 +129,7 @@ export default function CommandModal() {
               cmdk-vercel-badge=""
               onClick={() =>
                 ControlCommandModal.setPages(
-                  ControlCommandModal.pages.slice(0, ControlCommandModal.pages.findIndex((page) => page === p) + 1),
+                  ControlCommandModal.pages.slice(0, ControlCommandModal.pages.findIndex((page) => page === p) + 1)
                 )
               }
               style={p === activePage ? activePageStyle : {}}

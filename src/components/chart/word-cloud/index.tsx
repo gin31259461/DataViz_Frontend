@@ -56,7 +56,6 @@ export default function WordCloud({
   rotation = false,
   colors,
   margin = defaultMargin,
-  showControls,
 }: WordCloudProps) {
   const theme = useTheme();
 

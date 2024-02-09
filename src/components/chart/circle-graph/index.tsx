@@ -1,6 +1,7 @@
 'use client';
 
 import { localPoint } from '@visx/event';
+import { EventType } from '@visx/event/lib/types';
 import { Group } from '@visx/group';
 import { scaleOrdinal } from '@visx/scale';
 import { schemeTableau10 } from 'd3-scale-chromatic';
@@ -48,7 +49,6 @@ export default function CircleGraph({
   animate = true,
   width,
   height,
-  events,
   margin = defaultMargin,
 }: CircleGraphProps) {
   const {
@@ -99,7 +99,7 @@ export default function CircleGraph({
                 fontSize={radius / 10}
                 animate={animate}
                 getKey={({ data: { label } }) => label}
-                onClickDatum={({ data: { label, value } }) => {}}
+                onClickDatum={() => {}}
                 onMouseLeave={() => {
                   tooltipTimeout = window.setTimeout(() => {
                     hideTooltip();
@@ -107,7 +107,7 @@ export default function CircleGraph({
                 }}
                 onMouseMove={(event, { data: { label, value } }) => {
                   if (tooltipTimeout) clearTimeout(tooltipTimeout);
-                  const eventSvgCoords = localPoint(event);
+                  const eventSvgCoords = localPoint(event as unknown as EventType);
 
                   showTooltip({
                     tooltipData: {

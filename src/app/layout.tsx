@@ -4,6 +4,7 @@ import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
 import { getServerSession, Session } from 'next-auth';
+import { ReactNode } from 'react';
 import { Provider } from '../components/provider';
 import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';
@@ -21,8 +22,8 @@ export const metadata = {
 };
 
 interface RootLayoutProps {
-  children: React.ReactNode;
-  auth: React.ReactNode;
+  children: ReactNode;
+  auth: ReactNode;
   session: Session;
 }
 

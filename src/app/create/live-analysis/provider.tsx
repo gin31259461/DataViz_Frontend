@@ -1,12 +1,13 @@
 'use client';
 
 import { useProjectStore } from '@/hooks/store/use-project-store';
+import { ReactNode } from 'react';
 import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_components/stepper';
 
 interface StepperProviderProps {
   stepLength: number;
   steps: string[];
-  components: React.ReactNode[];
+  components: ReactNode[];
 }
 
 function StepperProvider(props: StepperProviderProps) {

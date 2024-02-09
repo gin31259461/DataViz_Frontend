@@ -12,7 +12,7 @@ function PreviewRacingChart() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const selectedData = trpc.dataObject.getContentFromDataTable.useQuery(selectedDataOID);
   const dataArgs = useProjectStore<DataArgsProps<RacingBarChartMapping>>(
-    (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>,
+    (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>
   );
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const setChartArgs = useProjectStore((state) => state.setChartArgs);

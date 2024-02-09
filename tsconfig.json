@@ -4,46 +4,41 @@
     "noEmit": true,
     "allowJs": true,
     "jsx": "preserve",
-    "module": "esnext",
-    "target": "esnext",
-    "skipLibCheck": true,
+    "module": "ESNext",
+    "target": "ESNext",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2020"
-    ],
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
     "allowSyntheticDefaultImports": true,
     "noErrorTruncation": false,
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@D3Chart": [
-        "./library/d3chart/dist/index.js"
       ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2020"
+    ],
+    "skipLibCheck": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/server/pyodide/pyodide.js"  ],
+  ],
   "exclude": [
-    "node_modules",
-    "temp",
-    "library"
+    "node_modules"
   ]
 }

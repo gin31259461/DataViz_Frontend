@@ -15,7 +15,7 @@ const AnimatedBar = animated(Bar);
 
 const RacingBarGroup = forwardRef(function ForwardRacingBarGroup(
   { frameData, xScale, yScale, colorScale, barGap }: RacingBarGroupProps,
-  ref,
+  ref
 ) {
   const transitionData = frameData.map(({ name, value }, i) => ({
     y: yScale(i) + i * barGap,
@@ -53,7 +53,7 @@ const RacingBarGroup = forwardRef(function ForwardRacingBarGroup(
     },
   }));
 
-  return transitions((style, item, transitionState, i) => {
+  return transitions((style, item) => {
     return (
       <AnimatedBar
         x={xScale(0)}

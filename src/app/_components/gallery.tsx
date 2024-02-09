@@ -5,7 +5,7 @@ import BarGraph, { BarGraphDataInstance } from '@/components/chart/bar-graph';
 import CircleGraph, { CircleGraphDataInstance } from '@/components/chart/circle-graph';
 import WordCloud from '@/components/chart/word-cloud';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Skeleton, Typography } from '@mui/material';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { ReactNode, RefObject, useEffect, useRef, useState } from 'react';
 
 const barGraphData: BarGraphDataInstance[] = [
   { x: '台北市', group: { 食: 10, 衣: 20, 住: 30 } },
@@ -41,7 +41,7 @@ type GalleryCardProps = {
   title: string;
   childrenMinHeight?: number;
   refObject?: RefObject<HTMLDivElement>;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const Gallery = () => {

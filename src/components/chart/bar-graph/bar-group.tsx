@@ -6,8 +6,7 @@ import {
   BarGroupHorizontal as VisxBarGroupHorizontalType,
   BarGroup as VisxBarGroupType,
 } from '@visx/shape/lib/types';
-
-type BarGroupMode = 'horizontal' | 'vertical';
+import { ReactNode } from 'react';
 
 export type BarGroupHorizontalProps = {
   data: any;
@@ -18,7 +17,7 @@ export type BarGroupHorizontalProps = {
   x1Scale: AnyScaleBand;
   yScale: PositionScale;
   colorScale: (key: string, index: number) => string;
-  children: (baGroups: VisxBarGroupHorizontalType<string>[]) => React.ReactNode;
+  children: (baGroups: VisxBarGroupHorizontalType<string>[]) => ReactNode;
   mode: 'horizontal';
 };
 
@@ -31,7 +30,7 @@ export type BarGroupVerticalProps = {
   x1Scale: AnyScaleBand;
   yScale: PositionScale;
   colorScale: (key: string, index: number) => string;
-  children: (barGroups: VisxBarGroupType<string>[]) => React.ReactNode;
+  children: (barGroups: VisxBarGroupType<string>[]) => ReactNode;
   mode: 'vertical';
 };
 

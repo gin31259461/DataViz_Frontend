@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 import DataVizIcon from './data-viz-icon';
 import { NavbarMenu, NavbarMenuButton, NavbarMenuItem } from './navbar-menu';
 import { NavbarContext } from './navbar.context';
@@ -18,8 +18,8 @@ interface NavbarProps {
   dropDownMenuItemHref: string[];
   navbarMenuItemList: string[];
   navbarMenuItemHref: string[];
-  rightSideSubMenu: React.ReactNode;
-  children: React.ReactNode;
+  rightSideSubMenu: ReactNode;
+  children: ReactNode;
 }
 
 export default function Navbar(props: NavbarProps) {
@@ -63,7 +63,7 @@ export default function Navbar(props: NavbarProps) {
                 return (
                   <NavbarMenuButton
                     key={i}
-                    active={splitPathName[splitPathName.length - 1] == pathnames[pathnames.length - 1]}
+                    active={splitPathName[splitPathName.length - 1] === pathnames[pathnames.length - 1]}
                     href={props.navbarMenuItemHref.at(i)}
                   >
                     {item}

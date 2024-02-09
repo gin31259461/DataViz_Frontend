@@ -11,7 +11,7 @@ interface MultiSelectProps {
   onChange: (selectedValues: string[]) => void;
 }
 
-const MultiSelect: React.FC<MultiSelectProps> = ({ options, onChange }) => {
+const MultiSelect = ({ options, onChange }: MultiSelectProps) => {
   const [selectedValues, setSelectedValues] = useState<string[]>(options);
 
   const handleSelectChange = (event: SelectChangeEvent<string[]>) => {

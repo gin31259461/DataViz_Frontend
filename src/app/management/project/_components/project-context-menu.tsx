@@ -1,11 +1,11 @@
 import { Menu, MenuItem, PopoverPosition } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { ConfirmModal } from '../../../../components/modal/confirm-modal';
 
 interface ContextMenuProps {
   id: number;
-  children: React.ReactNode;
+  children: ReactNode;
   onDelete: () => Promise<void>;
   maxWidth?: number | string;
   path?: string;
@@ -16,7 +16,7 @@ export default function ContextMenu({ children, maxWidth, id, onDelete, path }: 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const router = useRouter();
 
-  const handleContextMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleContextMenu = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
 
     setAnchorPosition({

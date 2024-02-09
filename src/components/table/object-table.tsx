@@ -14,7 +14,7 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
         Header: key,
         accessor: (row: { [key: string]: any }) => row[key],
       })),
-    [data],
+    [data]
   );
 
   const tableInstance = useTable({ columns, data });

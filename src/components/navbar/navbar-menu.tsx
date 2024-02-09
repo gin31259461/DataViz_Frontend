@@ -3,14 +3,15 @@ import styleStore from '@/styles/store.module.scss';
 import { colorTokens } from '@/utils/color-tokens';
 import { Button, styled, useTheme } from '@mui/material';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface NavbarMenuProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className: string;
   onClose: () => void;
 }
 
-export const NavbarMenu: React.FC<NavbarMenuProps> = ({ className, onClose, children }) => {
+export const NavbarMenu = ({ className, onClose, children }: NavbarMenuProps) => {
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
 
@@ -33,12 +34,12 @@ export const NavbarMenu: React.FC<NavbarMenuProps> = ({ className, onClose, chil
 };
 
 interface MenuItemProps {
-  children: React.ReactNode;
+  children: ReactNode;
   href?: string;
   onClick?: () => void;
 }
 
-export const NavbarMenuItem: React.FC<MenuItemProps> = ({ href, onClick, children }) => {
+export const NavbarMenuItem = ({ href, onClick, children }: MenuItemProps) => {
   return (
     <li>
       <Link
@@ -89,11 +90,11 @@ const NavbarMenuList = styled('div')({
 });
 
 interface NavbarMenuShortcutItemProps {
-  children: React.ReactNode;
+  children: ReactNode;
   href: string;
 }
 
-export const NavbarMenuShortcutItem: React.FC<NavbarMenuShortcutItemProps> = ({ children, href }) => {
+export const NavbarMenuShortcutItem = ({ children, href }: NavbarMenuShortcutItemProps) => {
   return (
     <Link
       className={styleStore['link']}
@@ -111,12 +112,12 @@ export const NavbarMenuShortcutItem: React.FC<NavbarMenuShortcutItemProps> = ({ 
 };
 
 interface NavbarMenuButtonProps {
-  children: React.ReactNode;
+  children: ReactNode;
   href: string | undefined;
   active?: boolean;
 }
 
-export const NavbarMenuButton: React.FC<NavbarMenuButtonProps> = ({ children, href, active }) => {
+export const NavbarMenuButton = ({ children, href, active }: NavbarMenuButtonProps) => {
   const theme = useTheme();
 
   const StyledNavMenuButton = styled(Button)({

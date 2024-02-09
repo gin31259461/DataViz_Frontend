@@ -185,7 +185,7 @@ export function I3SPrismaAdapter(p: PrismaClient): Adapter {
 
       if (!userAndSession) return null;
       const { Member, ...session } = userAndSession;
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve({
           user: {
             id: Member.MID.toString(),

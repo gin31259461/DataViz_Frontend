@@ -1,6 +1,6 @@
 import { convertCsvToFile, isValidCsvString } from '@/utils/csv';
 import { FormControlLabel, FormHelperText, Radio, RadioGroup, TextField } from '@mui/material';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type InputType = 'upload' | 'text' | 'url';
 
@@ -12,9 +12,9 @@ export default function CsvInputFiled({ onInputChange }: CsvInputFiledProps) {
   const [inputType, setInputType] = useState<InputType>('upload');
   const [inputValue, setInputValue] = useState<string | File>('');
   const [invalid, setInvalid] = useState(false);
-  const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[a-z0-9]+(?:[\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(?::[0-9]{1,5})?(?:\/.*)?$/;
+  const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[a-z0-9]+(?:[-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(?::[0-9]{1,5})?(?:\/.*)?$/;
 
-  const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     if (!isValidCsvString(event.target.value)) {
       setInvalid(true);
@@ -26,7 +26,7 @@ export default function CsvInputFiled({ onInputChange }: CsvInputFiledProps) {
     }
   };
 
-  const handleUrlInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     if (!urlRegex.test(event.target.value)) {
       setInvalid(true);
@@ -37,7 +37,7 @@ export default function CsvInputFiled({ onInputChange }: CsvInputFiledProps) {
     }
   };
 
-  const handleInputTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputType(event.target.value as InputType);
     setInputValue('');
     setInvalid(false);

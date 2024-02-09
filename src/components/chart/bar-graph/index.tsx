@@ -64,7 +64,6 @@ export default function BarGraph({
   legend = true,
   axisBottom = true,
   axisLeft = false,
-  animate = true,
   horizontal = false,
   width,
   height,
@@ -205,7 +204,7 @@ export default function BarGraph({
                         });
                       }}
                     />
-                  )),
+                  ))
                 )
               }
             </BarStack>
@@ -224,7 +223,7 @@ export default function BarGraph({
                   mode={'horizontal'}
                 >
                   {(barGroups) => {
-                    return barGroups.map((barGroup, i) => (
+                    return barGroups.map((barGroup) => (
                       <Group key={`bar-group-${barGroup.index}-${barGroup.y0}`} top={barGroup.y0}>
                         {barGroup.bars.map((bar) => (
                           <rect
@@ -274,7 +273,7 @@ export default function BarGraph({
                   mode={'vertical'}
                 >
                   {(barGroups) => {
-                    return barGroups.map((barGroup, i) => (
+                    return barGroups.map((barGroup) => (
                       <Group key={`bar-group-${barGroup.index}-${barGroup.x0}`} left={barGroup.x0}>
                         {barGroup.bars.map((bar) => (
                           <rect

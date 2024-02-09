@@ -30,7 +30,7 @@ export interface RacingBarChartArgs {
 
 export const convertToRacingBarChartData = (
   data: { [k: string]: any }[],
-  args: DataArgsProps<RacingBarChartMapping>,
+  args: DataArgsProps<RacingBarChartMapping>
 ) => {
   const newData = data.map((tuple) => {
     return {
@@ -73,7 +73,7 @@ function RacingBarChartEngine(props: { data: FrameDataProps[]; args: RacingBarCh
   };
 
   const playing = chartRef.current ? chartRef.current.playing : false;
-  const [_, forceUpdate] = useState<boolean>();
+  const [, forceUpdate] = useState<boolean>();
 
   return (
     <Container>

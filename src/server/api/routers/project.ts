@@ -31,7 +31,7 @@ export const projectRouter = createTRPCRouter({
         dataId: z.number(),
         type: z.string(),
         args: ArgZodSchema,
-      }),
+      })
     )
     .mutation(async ({ input, ctx }) => {
       await ctx.prismaWriter

@@ -1,7 +1,8 @@
 import { styled, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface ProjectListProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function ProjectList({ children }: ProjectListProps) {

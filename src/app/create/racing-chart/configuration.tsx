@@ -30,13 +30,13 @@ interface CustomFromSelectProps {
   onChange?: (label: string, value: string) => void;
 }
 
-const CustomSelect: React.FC<CustomFromSelectProps> = (props) => {
+const CustomSelect = (props: CustomFromSelectProps) => {
   const [value, setValue] = useState<string>(
     props.defaultValue
-      ? props.items?.findIndex((value) => value == props.defaultValue).toString() ?? ''
+      ? props.items?.findIndex((value) => value === props.defaultValue).toString() ?? ''
       : props.items && props.items.length > 0
         ? '0'
-        : '',
+        : ''
   );
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -110,7 +110,7 @@ function Configuration() {
         setDataArgs(newMapping as DataArgsProps<RacingBarChartMapping>);
       }
     },
-    [dataArgs, setDataArgs],
+    [dataArgs, setDataArgs]
   );
 
   return (

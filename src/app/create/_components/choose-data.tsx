@@ -33,7 +33,7 @@ export default function ChooseData() {
         const value = top100FromDataTable.data[0][col];
         if (!isNaN(Date.parse(value)) && new Date(value).getFullYear() <= new Date().getFullYear())
           columnTypesMapping['date'].push(col);
-        else if (Number.parseInt(value).toString() == value) columnTypesMapping['number'].push(col);
+        else if (Number.parseInt(value).toString() === value) columnTypesMapping['number'].push(col);
         else columnTypesMapping['string'].push(col);
       });
 
@@ -71,9 +71,9 @@ export default function ChooseData() {
             ?.sort((a, b) => {
               return b.id - a.id;
             })
-            .map((d, i) => d.id.toString() + ' : ' + d.name) ?? []
+            .map((d) => d.id.toString() + ' : ' + d.name) ?? []
         }
-        initialValueIndex={allMemberData.data?.findIndex((d) => d.id == selectedDataOID) ?? 0}
+        initialValueIndex={allMemberData.data?.findIndex((d) => d.id === selectedDataOID) ?? 0}
         onChange={handleSelectChange}
         loading={allMemberData.isLoading}
       ></AutoCompleteSelect>

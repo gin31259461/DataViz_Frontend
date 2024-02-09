@@ -1,10 +1,11 @@
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface CardButtonProps {
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   onClick?: () => void;
 }
 

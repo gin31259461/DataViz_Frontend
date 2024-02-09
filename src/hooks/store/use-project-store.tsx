@@ -28,14 +28,14 @@ export interface ProjectStoreProps {
   setChartType: (chartType: ChartTypes) => void;
   chartArgs: ChartArgsProps | undefined;
   setChartArgs: (chartArgs: object) => void;
-  dataArgs: DataArgsProps<{}> | undefined;
-  setDataArgs: (dataArgs: DataArgsProps<{}>) => void;
+  dataArgs: DataArgsProps<object> | undefined;
+  setDataArgs: (dataArgs: DataArgsProps<object>) => void;
   columnTypeMapping: ColumnTypeMappingProps | undefined;
   setColumnTypeMapping: (columnTypeMapping: ColumnTypeMappingProps) => void;
   clear: () => void;
 }
 
-export const useProjectStore = create<ProjectStoreProps>()((set, get) => ({
+export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   title: 'unnamed title',
   setTitle: (title: string) => set({ title: title }),
   des: 'description',

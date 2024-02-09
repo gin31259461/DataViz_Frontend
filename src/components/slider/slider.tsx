@@ -1,11 +1,11 @@
 import { Box, Button, Slide, Typography } from '@mui/material';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 type SliderProps = {
-  components: React.ReactNode[];
+  components: ReactNode[];
 };
 
-const Slider: React.FC<SliderProps> = ({ components }) => {
+const Slider = ({ components }: SliderProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'up' | 'down'>('left');
 

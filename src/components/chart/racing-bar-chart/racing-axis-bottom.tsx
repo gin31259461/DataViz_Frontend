@@ -6,7 +6,7 @@ const AnimatedAxisBottom = animated(AxisBottom);
 
 const RacingAxisBottom = forwardRef(function ForwardRacingAxisBottom(
   props: Omit<AxisBottomProps & { dates: Date[]; frameIdx: number }, 'x' | 'currentDate' | 'currentFrameIndex'>,
-  ref,
+  ref
 ) {
   const prevFrameIdxRef = useRef(props.frameIdx);
   const prevFrameIdx = prevFrameIdxRef.current;

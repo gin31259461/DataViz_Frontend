@@ -57,7 +57,7 @@ export default function ProjectContainer() {
       await deleteProject.mutateAsync(cid);
       await projects.refetch();
     },
-    [deleteProject, projects],
+    [deleteProject, projects]
   );
 
   return (

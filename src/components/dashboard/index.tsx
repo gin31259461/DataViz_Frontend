@@ -1,11 +1,12 @@
+import { ReactNode } from 'react';
 import LeftBoard from './left-board';
 import TopBoard from './top-board';
 
 interface DashboardProps {
   navigatorItems: string[];
-  navigatorIcons: React.ReactNode[];
+  navigatorIcons: ReactNode[];
   navigatorHref: string[];
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function Dashboard(props: DashboardProps) {

@@ -10,7 +10,7 @@ interface CtrlKProps {
   className: string;
 }
 
-export const CtrlK: React.FC<CtrlKProps> = ({ className }) => {
+export const CtrlK = ({ className }: CtrlKProps) => {
   const theme = useTheme();
   const ControlCommandModal = useContext(CommandModalContext);
 

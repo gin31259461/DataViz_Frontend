@@ -15,8 +15,8 @@ export default function TypingText() {
   const color = colorTokens(theme.palette.mode);
 
   useEffect(() => {
-    let intervalID: NodeJS.Timer;
-    let timeoutID: NodeJS.Timer;
+    let intervalID: ReturnType<typeof setInterval>;
+    let timeoutID: ReturnType<typeof setInterval>;
     if (typingAnimation) {
       setTextFlag((prev) => !prev);
       intervalID = setInterval(() => {

@@ -1,5 +1,6 @@
 import { BarStackHorizontal, BarStack as VisxBarStack } from '@visx/shape';
 import { Accessor, PositionScale, BarStack as VisxBarStackType } from '@visx/shape/lib/types';
+import { ReactNode } from 'react';
 
 type BarStackVerticalProps = {
   data: any;
@@ -8,14 +9,14 @@ type BarStackVerticalProps = {
   xScale: PositionScale;
   yScale: PositionScale;
   colorScale: any;
-  children: (batStacks: VisxBarStackType<any, string>[]) => React.ReactNode;
+  children: (batStacks: VisxBarStackType<any, string>[]) => ReactNode;
   mode: 'horizontal' | 'vertical';
 };
 
 export const BarStack = ({ data, keys, x, xScale, yScale, colorScale, children, mode }: BarStackVerticalProps) => {
   return (
     <>
-      {mode == 'vertical' ? (
+      {mode === 'vertical' ? (
         <VisxBarStack data={data} keys={keys} xScale={xScale} yScale={yScale} x={x} color={colorScale}>
           {children}
         </VisxBarStack>

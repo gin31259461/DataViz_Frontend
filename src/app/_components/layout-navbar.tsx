@@ -13,7 +13,7 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Button, IconButton, useTheme } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useContext, useState } from 'react';
+import { MouseEvent, useContext, useState } from 'react';
 
 const dropDownMenuItemList = ['Data', 'Project', 'Settings'];
 const dropDownMenuItemHref = ['/management/data', '/management/project', '/management/settings'];
@@ -29,7 +29,7 @@ export default function LayoutNavbar() {
   const colorMode = useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const avatarClick = (event: React.MouseEvent<HTMLElement>) => {
+  const avatarClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

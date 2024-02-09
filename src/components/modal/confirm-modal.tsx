@@ -1,11 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useState, useTransition } from 'react';
 
 type ConfirmModalProps = {
@@ -17,14 +10,7 @@ type ConfirmModalProps = {
   children: React.ReactNode;
 };
 
-export const ConfirmModal = ({
-  onConfirm,
-  onCancel,
-  open,
-  title,
-  children,
-  onClose,
-}: ConfirmModalProps) => {
+export const ConfirmModal = ({ onConfirm, onCancel, open, title, children, onClose }: ConfirmModalProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleClose = () => {

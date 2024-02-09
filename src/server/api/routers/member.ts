@@ -27,11 +27,7 @@ export const AccountZodSchema = z.record(z.unknown()).and(
     providerAccountId: z.string(),
     userId: z.string().optional(),
     provider: z.string(),
-    type: z.union([
-      z.literal('oauth'),
-      z.literal('email'),
-      z.literal('credentials'),
-    ]),
+    type: z.union([z.literal('oauth'), z.literal('email'), z.literal('credentials')]),
   }),
 );
 
@@ -44,36 +40,32 @@ export const defaultSetting: SettingSchema = {
 };
 
 export const userRouter = createTRPCRouter({
-  isEmailUsed: publicProcedure
-    .input(z.string())
-    .query(async ({ input, ctx }) => {
-      const member = await ctx.prismaReader.member.findUnique({
-        select: {
-          EMail: true,
-        },
-        where: {
-          EMail: input,
-        },
-      });
+  isEmailUsed: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
+    const member = await ctx.prismaReader.member.findUnique({
+      select: {
+        EMail: true,
+      },
+      where: {
+        EMail: input,
+      },
+    });
 
-      if (member?.EMail) return false;
-      return true;
-    }),
-  isUserNameUsed: publicProcedure
-    .input(z.string())
-    .query(async ({ input, ctx }) => {
-      const user = await ctx.prismaReader.member.findUnique({
-        select: {
-          Account: true,
-        },
-        where: {
-          Account: input,
-        },
-      });
+    if (member?.EMail) return false;
+    return true;
+  }),
+  isUserNameUsed: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
+    const user = await ctx.prismaReader.member.findUnique({
+      select: {
+        Account: true,
+      },
+      where: {
+        Account: input,
+      },
+    });
 
-      if (user?.Account) return false;
-      return true;
-    }),
+    if (user?.Account) return false;
+    return true;
+  }),
   enable: publicProcedure
     .input(
       z
@@ -129,20 +121,18 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
-  getLinkedAccount: publicProcedure
-    .input(z.number().optional())
-    .query(async ({ input, ctx }) => {
-      if (!input) return [];
+  getLinkedAccount: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
+    if (!input) return [];
 
-      const res = await ctx.prismaReader.account.findMany({
-        select: {
-          provider: true,
-        },
-        where: {
-          MID: input,
-        },
-      });
+    const res = await ctx.prismaReader.account.findMany({
+      select: {
+        provider: true,
+      },
+      where: {
+        MID: input,
+      },
+    });
 
-      return res;
-    }),
+    return res;
+  }),
 });

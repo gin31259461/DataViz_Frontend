@@ -5,13 +5,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { Container, IconButton } from '@mui/material';
 import { Suspense, useEffect, useRef, useState } from 'react';
-import RacingBarChart, {
-  RacingBarChartController,
-} from '../chart/racing-bar-chart/racing-bar-chart';
-import {
-  FrameDataProps,
-  makeKeyframes,
-} from '../chart/racing-bar-chart/use-keyframes';
+import RacingBarChart, { RacingBarChartController } from '../chart/racing-bar-chart/racing-bar-chart';
+import { FrameDataProps, makeKeyframes } from '../chart/racing-bar-chart/use-keyframes';
 
 export interface RacingBarChartMapping {
   [k: string]: string;
@@ -48,10 +43,7 @@ export const convertToRacingBarChartData = (
   return newData;
 };
 
-function RacingBarChartEngine(props: {
-  data: FrameDataProps[];
-  args: RacingBarChartArgs;
-}) {
+function RacingBarChartEngine(props: { data: FrameDataProps[]; args: RacingBarChartArgs }) {
   const keyframes = makeKeyframes(props.data, props.args.numOfSlice);
   const chartRef = useRef<RacingBarChartController>();
   const ChartContainerRef = useRef(null);
@@ -87,9 +79,7 @@ function RacingBarChartEngine(props: {
     <Container>
       <div ref={ChartContainerRef} style={{ display: 'flex' }}>
         {keyframes.length > 0 && chartContainerOffset && (
-          <Suspense
-            fallback={<LoadingWithTitle title="Generating racing bar chart" />}
-          >
+          <Suspense fallback={<LoadingWithTitle title="Generating racing bar chart" />}>
             <RacingBarChart
               {...props.args}
               keyframes={keyframes}

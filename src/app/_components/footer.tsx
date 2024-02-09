@@ -18,11 +18,9 @@ export default function Footer() {
               About Us
             </Typography>
             <Typography variant="body2" component="p">
-              WKE (Web Knowledge Extraction) Lab. WKE focuses on developing Web
-              information systems (WIS) for various domain requirements. By
-              integrating systems and modules about web/text mining methods
-              developed in WKE, WIS can be enhanced to advanced intelligent
-              information systems.
+              WKE (Web Knowledge Extraction) Lab. WKE focuses on developing Web information systems (WIS) for various
+              domain requirements. By integrating systems and modules about web/text mining methods developed in WKE,
+              WIS can be enhanced to advanced intelligent information systems.
             </Typography>
           </Grid>
           <Grid item xs={12} sm={3}>
@@ -51,11 +49,7 @@ export default function Footer() {
             <Typography variant="h6" gutterBottom>
               Follow Us
             </Typography>
-            <Link
-              href="https://github.com/gin31259461"
-              color="inherit"
-              target="_blank"
-            >
+            <Link href="https://github.com/gin31259461" color="inherit" target="_blank">
               <GitHubIcon sx={{ marginRight: 1 }} />
               GitHub
             </Link>
@@ -66,12 +60,7 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          align="center"
-          marginTop="2vh"
-        >
+        <Typography variant="body2" color="textSecondary" align="center" marginTop="2vh">
           {'© '}
           {new Date().getFullYear()}
           {' WKE. All rights reserved.'}

@@ -2,17 +2,8 @@
 
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { trpc } from '@/server/trpc';
-import { emailValidation } from '@/utils/function';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Paper,
-  TextField,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { emailValidation } from '@/utils/validation';
+import { Box, Button, CircularProgress, Container, Paper, TextField, Typography, useTheme } from '@mui/material';
 import { signIn, useSession } from 'next-auth/react';
 import { redirect, useSearchParams } from 'next/navigation';
 import { ChangeEvent, Fragment, useEffect, useState } from 'react';
@@ -32,8 +23,7 @@ export default function SignUpPage() {
   const MID = params.get('MID');
 
   const isEmailUsed = trpc.user.isEmailUsed.useQuery(email).data ?? true;
-  const isUsernameUsed =
-    trpc.user.isUserNameUsed.useQuery(username).data ?? true;
+  const isUsernameUsed = trpc.user.isUserNameUsed.useQuery(username).data ?? true;
   const enableUser = trpc.user.enable.useMutation();
 
   const signUpHandler = async () => {
@@ -99,9 +89,7 @@ export default function SignUpPage() {
           }}
           helperText={
             <Fragment>
-              {isUsernameUsed
-                ? ''
-                : 'Username cannot be used. Please choose another username.'}
+              {isUsernameUsed ? '' : 'Username cannot be used. Please choose another username.'}
               {username.length > 0 ? '' : 'Username cannot be null.'}
             </Fragment>
           }
@@ -121,20 +109,12 @@ export default function SignUpPage() {
                 ? ''
                 : `An account already exists with this e-mail address. Please sign
                     in to that account first, then connect your ${provider} account.`}
-              {emailValidation(email)
-                ? ''
-                : 'Invalid e-mail format. Please try another one.'}
+              {emailValidation(email) ? '' : 'Invalid e-mail format. Please try another one.'}
             </Fragment>
           }
         ></TextField>
         <Button
-          disabled={
-            !isEmailUsed ||
-            !isUsernameUsed ||
-            username.length <= 0 ||
-            !emailValidation(email) ||
-            pending
-          }
+          disabled={!isEmailUsed || !isUsernameUsed || username.length <= 0 || !emailValidation(email) || pending}
           color="info"
           variant="contained"
           onClick={async () => {

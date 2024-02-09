@@ -1,6 +1,7 @@
 'use client';
 
 import { useUserStore } from '@/hooks/store/use-user-store';
+import { DataSchema } from '@/server/api/routers/data';
 import { trpc } from '@/server/trpc';
 import { colorTokens } from '@/utils/color-tokens';
 import AddIcon from '@mui/icons-material/Add';
@@ -27,30 +28,11 @@ import dynamic from 'next/dynamic';
 import React, { useCallback, useMemo, useState } from 'react';
 import CardButton from '../../../../components/button/card-button';
 
-const ObjectTable = dynamic(
-  () => import('../../../../components/table/object-table'),
-);
+const ObjectTable = dynamic(() => import('@/components/table/object-table'));
 const ShowDataDialog = dynamic(() => import('./show-data-modal'));
 const DataFormDialog = dynamic(() => import('./data-form-dialog'));
-const MessageSnackbar = dynamic(
-  () => import('../../../../components/message-snackbar'),
-);
-const ConfirmDeleteButton = dynamic(
-  () => import('../../../../components/button/confirm-delete-button'),
-);
-
-interface DataSchema {
-  id: number;
-  name: string | null;
-  description: string | null;
-  since: string | null;
-  lastModified: string | null;
-  frequency: number;
-  md5: {
-    type: 'Buffer';
-    data: number[];
-  };
-}
+const MessageSnackbar = dynamic(() => import('@/components/message-snackbar'));
+const ConfirmDeleteButton = dynamic(() => import('@/components/button/confirm-delete-button'));
 
 interface DataPanelProps {
   flaskServer: string;
@@ -64,9 +46,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
 
-  const [selectDataOID, setSelectDataOID] = useState<number | undefined>(
-    undefined,
-  );
+  const [selectDataOID, setSelectDataOID] = useState<number | undefined>(undefined);
   const [deleteDataOID, setDeleteDataOID] = useState<number[]>([]);
 
   const [page, setPage] = useState(0);
@@ -88,8 +68,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
     counts: counts,
     mid: mid,
   });
-  const dataTable =
-    trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectDataOID);
+  const dataTable = trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectDataOID);
   const currentObjectId = trpc.dataObject.getCurrentObjectId.useQuery();
   const postData = trpc.dataObject.postData.useMutation();
   const deleteData = trpc.dataObject.deleteData.useMutation({
@@ -121,10 +100,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
       await currentObjectId.refetch();
 
       if (currentObjectId.data) {
-        formData.append(
-          'dataId',
-          (Number(currentObjectId.data) + 1).toString(),
-        );
+        formData.append('dataId', (Number(currentObjectId.data) + 1).toString());
         await fetch(`${flaskServer}/api/file_upload`, {
           method: 'POST',
           body: formData,
@@ -160,8 +136,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
   };
 
   const DataTable = useMemo(() => {
-    if (dataTable.data)
-      return <ObjectTable data={dataTable.data}></ObjectTable>;
+    if (dataTable.data) return <ObjectTable data={dataTable.data}></ObjectTable>;
     return null;
   }, [dataTable]);
 
@@ -220,19 +195,14 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
               </TableCell>
               <TableCell align="right" sx={{ color: 'inherit' }}>
                 {deleteDataOID.length > 0 && (
-                  <ConfirmDeleteButton
-                    onConfirm={handleDelete}
-                    deleteIDs={deleteDataOID}
-                  ></ConfirmDeleteButton>
+                  <ConfirmDeleteButton onConfirm={handleDelete} deleteIDs={deleteDataOID}></ConfirmDeleteButton>
                 )}
                 Actions
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {someDataObject.isLoading ||
-            someDataObject.isFetching ||
-            !someDataObject.data
+            {someDataObject.isLoading || someDataObject.isFetching || !someDataObject.data
               ? new Array(counts).fill(0).map((_, i) => {
                   return (
                     <TableRow key={i}>
@@ -245,9 +215,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
                       <TableCell>
                         <Skeleton />
                       </TableCell>
-                      <TableCell
-                        sx={{ display: 'flex', justifyContent: 'right' }}
-                      >
+                      <TableCell sx={{ display: 'flex', justifyContent: 'right' }}>
                         <Skeleton width={'40%'} />
                       </TableCell>
                     </TableRow>
@@ -267,11 +235,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
                     <TableCell>{dataSet.lastModified}</TableCell>
                     <TableCell align="right">
                       <Checkbox
-                        checked={
-                          deleteDataOID.findIndex(
-                            (value) => value == dataSet.id,
-                          ) >= 0
-                        }
+                        checked={deleteDataOID.findIndex((value) => value == dataSet.id) >= 0}
                         color="info"
                         onChange={(e, checked) => {
                           if (checked) {
@@ -279,11 +243,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
                           } else {
                             setDeleteDataOID(
                               deleteDataOID.filter(
-                                (v, i) =>
-                                  i !=
-                                  deleteDataOID.findIndex(
-                                    (value) => value == dataSet.id,
-                                  ),
+                                (v, i) => i != deleteDataOID.findIndex((value) => value == dataSet.id),
                               ),
                             );
                           }
@@ -311,10 +271,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                onPageChange={(
-                  event: React.MouseEvent<HTMLButtonElement> | null,
-                  page: number,
-                ) => {
+                onPageChange={(event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
                   setPage(page);
                 }}
                 rowsPerPageOptions={[]}
@@ -329,18 +286,12 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
 
       <ShowDataDialog
         title={someDataObject.data?.find((d) => d.id === selectDataOID)?.name}
-        description={
-          someDataObject.data?.find((d) => d.id === selectDataOID)?.description
-        }
+        description={someDataObject.data?.find((d) => d.id === selectDataOID)?.description}
         dataInfo={'Preview top 100 rows'}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
       >
-        {dataTable.isLoading ? (
-          <LinearProgress color="info" sx={{ marginTop: 2 }} />
-        ) : (
-          DataTable
-        )}
+        {dataTable.isLoading ? <LinearProgress color="info" sx={{ marginTop: 2 }} /> : DataTable}
       </ShowDataDialog>
 
       <DataFormDialog
@@ -357,18 +308,8 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
         message={message}
         status="success"
       />
-      <MessageSnackbar
-        open={submitError}
-        onClose={() => setSubmitError(false)}
-        message={message}
-        status="error"
-      />
-      <MessageSnackbar
-        open={deleteSuccess}
-        onClose={() => setDeleteSuccess(false)}
-        message={message}
-        status="info"
-      />
+      <MessageSnackbar open={submitError} onClose={() => setSubmitError(false)} message={message} status="error" />
+      <MessageSnackbar open={deleteSuccess} onClose={() => setDeleteSuccess(false)} message={message} status="info" />
     </Grid>
   );
 };

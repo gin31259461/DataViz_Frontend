@@ -24,10 +24,7 @@ export default function Loader({ floating }: LoaderProps) {
   return (
     <LoaderContainer
       style={{
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? 'rgb(0, 0, 0, 0.3)'
-            : 'rgb(252, 252, 252, 0.3)',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgb(0, 0, 0, 0.3)' : 'rgb(252, 252, 252, 0.3)',
       }}
     >
       <div>

@@ -12,8 +12,7 @@ export default function Login() {
   const theme = useTheme();
   const session = useSession();
 
-  const buttonVariant =
-    theme.palette.mode === 'dark' ? 'contained' : 'outlined';
+  const buttonVariant = theme.palette.mode === 'dark' ? 'contained' : 'outlined';
 
   const handleSignIn = (provider: string) => {
     signIn(provider, { callbackUrl: '/management/data' });
@@ -44,12 +43,7 @@ export default function Login() {
             variant={buttonVariant}
             color="primary"
             startIcon={
-              <Image
-                src={`/assets/icons/${provider.toLowerCase()}.ico`}
-                height={30}
-                width={30}
-                alt={provider}
-              />
+              <Image src={`/assets/icons/${provider.toLowerCase()}.ico`} height={30} width={30} alt={provider} />
             }
             onClick={() => handleSignIn(provider.toLowerCase())}
             key={i}

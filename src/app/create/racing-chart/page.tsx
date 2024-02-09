@@ -7,11 +7,8 @@ import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChooseData from '../_components/choose-data';
 import Complete from '../_components/complete';
-import Stepper, {
-  CustomStepperContext,
-  useCustomStepperAction,
-} from '../_components/stepper';
-import { revalidateProject } from './action';
+import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_components/stepper';
+import { revalidateProject } from '../action';
 import Configuration from './configuration';
 import PreviewRacingChart from './preview-racing-chart';
 
@@ -28,12 +25,7 @@ function CreateRacingBarChartPage() {
   const lastProjectId = trpc.project.getLastProjectId.useQuery(mid);
   const [done, setDone] = useState(false);
 
-  const steps = [
-    'Select data',
-    'Configuration',
-    'Preview racing bar chart',
-    'Completed',
-  ];
+  const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];
   const stepperValue = useCustomStepperAction(steps.length);
   const components = [
     <ChooseData key={0} />,

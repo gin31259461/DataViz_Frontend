@@ -1,10 +1,4 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useMemo } from 'react';
 import { useTable } from 'react-table';
 
@@ -25,8 +19,7 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
 
   const tableInstance = useTable({ columns, data });
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
 
   return (
     <Table {...getTableProps()} sx={{ position: 'relative' }}>
@@ -53,10 +46,7 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
           return (
             <TableRow key={row.getRowProps().key}>
               {row.cells.map((cell) => (
-                <TableCell
-                  sx={{ whiteSpace: 'nowrap' }}
-                  key={cell.getCellProps().key}
-                >
+                <TableCell sx={{ whiteSpace: 'nowrap' }} key={cell.getCellProps().key}>
                   {cell.render('Cell')}
                 </TableCell>
               ))}

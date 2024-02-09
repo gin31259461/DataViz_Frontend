@@ -61,10 +61,7 @@ export default function WordCloud({
   const theme = useTheme();
 
   if (!colors) {
-    colors =
-      theme.palette.mode === 'dark'
-        ? [...schemeBlues[3]].reverse()
-        : ['#143059', '#2F6B9A', '#82a6c2'];
+    colors = theme.palette.mode === 'dark' ? [...schemeBlues[3]].reverse() : ['#143059', '#2F6B9A', '#82a6c2'];
   }
 
   if (!width || !height) return null;
@@ -76,10 +73,7 @@ export default function WordCloud({
   const words = wordFreq(data);
 
   const fontScale = scaleLog({
-    domain: [
-      Math.min(...words.map((w) => w.value)),
-      Math.max(...words.map((w) => w.value)),
-    ],
+    domain: [Math.min(...words.map((w) => w.value)), Math.max(...words.map((w) => w.value))],
     range: [10, 100],
   });
   const fontSizeSetter = (datum: WordDataInstance) => fontScale(datum.value);

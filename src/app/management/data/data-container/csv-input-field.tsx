@@ -1,11 +1,5 @@
-import { convertCsvToFile, isValidCsvString } from '@/utils/function';
-import {
-  FormControlLabel,
-  FormHelperText,
-  Radio,
-  RadioGroup,
-  TextField,
-} from '@mui/material';
+import { convertCsvToFile, isValidCsvString } from '@/utils/csv';
+import { FormControlLabel, FormHelperText, Radio, RadioGroup, TextField } from '@mui/material';
 import { useState } from 'react';
 
 type InputType = 'upload' | 'text' | 'url';
@@ -18,12 +12,9 @@ export default function CsvInputFiled({ onInputChange }: CsvInputFiledProps) {
   const [inputType, setInputType] = useState<InputType>('upload');
   const [inputValue, setInputValue] = useState<string | File>('');
   const [invalid, setInvalid] = useState(false);
-  const urlRegex =
-    /^(?:https?:\/\/)?(?:www\.)?[a-z0-9]+(?:[\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(?::[0-9]{1,5})?(?:\/.*)?$/;
+  const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[a-z0-9]+(?:[\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(?::[0-9]{1,5})?(?:\/.*)?$/;
 
-  const handleTextInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     if (!isValidCsvString(event.target.value)) {
       setInvalid(true);
@@ -46,9 +37,7 @@ export default function CsvInputFiled({ onInputChange }: CsvInputFiledProps) {
     }
   };
 
-  const handleInputTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleInputTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputType(event.target.value as InputType);
     setInputValue('');
     setInvalid(false);
@@ -65,21 +54,9 @@ export default function CsvInputFiled({ onInputChange }: CsvInputFiledProps) {
         row
         sx={{ marginTop: 5, width: '100%' }}
       >
-        <FormControlLabel
-          value="upload"
-          control={<Radio color="secondary" />}
-          label="CSV File"
-        />
-        <FormControlLabel
-          value="text"
-          control={<Radio color="secondary" />}
-          label="CSV Text"
-        />
-        <FormControlLabel
-          value="url"
-          control={<Radio color="secondary" />}
-          label="URL"
-        />
+        <FormControlLabel value="upload" control={<Radio color="secondary" />} label="CSV File" />
+        <FormControlLabel value="text" control={<Radio color="secondary" />} label="CSV Text" />
+        <FormControlLabel value="url" control={<Radio color="secondary" />} label="URL" />
       </RadioGroup>
       {inputType === 'upload' && (
         <TextField

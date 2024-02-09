@@ -6,10 +6,12 @@ import { useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export default function TypingText() {
+  const theme = useTheme();
+
   const [typingAnimation, setTypingAnimation] = useState(true);
   const [textFlag, setTextFlag] = useState(true);
   const [stopTypingFlag, setStopTypingFlag] = useState(false);
-  const theme = useTheme();
+
   const color = colorTokens(theme.palette.mode);
 
   useEffect(() => {
@@ -37,15 +39,8 @@ export default function TypingText() {
 
   useEffect(() => {
     if (document.getElementById('typing-text') !== null) {
-      document
-        .getElementById('typing-text')
-        ?.style.setProperty('--cursor-color', color.greenAccent[500]);
-      document
-        .getElementById('typing-text')
-        ?.style.setProperty(
-          '--background-color',
-          theme.palette.background.default,
-        );
+      document.getElementById('typing-text')?.style.setProperty('--cursor-color', color.greenAccent[500]);
+      document.getElementById('typing-text')?.style.setProperty('--background-color', theme.palette.background.default);
     }
   }, [theme.palette.mode, theme.palette.background, color.greenAccent]);
 

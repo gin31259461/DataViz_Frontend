@@ -7,14 +7,10 @@ type SliderProps = {
 
 const Slider: React.FC<SliderProps> = ({ components }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<
-    'left' | 'right' | 'up' | 'down'
-  >('left');
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'up' | 'down'>('left');
 
   const handleNext = () => {
-    setCurrentPage((prevPage) =>
-      prevPage < components.length - 1 ? prevPage + 1 : prevPage,
-    );
+    setCurrentPage((prevPage) => (prevPage < components.length - 1 ? prevPage + 1 : prevPage));
     setSlideDirection('left');
   };
 
@@ -65,23 +61,13 @@ const Slider: React.FC<SliderProps> = ({ components }) => {
           gap: 2,
         }}
       >
-        <Button
-          variant="outlined"
-          onClick={handlePrevious}
-          color="info"
-          disabled={currentPage === 0}
-        >
+        <Button variant="outlined" onClick={handlePrevious} color="info" disabled={currentPage === 0}>
           上一個
         </Button>
         <Typography variant="body1">
           第 {currentPage + 1} 頁 / 共 {components.length} 頁
         </Typography>
-        <Button
-          variant="outlined"
-          onClick={handleNext}
-          color="info"
-          disabled={currentPage === components.length - 1}
-        >
+        <Button variant="outlined" onClick={handleNext} color="info" disabled={currentPage === components.length - 1}>
           下一個
         </Button>
       </Box>

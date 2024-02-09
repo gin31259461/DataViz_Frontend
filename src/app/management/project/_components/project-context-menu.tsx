@@ -11,16 +11,8 @@ interface ContextMenuProps {
   path?: string;
 }
 
-export default function ContextMenu({
-  children,
-  maxWidth,
-  id,
-  onDelete,
-  path,
-}: ContextMenuProps) {
-  const [anchorPosition, setAnchorPosition] = useState<
-    PopoverPosition | undefined
-  >(undefined);
+export default function ContextMenu({ children, maxWidth, id, onDelete, path }: ContextMenuProps) {
+  const [anchorPosition, setAnchorPosition] = useState<PopoverPosition | undefined>(undefined);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const router = useRouter();
 

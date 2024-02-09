@@ -36,33 +36,20 @@ export default function Navbar(props: NavbarProps) {
     <div
       className={style['container']}
       style={{
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? 'rgb(20, 27, 45, 0.7)'
-            : 'rgb(252, 252, 252, 0.8)',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgb(20, 27, 45, 0.7)' : 'rgb(252, 252, 252, 0.8)',
         borderBottom: `${useSplitLineStyle()}`,
         translate: navbar.open ? '0 0' : '0 -80px',
       }}
     >
       <div className={style['navbar-container']}>
         <div>
-          <Link
-            onClick={handleClose}
-            href={'/'}
-            className={style['link']}
-            title={''}
-          >
+          <Link onClick={handleClose} href={'/'} className={style['link']} title={''}>
             <DataVizIcon color={theme.palette.primary.main}></DataVizIcon>
           </Link>
         </div>
 
         <h2 style={{ marginLeft: '12px' }}>
-          <Link
-            onClick={handleClose}
-            href={'/'}
-            className={style['link']}
-            title={''}
-          >
+          <Link onClick={handleClose} href={'/'} className={style['link']} title={''}>
             Data Viz
           </Link>
         </h2>
@@ -76,10 +63,7 @@ export default function Navbar(props: NavbarProps) {
                 return (
                   <NavbarMenuButton
                     key={i}
-                    active={
-                      splitPathName[splitPathName.length - 1] ==
-                      pathnames[pathnames.length - 1]
-                    }
+                    active={splitPathName[splitPathName.length - 1] == pathnames[pathnames.length - 1]}
                     href={props.navbarMenuItemHref.at(i)}
                   >
                     {item}
@@ -90,9 +74,7 @@ export default function Navbar(props: NavbarProps) {
           </div>
 
           <div className={style['nav-menu-2']}>
-            <div className={style['nav-menu-2-1']}>
-              {props.rightSideSubMenu}
-            </div>
+            <div className={style['nav-menu-2-1']}>{props.rightSideSubMenu}</div>
             {props.children}
 
             <IconButton
@@ -111,10 +93,7 @@ export default function Navbar(props: NavbarProps) {
         </div>
       </div>
 
-      <NavbarMenu
-        className={menuOpen ? style['nav-menu-open'] : style['nav-menu-close']}
-        onClose={handleClose}
-      >
+      <NavbarMenu className={menuOpen ? style['nav-menu-open'] : style['nav-menu-close']} onClose={handleClose}>
         {props.dropDownMenuItemList.map((item, i) => {
           return (
             <NavbarMenuItem href={props.dropDownMenuItemHref.at(i)} key={i}>

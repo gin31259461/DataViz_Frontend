@@ -1,12 +1,4 @@
-import {
-  styled,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  useTheme,
-} from '@mui/material';
+import { styled, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 
 interface ProjectListProps {
   children: React.ReactNode;

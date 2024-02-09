@@ -1,8 +1,6 @@
 'use client';
 
-import OpenCMDKButton, {
-  CtrlK,
-} from '@/components/modal/command-modal/open-cmdk-button';
+import OpenCMDKButton, { CtrlK } from '@/components/modal/command-modal/open-cmdk-button';
 import { ConfirmModal } from '@/components/modal/confirm-modal';
 import Navbar from '@/components/navbar';
 import AccountMenu from '@/components/navbar/account-menu';
@@ -18,18 +16,10 @@ import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 
 const dropDownMenuItemList = ['Data', 'Project', 'Settings'];
-const dropDownMenuItemHref = [
-  '/management/data',
-  '/management/project',
-  '/management/settings',
-];
+const dropDownMenuItemHref = ['/management/data', '/management/project', '/management/settings'];
 
 const navbarMenuItemList = ['Data', 'Project', 'Settings'];
-const navbarMenuItemHref = [
-  '/management/data',
-  '/management/project',
-  '/management/settings',
-];
+const navbarMenuItemHref = ['/management/data', '/management/project', '/management/settings'];
 
 export default function LayoutNavbar() {
   const theme = useTheme();

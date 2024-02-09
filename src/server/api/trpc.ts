@@ -3,9 +3,7 @@ import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import * as trpcNext from '@trpc/server/adapters/next';
 import { prismaReader, prismaWriter } from '../db';
 
-export const createContext = async (
-  opts?: trpcNext.CreateNextContextOptions,
-) => {
+export const createContext = async (opts?: trpcNext.CreateNextContextOptions) => {
   const req = opts?.req;
   const res = opts?.res;
 

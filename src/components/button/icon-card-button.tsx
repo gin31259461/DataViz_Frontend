@@ -6,11 +6,7 @@ interface IconCardButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
 }
-export default function IconCardButton({
-  children,
-  title,
-  onClick,
-}: IconCardButtonProps) {
+export default function IconCardButton({ children, title, onClick }: IconCardButtonProps) {
   return (
     <Tooltip title={title}>
       <Card

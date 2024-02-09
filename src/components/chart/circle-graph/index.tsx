@@ -129,11 +129,7 @@ export default function CircleGraph({
 
       <div>
         {tooltipOpen && tooltipData && (
-          <TooltipInPortal
-            top={tooltipTop}
-            left={tooltipLeft}
-            style={tooltipStyles}
-          >
+          <TooltipInPortal top={tooltipTop} left={tooltipLeft} style={tooltipStyles}>
             <div style={{ color: colorScale(tooltipData.label) }}>
               <strong>{tooltipData.label}</strong>
             </div>

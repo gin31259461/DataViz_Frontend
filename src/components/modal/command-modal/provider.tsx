@@ -1,10 +1,4 @@
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, Dispatch, SetStateAction, useMemo, useState } from 'react';
 
 interface CommandModalContextProps {
   isOpen: boolean;

@@ -1,11 +1,7 @@
 import { RacingBarChartMapping } from '@/components/chart-engine/racing-bar-chart-engine';
-import {
-  DataArgsProps,
-  useProjectStore,
-} from '@/hooks/store/use-project-store';
+import { DataArgsProps, useProjectStore } from '@/hooks/store/use-project-store';
 import { trpc } from '@/server/trpc';
 import AbcIcon from '@mui/icons-material/Abc';
-import CategoryIcon from '@mui/icons-material/Category';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import {
@@ -37,9 +33,7 @@ interface CustomFromSelectProps {
 const CustomSelect: React.FC<CustomFromSelectProps> = (props) => {
   const [value, setValue] = useState<string>(
     props.defaultValue
-      ? props.items
-          ?.findIndex((value) => value == props.defaultValue)
-          .toString() ?? ''
+      ? props.items?.findIndex((value) => value == props.defaultValue).toString() ?? ''
       : props.items && props.items.length > 0
         ? '0'
         : '',
@@ -47,17 +41,11 @@ const CustomSelect: React.FC<CustomFromSelectProps> = (props) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value.toString());
-    if (props.onChange && props.items)
-      props.onChange(props.label, props.items[parseInt(event.target.value)]);
+    if (props.onChange && props.items) props.onChange(props.label, props.items[parseInt(event.target.value)]);
   };
 
   return (
-    <FormControl
-      fullWidth
-      required={props.required ?? false}
-      error={props.error ?? false}
-      color={'info'}
-    >
+    <FormControl fullWidth required={props.required ?? false} error={props.error ?? false} color={'info'}>
       <InputLabel id={`select-label-${props.label}`}>{props.label}</InputLabel>
       <Select
         labelId={`select-label-${props.label}`}
@@ -85,9 +73,7 @@ const CustomSelect: React.FC<CustomFromSelectProps> = (props) => {
 function Configuration() {
   const theme = useTheme();
   const columnTypeMapping = useProjectStore((state) => state.columnTypeMapping);
-  const dataArgs = useProjectStore(
-    (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>,
-  );
+  const dataArgs = useProjectStore((state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>);
   const setDataArgs = useProjectStore((state) => state.setDataArgs);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const title = useProjectStore((state) => state.title);
@@ -95,10 +81,9 @@ function Configuration() {
   const setTitle = useProjectStore((state) => state.setTitle);
   const setDes = useProjectStore((state) => state.setDes);
   const setChartType = useProjectStore((state) => state.setChartType);
-  const rowsCountFromDataTable =
-    trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
-  const oneMemberData =
-    trpc.dataObject.getFirstMemberData.useQuery(selectedDataOID);
+
+  const dataTableCount = trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
+  const firstMemberData = trpc.dataObject.getFirstMemberData.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (!dataArgs) {
@@ -134,21 +119,10 @@ function Configuration() {
         <Grid container gap={3}>
           <Typography variant="h4">Project setting</Typography>
           <Grid container>
-            <TextField
-              label="Name"
-              fullWidth
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+            <TextField label="Name" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
           </Grid>
           <Grid container>
-            <TextField
-              label="Description"
-              fullWidth
-              multiline
-              value={des}
-              onChange={(e) => setDes(e.target.value)}
-            />
+            <TextField label="Description" fullWidth multiline value={des} onChange={(e) => setDes(e.target.value)} />
           </Grid>
         </Grid>
         <Grid container>
@@ -156,11 +130,7 @@ function Configuration() {
             <Typography variant="h4">Chart type</Typography>
           </Grid>
           <Grid item sm={4}>
-            <CustomSelect
-              label="type"
-              items={['racing chart']}
-              disabled
-            ></CustomSelect>
+            <CustomSelect label="type" items={['racing chart']} disabled></CustomSelect>
           </Grid>
         </Grid>
         <Grid container>
@@ -169,50 +139,35 @@ function Configuration() {
         <Grid container>
           <Grid item sm={4}>
             <Typography variant="h5">
-              ID:{' '}
-              <span style={{ color: theme.palette.info.light }}>
-                {selectedDataOID}
-              </span>
+              ID: <span style={{ color: theme.palette.info.light }}>{selectedDataOID}</span>
             </Typography>
           </Grid>
           <Grid item sm={4}>
             <Typography variant="h5">
               Name:{' '}
               <span style={{ color: theme.palette.info.light }}>
-                {oneMemberData.data && oneMemberData.data.name}
+                {firstMemberData.data && firstMemberData.data.name}
               </span>{' '}
             </Typography>
           </Grid>
           <Grid item sm={4}>
             <Typography variant="h5">
               Rows:{' '}
-              <span style={{ color: theme.palette.info.light }}>
-                {rowsCountFromDataTable.data && rowsCountFromDataTable.data}
-              </span>
+              <span style={{ color: theme.palette.info.light }}>{dataTableCount.data && dataTableCount.data}</span>
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Typography variant="h4">
-            Mapping data into specific format
-          </Typography>
+          <Typography variant="h4">Mapping data into specific format</Typography>
         </Grid>
-        <Grid
-          position={'relative'}
-          top={10}
-          container
-          direction={'column'}
-          alignItems={'center'}
-          gap={5}
-        >
+        <Grid position={'relative'} top={10} container direction={'column'} alignItems={'center'} gap={5}>
           <Grid container>
             <Grid item sm={2}>
               <DateRangeIcon fontSize={'large'} />
             </Grid>
             <Grid item sm={6}>
               <Typography variant="body1">
-                Select one column as date that is continuous x data of racing
-                chart
+                Select one column as date that is continuous x data of racing chart
               </Typography>
             </Grid>
             <Grid item sm={4}>
@@ -231,9 +186,7 @@ function Configuration() {
               <AbcIcon fontSize={'large'} />
             </Grid>
             <Grid item sm={6}>
-              <Typography variant="body1">
-                Select one column as showing label
-              </Typography>
+              <Typography variant="body1">Select one column as showing label</Typography>
             </Grid>
             <Grid item sm={4}>
               <CustomSelect
@@ -251,9 +204,7 @@ function Configuration() {
               <NumbersIcon fontSize={'large'} />
             </Grid>
             <Grid item sm={6}>
-              <Typography variant="body1">
-                Select one column as value of y
-              </Typography>
+              <Typography variant="body1">Select one column as value of y</Typography>
             </Grid>
             <Grid item sm={4}>
               <CustomSelect
@@ -266,7 +217,7 @@ function Configuration() {
               ></CustomSelect>
             </Grid>
           </Grid>
-          <Grid container>
+          {/* <Grid container>
             <Grid item sm={2}>
               <CategoryIcon fontSize={'large'} />
             </Grid>
@@ -283,7 +234,7 @@ function Configuration() {
                 defaultValue={dataArgs?.mapping.category}
               ></CustomSelect>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>

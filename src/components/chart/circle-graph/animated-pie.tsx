@@ -73,9 +73,7 @@ export function AnimatedPie<Datum>({
           fill={getColor(arc)}
           onClick={() => onClickDatum(arc)}
           onMouseMove={(event) => onMouseMove(event, arc, centroidX, centroidY)}
-          onMouseLeave={(event) =>
-            onMouseLeave(event, arc, centroidX, centroidY)
-          }
+          onMouseLeave={(event) => onMouseLeave(event, arc, centroidX, centroidY)}
           onTouchStart={() => onClickDatum(arc)}
         />
         {hasSpaceForLabel && (

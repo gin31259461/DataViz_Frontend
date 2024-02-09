@@ -56,9 +56,7 @@ export default function OpenCMDKButton() {
         style={{
           border: useSplitLineStyle(),
           backgroundColor: theme.palette.background.default,
-          color: theme.palette.getContrastText(
-            theme.palette.background.default,
-          ),
+          color: theme.palette.getContrastText(theme.palette.background.default),
         }}
       >
         CtrlK

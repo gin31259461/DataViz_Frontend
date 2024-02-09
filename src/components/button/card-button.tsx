@@ -8,12 +8,7 @@ interface CardButtonProps {
   onClick?: () => void;
 }
 
-export default function CardButton({
-  title,
-  description,
-  icon,
-  onClick,
-}: CardButtonProps) {
+export default function CardButton({ title, description, icon, onClick }: CardButtonProps) {
   return (
     <Card sx={{ width: '100%', border: useSplitLineStyle() }}>
       <CardActionArea onClick={onClick}>

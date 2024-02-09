@@ -1,13 +1,7 @@
 'use client';
 
 import style from '@/styles/dashboard.module.scss';
-import {
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  styled,
-  useTheme,
-} from '@mui/material';
+import { ListItemButton, ListItemIcon, ListItemText, styled, useTheme } from '@mui/material';
 
 const ListItemIconStyled = styled(ListItemIcon)({
   // minWidth: 2,
@@ -37,9 +31,7 @@ function TopBoard(props: TopBoardProps) {
         {props.items.map((item, i) => {
           return (
             <ListItemButton key={i} href={props.href.at(i) ?? '/'}>
-              <ListItemIconStyled>
-                {props.icons.at(i) ?? <></>}
-              </ListItemIconStyled>
+              <ListItemIconStyled>{props.icons.at(i) ?? <></>}</ListItemIconStyled>
               <ListItemText primary={item} />
             </ListItemButton>
           );

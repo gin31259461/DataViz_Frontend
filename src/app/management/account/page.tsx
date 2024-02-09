@@ -48,11 +48,7 @@ const AccountPage = async () => {
           })}
           <AccountListItemContainer>
             <AccountListItemLeft>
-              <Button
-                sx={{ textTransform: 'none' }}
-                variant="outlined"
-                color="info"
-              >
+              <Button sx={{ textTransform: 'none' }} variant="outlined" color="info">
                 Change Password
               </Button>
             </AccountListItemLeft>
@@ -61,26 +57,19 @@ const AccountPage = async () => {
         </div>
         <div>
           <Typography variant="h5">Connect account</Typography>
-          {['google', 'discord', 'facebook', 'github', 'wkesso'].map(
-            (provider) => {
-              return (
-                <>
-                  <AccountListItem
-                    startIcon={
-                      <Image
-                        src={`/assets/icons/${provider}.ico`}
-                        height={30}
-                        width={30}
-                        alt={provider}
-                      ></Image>
-                    }
-                    provider={provider}
-                  ></AccountListItem>
-                  <Divider />
-                </>
-              );
-            },
-          )}
+          {['google', 'discord', 'facebook', 'github', 'wkesso'].map((provider) => {
+            return (
+              <>
+                <AccountListItem
+                  startIcon={
+                    <Image src={`/assets/icons/${provider}.ico`} height={30} width={30} alt={provider}></Image>
+                  }
+                  provider={provider}
+                ></AccountListItem>
+                <Divider />
+              </>
+            );
+          })}
         </div>
       </Box>
     </ManagementDashBoard>

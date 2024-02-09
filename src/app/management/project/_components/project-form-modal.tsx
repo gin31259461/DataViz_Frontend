@@ -1,12 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
 
 interface ProjectFormDialogProps {
@@ -15,11 +7,7 @@ interface ProjectFormDialogProps {
   onSubmit: (formData: FormData) => Promise<void>;
 }
 
-export default function ProjectFormModal({
-  open,
-  onClose,
-  onSubmit,
-}: ProjectFormDialogProps) {
+export default function ProjectFormModal({ open, onClose, onSubmit }: ProjectFormDialogProps) {
   const [file, setFile] = useState<File | string | null>(null);
   const [name, setName] = useState('');
   const [des, setDes] = useState('');
@@ -79,11 +67,7 @@ export default function ProjectFormModal({
           >
             Cancel
           </Button>
-          <Button
-            sx={{ color: 'inherit' }}
-            onClick={handleSubmit}
-            disabled={file === null || loading}
-          >
+          <Button sx={{ color: 'inherit' }} onClick={handleSubmit} disabled={file === null || loading}>
             {loading ? <CircularProgress color="info" size={20} /> : 'Submit'}
           </Button>
         </DialogActions>

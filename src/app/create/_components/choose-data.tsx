@@ -2,10 +2,7 @@
 
 import AutoCompleteSelect from '@/components/select/auto-complete-select';
 import ObjectTable from '@/components/table/object-table';
-import {
-  BasicColumnTypeMapping,
-  useProjectStore,
-} from '@/hooks/store/use-project-store';
+import { BasicColumnTypeMapping, useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
 import { Box, LinearProgress, Typography } from '@mui/material';
@@ -16,18 +13,12 @@ export default function ChooseData() {
   const allMemberData = trpc.dataObject.getAllMemberData.useQuery(mid);
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const setSelectedDataOID = useProjectStore(
-    (state) => state.setSelectedDataOID,
-  );
-  const setColumnTypesMapping = useProjectStore(
-    (state) => state.setColumnTypeMapping,
-  );
+  const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataOID);
+  const setColumnTypesMapping = useProjectStore((state) => state.setColumnTypeMapping);
   const clearProjectStore = useProjectStore((state) => state.clear);
 
-  const top100FromDataTable =
-    trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectedDataOID);
-  const rowsCountFromDataTable =
-    trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
+  const top100FromDataTable = trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectedDataOID);
+  const rowsCountFromDataTable = trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (top100FromDataTable.data && top100FromDataTable.data.length > 0) {
@@ -40,13 +31,9 @@ export default function ChooseData() {
 
       columns.forEach((col) => {
         const value = top100FromDataTable.data[0][col];
-        if (
-          !isNaN(Date.parse(value)) &&
-          new Date(value).getFullYear() <= new Date().getFullYear()
-        )
+        if (!isNaN(Date.parse(value)) && new Date(value).getFullYear() <= new Date().getFullYear())
           columnTypesMapping['date'].push(col);
-        else if (Number.parseInt(value).toString() == value)
-          columnTypesMapping['number'].push(col);
+        else if (Number.parseInt(value).toString() == value) columnTypesMapping['number'].push(col);
         else columnTypesMapping['string'].push(col);
       });
 
@@ -64,8 +51,7 @@ export default function ChooseData() {
   const dataTableInfo = useMemo(() => {
     return (
       <Typography sx={{ padding: 2 }} variant="h6">
-        Total row : <strong>{rowsCountFromDataTable.data}</strong>, only show
-        top <strong>100</strong> row
+        Total row : <strong>{rowsCountFromDataTable.data}</strong>, only show top <strong>100</strong> row
       </Typography>
     );
   }, [rowsCountFromDataTable]);
@@ -87,22 +73,15 @@ export default function ChooseData() {
             })
             .map((d, i) => d.id.toString() + ' : ' + d.name) ?? []
         }
-        initialValueIndex={
-          allMemberData.data?.findIndex((d) => d.id == selectedDataOID) ?? 0
-        }
+        initialValueIndex={allMemberData.data?.findIndex((d) => d.id == selectedDataOID) ?? 0}
         onChange={handleSelectChange}
         loading={allMemberData.isLoading}
       ></AutoCompleteSelect>
-      {selectedDataOID !== -1 && top100FromDataTable.isLoading && (
-        <LinearProgress color="info" sx={{ top: 10 }} />
-      )}
+      {selectedDataOID !== -1 && top100FromDataTable.isLoading && <LinearProgress color="info" sx={{ top: 10 }} />}
       {top100FromDataTable.data && top100FromDataTable.data.length > 0 && (
         <div>
           {dataTableInfo}
-          <ObjectTable
-            headerID="selected-data-table"
-            data={top100FromDataTable.data}
-          />
+          <ObjectTable headerID="selected-data-table" data={top100FromDataTable.data} />
         </div>
       )}
     </Box>

@@ -1,13 +1,7 @@
 'use client';
 
 import { ProjectSchema } from '@/server/api/routers/project';
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Card, CardActionArea, CardContent, Typography, useTheme } from '@mui/material';
 
 interface ProjectCardProps {
   project?: ProjectSchema;
@@ -15,19 +9,13 @@ interface ProjectCardProps {
   children?: React.ReactNode;
 }
 
-export default function ProjectCard({
-  project,
-  active = false,
-  children,
-}: ProjectCardProps) {
+export default function ProjectCard({ project, active = false, children }: ProjectCardProps) {
   const theme = useTheme();
 
   return (
     <Card
       sx={{
-        border: active
-          ? '2px solid ' + theme.palette.info.main
-          : theme.palette.background.paper,
+        border: active ? '2px solid ' + theme.palette.info.main : theme.palette.background.paper,
       }}
     >
       <CardActionArea sx={{ height: 145 }}>
@@ -35,11 +23,7 @@ export default function ProjectCard({
           <Typography gutterBottom variant="h5" component="div">
             {project ? project.title : children}
           </Typography>
-          <Typography
-            sx={{ height: 100, textOverflow: 'ellipsis' }}
-            variant="body2"
-            color="text.secondary"
-          >
+          <Typography sx={{ height: 100, textOverflow: 'ellipsis' }} variant="body2" color="text.secondary">
             {project ? project.des : children}
           </Typography>
         </CardContent>

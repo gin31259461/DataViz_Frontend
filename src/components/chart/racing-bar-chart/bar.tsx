@@ -22,14 +22,7 @@ const Bar = ({ color, x, y, width, height, name, value }: BarProps) => {
     <Fragment>
       {name && (
         <Group>
-          <VisxBar
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            fill={color}
-            style={{ opacity: 0.8 }}
-          />
+          <VisxBar x={x} y={y} width={width} height={height} fill={color} style={{ opacity: 0.8 }} />
           <VisxText
             verticalAnchor="middle"
             textAnchor="end"

@@ -1,13 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Typography } from '@mui/material';
 
 interface ShowDataModalProps {
   open: boolean;
@@ -18,14 +10,7 @@ interface ShowDataModalProps {
   children: React.ReactNode;
 }
 
-export default function ShowDataModal({
-  open,
-  onClose,
-  title,
-  description,
-  dataInfo,
-  children,
-}: ShowDataModalProps) {
+export default function ShowDataModal({ open, onClose, title, description, dataInfo, children }: ShowDataModalProps) {
   return (
     <Dialog open={open} onClose={onClose} fullScreen>
       <DialogTitle>

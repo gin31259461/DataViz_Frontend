@@ -1,10 +1,4 @@
-import {
-  Alert,
-  AlertColor,
-  Snackbar,
-  SnackbarProps,
-  Typography,
-} from '@mui/material';
+import { Alert, AlertColor, Snackbar, SnackbarProps, Typography } from '@mui/material';
 
 interface MessageSnackbarProps extends Omit<SnackbarProps, 'open'> {
   open: boolean;

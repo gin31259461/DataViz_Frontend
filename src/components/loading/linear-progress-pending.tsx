@@ -4,8 +4,6 @@ interface LinearProgressPendingProps {
   isPending?: boolean;
 }
 
-export default function LinearProgressPending(
-  props: LinearProgressPendingProps,
-) {
+export default function LinearProgressPending(props: LinearProgressPendingProps) {
   return <>{props.isPending && <LinearProgress color="info" />}</>;
 }

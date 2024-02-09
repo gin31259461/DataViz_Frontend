@@ -6,10 +6,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import React from 'react';
-import {
-  CommandModalContext,
-  useCommandModal,
-} from '../modal/command-modal/provider';
+import { CommandModalContext, useCommandModal } from '../modal/command-modal/provider';
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -32,9 +29,7 @@ export function Provider({ children, session }: ProviderProps) {
           <CssBaseline />
           <div>
             <SessionProvider session={session} basePath="/api/auth">
-              <CommandModalContext.Provider value={ControlCommandModal}>
-                {children}
-              </CommandModalContext.Provider>
+              <CommandModalContext.Provider value={ControlCommandModal}>{children}</CommandModalContext.Provider>
             </SessionProvider>
           </div>
         </ThemeProvider>

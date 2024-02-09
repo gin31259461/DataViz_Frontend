@@ -10,11 +10,7 @@ interface NavbarMenuProps {
   onClose: () => void;
 }
 
-export const NavbarMenu: React.FC<NavbarMenuProps> = ({
-  className,
-  onClose,
-  children,
-}) => {
+export const NavbarMenu: React.FC<NavbarMenuProps> = ({ className, onClose, children }) => {
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
 
@@ -22,8 +18,7 @@ export const NavbarMenu: React.FC<NavbarMenuProps> = ({
     <NavbarMenuContainer
       className={className}
       style={{
-        backgroundColor:
-          theme.palette.mode === 'dark' ? colors.primary[500] : '#fcfcfc',
+        backgroundColor: theme.palette.mode === 'dark' ? colors.primary[500] : '#fcfcfc',
         borderBottom: useSplitLineStyle(),
       }}
       onClick={() => {
@@ -43,11 +38,7 @@ interface MenuItemProps {
   onClick?: () => void;
 }
 
-export const NavbarMenuItem: React.FC<MenuItemProps> = ({
-  href,
-  onClick,
-  children,
-}) => {
+export const NavbarMenuItem: React.FC<MenuItemProps> = ({ href, onClick, children }) => {
   return (
     <li>
       <Link
@@ -102,10 +93,7 @@ interface NavbarMenuShortcutItemProps {
   href: string;
 }
 
-export const NavbarMenuShortcutItem: React.FC<NavbarMenuShortcutItemProps> = ({
-  children,
-  href,
-}) => {
+export const NavbarMenuShortcutItem: React.FC<NavbarMenuShortcutItemProps> = ({ children, href }) => {
   return (
     <Link
       className={styleStore['link']}
@@ -128,19 +116,13 @@ interface NavbarMenuButtonProps {
   active?: boolean;
 }
 
-export const NavbarMenuButton: React.FC<NavbarMenuButtonProps> = ({
-  children,
-  href,
-  active,
-}) => {
+export const NavbarMenuButton: React.FC<NavbarMenuButtonProps> = ({ children, href, active }) => {
   const theme = useTheme();
 
   const StyledNavMenuButton = styled(Button)({
     borderRadius: 64,
     backgroundColor: active ? theme.palette.grey[300] : 'inherit',
-    color: active
-      ? theme.palette.getContrastText(theme.palette.grey[300])
-      : 'inherit',
+    color: active ? theme.palette.getContrastText(theme.palette.grey[300]) : 'inherit',
     textTransform: 'none',
     padding: '4px 8px',
   });

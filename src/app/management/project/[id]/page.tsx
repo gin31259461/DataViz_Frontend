@@ -16,32 +16,21 @@ function ProjectPage() {
   const currentIndex = 0;
   const projectId = parseInt(useParams().id as string);
   const observations = trpc.project.getProjectObservations.useQuery(projectId);
-  const args = trpc.project.getArgsFromObservations.useQuery(
-    observations.data && observations.data.map((d) => d.CID),
-  );
+  const args = trpc.project.getArgsFromObservations.useQuery(observations.data && observations.data.map((d) => d.CID));
 
-  const arg: ArgSchema = JSON.parse(
-    (args.data && args.data[currentIndex].CDes) ?? '{}',
-  );
+  const arg: ArgSchema = JSON.parse((args.data && args.data[currentIndex].CDes) ?? '{}');
 
-  const dataContent = trpc.dataObject.getContentFromDataTable.useQuery(
-    arg.dataId,
-  );
+  const dataContent = trpc.dataObject.getContentFromDataTable.useQuery(arg.dataId);
 
   return (
-    <Container
-      sx={{ paddingTop: 10, gap: 3, display: 'flex', flexDirection: 'column' }}
-    >
+    <Container sx={{ paddingTop: 10, gap: 3, display: 'flex', flexDirection: 'column' }}>
       {dataContent.data && args.data ? (
         <>
           <Typography variant="h3" sx={{ textAlign: 'center' }}>
             {args.data[currentIndex].EName}
           </Typography>
           <RacingBarChartEngine
-            data={convertToRacingBarChartData(
-              dataContent.data,
-              arg.dataArgs as DataArgsProps<RacingBarChartMapping>,
-            )}
+            data={convertToRacingBarChartData(dataContent.data, arg.dataArgs as DataArgsProps<RacingBarChartMapping>)}
             args={arg.chartArgs as RacingBarChartArgs}
           />
           {/* <Button onClick={() => navbar.toggleOpen()}>Toggle</Button> */}

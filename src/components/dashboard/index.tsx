@@ -11,17 +11,9 @@ interface DashboardProps {
 export default function Dashboard(props: DashboardProps) {
   return (
     <div>
-      <TopBoard
-        href={props.navigatorHref}
-        items={props.navigatorItems}
-        icons={props.navigatorIcons}
-      />
+      <TopBoard href={props.navigatorHref} items={props.navigatorItems} icons={props.navigatorIcons} />
       <div style={{ display: 'flex', position: 'relative' }}>
-        <LeftBoard
-          href={props.navigatorHref}
-          items={props.navigatorItems}
-          icons={props.navigatorIcons}
-        />
+        <LeftBoard href={props.navigatorHref} items={props.navigatorItems} icons={props.navigatorIcons} />
         <main style={{ width: '100%' }}>{props.children}</main>
       </div>
     </div>

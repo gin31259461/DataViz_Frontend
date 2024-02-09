@@ -1,21 +1,10 @@
 import { useTheme } from '@mui/material';
-import {
-  defaultStyles,
-  useTooltipInPortal,
-  useTooltip as useVisxTooltip,
-} from '@visx/tooltip';
+import { defaultStyles, useTooltipInPortal, useTooltip as useVisxTooltip } from '@visx/tooltip';
 
 export const useTooltip = <T,>() => {
   const theme = useTheme();
 
-  const {
-    tooltipOpen,
-    tooltipLeft,
-    tooltipTop,
-    tooltipData,
-    hideTooltip,
-    showTooltip,
-  } = useVisxTooltip<T>();
+  const { tooltipOpen, tooltipLeft, tooltipTop, tooltipData, hideTooltip, showTooltip } = useVisxTooltip<T>();
 
   const { containerRef, TooltipInPortal } = useTooltipInPortal({
     // TooltipInPortal is rendered in a separate child of <body /> and positioned

@@ -4,10 +4,7 @@ import AxisTop, { AxisTopProps } from './axis-top';
 
 const AnimatedAxisTop = animated(AxisTop);
 
-const RacingAxisTop = forwardRef(function ForwardRacingAxisTop(
-  { domainMax, xMax, height }: AxisTopProps,
-  ref,
-) {
+const RacingAxisTop = forwardRef(function ForwardRacingAxisTop({ domainMax, xMax, height }: AxisTopProps, ref) {
   const prevDomainMaxRef = useRef(domainMax);
   const prevDomainMax = prevDomainMaxRef.current;
   const api = useSpringRef();

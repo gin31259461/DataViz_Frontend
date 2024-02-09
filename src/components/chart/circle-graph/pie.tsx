@@ -9,9 +9,7 @@ interface PieProps {
   innerRadius?: number;
   cornerRadius?: number;
   padAngle?: number;
-  children?: (
-    provided: ProvidedProps<CircleGraphDataInstance>,
-  ) => React.ReactNode;
+  children?: (provided: ProvidedProps<CircleGraphDataInstance>) => React.ReactNode;
 }
 
 export const Pie = ({

@@ -1,9 +1,5 @@
 import { BarStackHorizontal, BarStack as VisxBarStack } from '@visx/shape';
-import {
-  Accessor,
-  PositionScale,
-  BarStack as VisxBarStackType,
-} from '@visx/shape/lib/types';
+import { Accessor, PositionScale, BarStack as VisxBarStackType } from '@visx/shape/lib/types';
 
 type BarStackVerticalProps = {
   data: any;
@@ -16,38 +12,15 @@ type BarStackVerticalProps = {
   mode: 'horizontal' | 'vertical';
 };
 
-export const BarStack = ({
-  data,
-  keys,
-  x,
-  xScale,
-  yScale,
-  colorScale,
-  children,
-  mode,
-}: BarStackVerticalProps) => {
+export const BarStack = ({ data, keys, x, xScale, yScale, colorScale, children, mode }: BarStackVerticalProps) => {
   return (
     <>
       {mode == 'vertical' ? (
-        <VisxBarStack
-          data={data}
-          keys={keys}
-          xScale={xScale}
-          yScale={yScale}
-          x={x}
-          color={colorScale}
-        >
+        <VisxBarStack data={data} keys={keys} xScale={xScale} yScale={yScale} x={x} color={colorScale}>
           {children}
         </VisxBarStack>
       ) : (
-        <BarStackHorizontal
-          data={data}
-          keys={keys}
-          xScale={xScale}
-          yScale={yScale}
-          y={x}
-          color={colorScale}
-        >
+        <BarStackHorizontal data={data} keys={keys} xScale={xScale} yScale={yScale} y={x} color={colorScale}>
           {children}
         </BarStackHorizontal>
       )}

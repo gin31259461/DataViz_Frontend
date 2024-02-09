@@ -1,10 +1,7 @@
 'use client';
 
 import { useProjectStore } from '@/hooks/store/use-project-store';
-import Stepper, {
-  CustomStepperContext,
-  useCustomStepperAction,
-} from '../_components/stepper';
+import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_components/stepper';
 
 interface StepperProviderProps {
   stepLength: number;

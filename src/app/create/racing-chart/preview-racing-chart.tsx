@@ -3,20 +3,14 @@ import RacingBarChartEngine, {
   RacingBarChartArgs,
   RacingBarChartMapping,
 } from '@/components/chart-engine/racing-bar-chart-engine';
-import {
-  DataArgsProps,
-  useProjectStore,
-} from '@/hooks/store/use-project-store';
+import { DataArgsProps, useProjectStore } from '@/hooks/store/use-project-store';
 import { trpc } from '@/server/trpc';
 import { Container } from '@mui/material';
 import { useEffect } from 'react';
 
 function PreviewRacingChart() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const selectedData =
-    trpc.dataObject.getContentFromDataTable.useQuery<
-      { [index: string]: any }[]
-    >(selectedDataOID);
+  const selectedData = trpc.dataObject.getContentFromDataTable.useQuery(selectedDataOID);
   const dataArgs = useProjectStore<DataArgsProps<RacingBarChartMapping>>(
     (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>,
   );
@@ -30,8 +24,8 @@ function PreviewRacingChart() {
       chartMargin: {
         top: 30,
         right: 220,
-        bottom: 150,
-        left: 200,
+        bottom: 130,
+        left: 220,
       },
       chartHeight: 500,
     });

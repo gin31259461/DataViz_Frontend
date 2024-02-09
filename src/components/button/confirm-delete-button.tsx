@@ -13,11 +13,7 @@ interface ConfirmDeleteButtonProps {
   onCancel?: () => void;
 }
 
-export default function ConfirmDeleteButton({
-  deleteIDs: deleteOIDs,
-  onConfirm,
-  onCancel,
-}: ConfirmDeleteButtonProps) {
+export default function ConfirmDeleteButton({ deleteIDs: deleteOIDs, onConfirm, onCancel }: ConfirmDeleteButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -49,11 +45,7 @@ export default function ConfirmDeleteButton({
         <DialogTitle>Delete?</DialogTitle>
         <DialogContent>Are you sure you want to delete this?</DialogContent>
         <DialogActions>
-          <Button
-            sx={{ color: 'inherit' }}
-            disabled={loading}
-            onClick={handleCancel}
-          >
+          <Button sx={{ color: 'inherit' }} disabled={loading} onClick={handleCancel}>
             Cancel
           </Button>
           <Button sx={{ color: 'inherit' }} onClick={handleConfirm}>

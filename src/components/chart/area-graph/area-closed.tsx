@@ -12,16 +12,7 @@ type AreaClosedProps = {
   fill?: string;
 } & Pick<React.ComponentProps<typeof VisxAreaClosed>, 'curve'>;
 
-export const AreaClosed = ({
-  data,
-  x,
-  y,
-  yScale,
-  strokeWidth = 1,
-  stroke,
-  fill = 'none',
-  curve,
-}: AreaClosedProps) => {
+export const AreaClosed = ({ data, x, y, yScale, strokeWidth = 1, stroke, fill = 'none', curve }: AreaClosedProps) => {
   return (
     <VisxAreaClosed
       data={data}

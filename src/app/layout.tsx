@@ -1,4 +1,4 @@
-import { CommandModal } from '@/components/modal/command-modal';
+import CommandModal from '@/components/modal/command-modal';
 import { NavbarProvider } from '@/components/navbar/navbar-provider';
 import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';

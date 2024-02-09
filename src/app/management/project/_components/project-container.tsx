@@ -4,7 +4,7 @@ import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { trpc } from '@/server/trpc';
-import convertOpacityToHexString from '@/utils/function';
+import { convertOpacityNumberToHexString } from '@/utils/color';
 import AddIcon from '@mui/icons-material/AddOutlined';
 import GridViewIcon from '@mui/icons-material/GridViewOutlined';
 import ListIcon from '@mui/icons-material/ListOutlined';
@@ -46,9 +46,7 @@ export default function ProjectContainer() {
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
 
   const deleteProject = trpc.project.deleteProject.useMutation();
-  const projects = trpc.project.getAllProject.useQuery(
-    session.data ? parseInt(session.data.user.id) : undefined,
-  );
+  const projects = trpc.project.getAllProject.useQuery(session.data ? parseInt(session.data.user.id) : undefined);
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);
@@ -84,10 +82,7 @@ export default function ProjectContainer() {
             ></CardButton>
           </Grid>
 
-          <Dialog
-            open={newProjectDialogOpen}
-            onClose={() => setNewProjectDialogOpen(false)}
-          >
+          <Dialog open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
             <DialogTitle>Create new project</DialogTitle>
             <DialogContent
               sx={{
@@ -114,20 +109,11 @@ export default function ProjectContainer() {
           </Dialog>
         </Grid>
 
-        <Grid
-          container
-          height={50}
-          justifyContent="flex-end"
-          alignItems={'flex-end'}
-        >
+        <Grid container height={50} justifyContent="flex-end" alignItems={'flex-end'}>
           <div style={{ marginRight: 10 }}>
             <FormControl variant="standard">
               <InputLabel>Sort by: </InputLabel>
-              <Select
-                sx={{ border: 'none' }}
-                value={sortTarget}
-                onChange={handleSortChange}
-              >
+              <Select sx={{ border: 'none' }} value={sortTarget} onChange={handleSortChange}>
                 <MenuItem value="name">Name</MenuItem>
                 <MenuItem value="dateCreated">Date created</MenuItem>
                 <MenuItem value="lastViewed">Last viewed</MenuItem>
@@ -135,27 +121,13 @@ export default function ProjectContainer() {
             </FormControl>
           </div>
           <div style={{ marginRight: 5 }}>
-            <IconCardButton
-              title="Grid view"
-              onClick={() => setViewMode('grid')}
-            >
-              {viewMode === 'list' ? (
-                <GridViewIcon />
-              ) : (
-                <GridViewIcon color="secondary" />
-              )}
+            <IconCardButton title="Grid view" onClick={() => setViewMode('grid')}>
+              {viewMode === 'list' ? <GridViewIcon /> : <GridViewIcon color="secondary" />}
             </IconCardButton>
           </div>
           <div>
-            <IconCardButton
-              title="List view"
-              onClick={() => setViewMode('list')}
-            >
-              {viewMode === 'grid' ? (
-                <ListIcon />
-              ) : (
-                <ListIcon color="secondary" />
-              )}
+            <IconCardButton title="List view" onClick={() => setViewMode('list')}>
+              {viewMode === 'grid' ? <ListIcon /> : <ListIcon color="secondary" />}
             </IconCardButton>
           </div>
         </Grid>
@@ -189,10 +161,7 @@ export default function ProjectContainer() {
                         id={project.id}
                       >
                         <div onMouseDown={() => setActiveID(project.id)}>
-                          <ProjectCard
-                            active={activeID === project.id ? true : false}
-                            project={project}
-                          />
+                          <ProjectCard active={activeID === project.id ? true : false} project={project} />
                         </div>
                       </ContextMenu>
                     </Grid>
@@ -208,40 +177,24 @@ export default function ProjectContainer() {
                     key={project.id}
                     sx={{
                       '&:hover': {
-                        backgroundColor:
-                          activeID === project.id
-                            ? 'none'
-                            : theme.palette.action.hover,
+                        backgroundColor: activeID === project.id ? 'none' : theme.palette.action.hover,
                       },
                       backgroundColor:
                         activeID === project.id
-                          ? theme.palette.info.main +
-                            convertOpacityToHexString(15)
+                          ? theme.palette.info.main + convertOpacityNumberToHexString(15)
                           : 'none',
                     }}
                   >
                     <TableCell padding="none">
-                      <ContextMenu
-                        onDelete={async () => await onDelete(project.id)}
-                        id={project.id}
-                      >
-                        <div
-                          style={{ height: 50, padding: 16 }}
-                          onMouseDown={() => setActiveID(project.id)}
-                        >
+                      <ContextMenu onDelete={async () => await onDelete(project.id)} id={project.id}>
+                        <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
                           {project.title}
                         </div>
                       </ContextMenu>
                     </TableCell>
                     <TableCell padding="none">
-                      <ContextMenu
-                        onDelete={async () => await onDelete(project.id)}
-                        id={project.id}
-                      >
-                        <div
-                          style={{ height: 50, padding: 16 }}
-                          onMouseDown={() => setActiveID(project.id)}
-                        >
+                      <ContextMenu onDelete={async () => await onDelete(project.id)} id={project.id}>
+                        <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
                           {new Date(project.lastModifiedDT).toDateString()}
                         </div>
                       </ContextMenu>

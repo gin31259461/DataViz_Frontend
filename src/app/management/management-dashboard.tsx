@@ -27,11 +27,7 @@ interface ManagementDashBoardProps {
 
 export default function ManagementDashBoard(props: ManagementDashBoardProps) {
   return (
-    <Dashboard
-      navigatorHref={href}
-      navigatorIcons={icons}
-      navigatorItems={items}
-    >
+    <Dashboard navigatorHref={href} navigatorIcons={icons} navigatorItems={items}>
       {props.children}
     </Dashboard>
   );

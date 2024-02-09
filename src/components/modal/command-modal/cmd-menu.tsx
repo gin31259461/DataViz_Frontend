@@ -29,39 +29,23 @@ export const NavigationGroup = () => {
   const selectedHandler = usePageItemSelected();
   return (
     <Command.Group heading="Navigation">
-      <CommandModalItem
-        value="home"
-        shortcut="G H"
-        onSelect={() => selectedHandler('/')}
-      >
+      <CommandModalItem value="home" shortcut="G H" onSelect={() => selectedHandler('/')}>
         <HomeOutlinedIcon />
         Home
       </CommandModalItem>
-      <CommandModalItem
-        value="data"
-        onSelect={() => selectedHandler('/management/data')}
-      >
+      <CommandModalItem value="data" onSelect={() => selectedHandler('/management/data')}>
         <DatasetOutlinedIcon />
         Data
       </CommandModalItem>
-      <CommandModalItem
-        value="project"
-        onSelect={() => selectedHandler('/management/project')}
-      >
+      <CommandModalItem value="project" onSelect={() => selectedHandler('/management/project')}>
         <ShowChartOutlinedIcon />
         Project
       </CommandModalItem>
-      <CommandModalItem
-        value="profile"
-        onSelect={() => selectedHandler('/management/profile')}
-      >
+      <CommandModalItem value="profile" onSelect={() => selectedHandler('/management/profile')}>
         <AccountBoxOutlinedIcon />
         Profile
       </CommandModalItem>
-      <CommandModalItem
-        value="settings"
-        onSelect={() => selectedHandler('/management/settings')}
-      >
+      <CommandModalItem value="settings" onSelect={() => selectedHandler('/management/settings')}>
         <SettingsOutlinedIcon />
         Settings
       </CommandModalItem>
@@ -78,21 +62,12 @@ export const ProjectGroup = () => {
       <CommandModalItem
         value="search project"
         shortcut="S P"
-        onSelect={() =>
-          ControlCommandModal.setPages([
-            ...ControlCommandModal.pages,
-            'project',
-          ])
-        }
+        onSelect={() => ControlCommandModal.setPages([...ControlCommandModal.pages, 'project'])}
       >
         <SearchOutlinedIcon />
         Search Project
       </CommandModalItem>
-      <CommandModalItem
-        value="new project"
-        shortcut="N P"
-        onSelect={() => selectedHandler('/management/project')}
-      >
+      <CommandModalItem value="new project" shortcut="N P" onSelect={() => selectedHandler('/management/project')}>
         <AddOutlinedIcon />
         New Project
       </CommandModalItem>

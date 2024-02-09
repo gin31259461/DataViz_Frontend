@@ -3,16 +3,7 @@
 import style from '@/styles/dashboard.module.scss';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import {
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  useTheme,
-} from '@mui/material';
+import { Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { useState } from 'react';
 
 interface LeftBoardProps {

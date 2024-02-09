@@ -1,6 +1,6 @@
 'use client';
 
-import { omit } from '@/utils/obj';
+import { omit } from '@/utils/object';
 import { useTheme } from '@mui/material';
 import { localPoint } from '@visx/event';
 import { Grid } from '@visx/grid';
@@ -120,11 +120,7 @@ export default function BarGraph({
       0,
       mode === 'stack'
         ? Math.max(...totals) * yDomainMaxScale
-        : Math.max(
-            ...data.map((d) =>
-              Math.max(...keys.map((key) => Number(d.group[key]))),
-            ),
-          ) * yDomainMaxScale,
+        : Math.max(...data.map((d) => Math.max(...keys.map((key) => Number(d.group[key]))))) * yDomainMaxScale,
     ],
     nice: true,
   });
@@ -229,10 +225,7 @@ export default function BarGraph({
                 >
                   {(barGroups) => {
                     return barGroups.map((barGroup, i) => (
-                      <Group
-                        key={`bar-group-${barGroup.index}-${barGroup.y0}`}
-                        top={barGroup.y0}
-                      >
+                      <Group key={`bar-group-${barGroup.index}-${barGroup.y0}`} top={barGroup.y0}>
                         {barGroup.bars.map((bar) => (
                           <rect
                             key={`bar-stack-${barGroup.index}-${bar.index}`}
@@ -242,8 +235,7 @@ export default function BarGraph({
                             width={bar.width}
                             fill={bar.color}
                             onClick={() => {
-                              if (events)
-                                alert(`clicked: ${JSON.stringify(bar)}`);
+                              if (events) alert(`clicked: ${JSON.stringify(bar)}`);
                             }}
                             onMouseLeave={() => {
                               tooltipTimeout = window.setTimeout(() => {
@@ -283,10 +275,7 @@ export default function BarGraph({
                 >
                   {(barGroups) => {
                     return barGroups.map((barGroup, i) => (
-                      <Group
-                        key={`bar-group-${barGroup.index}-${barGroup.x0}`}
-                        left={barGroup.x0}
-                      >
+                      <Group key={`bar-group-${barGroup.index}-${barGroup.x0}`} left={barGroup.x0}>
                         {barGroup.bars.map((bar) => (
                           <rect
                             key={`bar-stack-${barGroup.index}-${bar.index}`}
@@ -296,8 +285,7 @@ export default function BarGraph({
                             width={bar.width}
                             fill={bar.color}
                             onClick={() => {
-                              if (events)
-                                alert(`clicked: ${JSON.stringify(bar)}`);
+                              if (events) alert(`clicked: ${JSON.stringify(bar)}`);
                             }}
                             onMouseLeave={() => {
                               tooltipTimeout = window.setTimeout(() => {
@@ -327,30 +315,14 @@ export default function BarGraph({
             </>
           )}
         </Group>
-        {axisBottom && (
-          <AxisBottom
-            top={yMax + margin.top}
-            left={margin.left}
-            scale={horizontal ? yScale : xScale}
-          />
-        )}
-        {axisLeft && (
-          <AxisLeft
-            top={margin.top}
-            left={margin.left}
-            scale={horizontal ? xScale : yScale}
-          />
-        )}
+        {axisBottom && <AxisBottom top={yMax + margin.top} left={margin.left} scale={horizontal ? yScale : xScale} />}
+        {axisLeft && <AxisLeft top={margin.top} left={margin.left} scale={horizontal ? xScale : yScale} />}
       </svg>
 
       {legend && <Legend top={margin.top / 2} colorScale={colorScale} />}
 
       {tooltipOpen && tooltipData && (
-        <TooltipInPortal
-          top={tooltipTop}
-          left={tooltipLeft}
-          style={tooltipStyles}
-        >
+        <TooltipInPortal top={tooltipTop} left={tooltipLeft} style={tooltipStyles}>
           <div style={{ color: colorScale(tooltipData.key) }}>
             <strong>{tooltipData.key}</strong>
           </div>

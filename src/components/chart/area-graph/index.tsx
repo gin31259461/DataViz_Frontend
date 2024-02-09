@@ -54,9 +54,7 @@ interface AreaGraphProps {
 const defaultMargin = { top: 0, right: 10, bottom: 10, left: 10 };
 const getDate = (d: AreaGraphDataInstance) => new Date(d.date);
 const getValue = (d: AreaGraphDataInstance) => d.value;
-const bisectDate = bisector<AreaGraphDataInstance, Date>(
-  (d) => new Date(d.date),
-).left;
+const bisectDate = bisector<AreaGraphDataInstance, Date>((d) => new Date(d.date)).left;
 
 export default function AreaGraph({
   margin = defaultMargin,
@@ -71,13 +69,7 @@ export default function AreaGraph({
   height,
 }: AreaGraphProps) {
   const theme = useTheme();
-  const {
-    showTooltip,
-    hideTooltip,
-    tooltipData,
-    tooltipTop = 0,
-    tooltipLeft = 0,
-  } = useTooltip<AreaGraphTooltipData>();
+  const { showTooltip, hideTooltip, tooltipData, tooltipTop = 0, tooltipLeft = 0 } = useTooltip<AreaGraphTooltipData>();
 
   if (!width || !height) return null;
 
@@ -105,9 +97,7 @@ export default function AreaGraph({
   if (!fillColor) fillColor = theme.palette.info.main;
 
   // tooltip handler
-  const handleTooltip = (
-    event: React.TouchEvent<SVGRectElement> | React.MouseEvent<SVGRectElement>,
-  ) => {
+  const handleTooltip = (event: React.TouchEvent<SVGRectElement> | React.MouseEvent<SVGRectElement>) => {
     const { x } = localPoint(event) || { x: 0 };
     const x0 = dateScale.invert(x);
     const index = bisectDate(data, x0, 1);
@@ -115,11 +105,7 @@ export default function AreaGraph({
     const d1 = data[index];
     let d = d0;
     if (d1 && getDate(d1)) {
-      d =
-        x0.valueOf() - getDate(d0).valueOf() >
-        getDate(d1).valueOf() - x0.valueOf()
-          ? d1
-          : d0;
+      d = x0.valueOf() - getDate(d0).valueOf() > getDate(d1).valueOf() - x0.valueOf() ? d1 : d0;
     }
     showTooltip({
       tooltipData: d,
@@ -138,12 +124,7 @@ export default function AreaGraph({
   return (
     <div style={{ position: 'relative' }}>
       <svg width={width} height={height}>
-        <LinearGradient
-          id="area-gradient"
-          from={fillColor}
-          to={fillColor}
-          toOpacity={0.1}
-        />
+        <LinearGradient id="area-gradient" from={fillColor} to={fillColor} toOpacity={0.1} />
         <Group>
           {grid && (
             <>
@@ -189,16 +170,8 @@ export default function AreaGraph({
             ></LinePath>
           )}
         </Group>
-        {axisLeft && (
-          <AxisLeft top={margin.top} left={margin.left} scale={valueScale} />
-        )}
-        {axisBottom && (
-          <AxisBottom
-            top={margin.top + yMax}
-            left={margin.left}
-            scale={dateScale}
-          />
-        )}
+        {axisLeft && <AxisLeft top={margin.top} left={margin.left} scale={valueScale} />}
+        {axisBottom && <AxisBottom top={margin.top + yMax} left={margin.left} scale={dateScale} />}
         <Group>
           <Bar
             x={margin.left}
@@ -248,11 +221,7 @@ export default function AreaGraph({
       </svg>
       {tooltipData && (
         <div>
-          <VisxTooltipWithBounds
-            top={tooltipTop - 12}
-            left={tooltipLeft + 12}
-            style={tooltipStyles}
-          >
+          <VisxTooltipWithBounds top={tooltipTop - 12} left={tooltipLeft + 12} style={tooltipStyles}>
             {`${getValue(tooltipData)}`}
           </VisxTooltipWithBounds>
           <VisxTooltip

@@ -17,11 +17,7 @@ export const Legend = (props: LegendProps) => {
         fontSize: '14px',
       }}
     >
-      <LegendOrdinal
-        scale={props.colorScale}
-        direction="row"
-        labelMargin="0 15px 0 0"
-      />
+      <LegendOrdinal scale={props.colorScale} direction="row" labelMargin="0 15px 0 0" />
     </div>
   );
 };

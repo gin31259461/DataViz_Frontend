@@ -1,12 +1,4 @@
-import {
-  Checkbox,
-  FormControl,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
 
 // interface Option {
@@ -42,10 +34,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ options, onChange }) => {
           .sort((a, b) => Number(a) - Number(b))
           .map((option) => (
             <MenuItem key={option} value={option}>
-              <Checkbox
-                color="info"
-                checked={selectedValues.includes(option)}
-              />
+              <Checkbox color="info" checked={selectedValues.includes(option)} />
               <ListItemText primary={option} />
             </MenuItem>
           ))}

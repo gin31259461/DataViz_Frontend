@@ -22,17 +22,12 @@ function CreateRacingBarChartPage() {
   const chartType = useProjectStore((state) => state.chartType);
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const dataArgs = useProjectStore((state) => state.dataArgs);
+  const clear = useProjectStore((state) => state.clear);
   const lastProjectId = trpc.project.getLastProjectId.useQuery(mid);
   const [done, setDone] = useState(false);
 
   const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];
   const stepperValue = useCustomStepperAction(steps.length);
-  const components = [
-    <ChooseData key={0} />,
-    <Configuration key={1} />,
-    <PreviewRacingChart key={2} />,
-    <Complete key={3} />,
-  ];
 
   const backButtonDisabled = () => {
     if (stepperValue.activeStep !== 0) return false;
@@ -61,6 +56,7 @@ function CreateRacingBarChartPage() {
       });
 
       await lastProjectId.refetch();
+      clear();
     }
   };
 
@@ -76,14 +72,18 @@ function CreateRacingBarChartPage() {
     <CustomStepperContext.Provider value={stepperValue}>
       <Stepper
         steps={steps}
-        components={components}
         backButtonDisabled={backButtonDisabled}
         nextButtonDisabled={nextButtonDisabled}
         callback={async () => {
           await onConfirm();
           setDone(true);
         }}
-      />
+      >
+        <ChooseData />
+        <Configuration />
+        <PreviewRacingChart />
+        <Complete />
+      </Stepper>
     </CustomStepperContext.Provider>
   );
 }

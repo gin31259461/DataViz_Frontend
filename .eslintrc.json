@@ -12,10 +12,12 @@
     "commonjs": true,
     "es6": true,
     "node": true,
-    "es2020": true
+    "es2024": true
     // "jest": true
   },
   "plugins": [
+    "react",
+    "react-hooks",
     "prettier",
     "@typescript-eslint"
   ],
@@ -24,11 +26,22 @@
     "dist"
   ],
   "parserOptions": {
+    "requireConfigFile": false,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
     "babelOptions": {
       "presets": [
         "next/babel"
       ]
     }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/internal-regex": "^next/"
   },
   "rules": {
     "array-callback-return": "warn",

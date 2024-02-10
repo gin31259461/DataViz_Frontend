@@ -2,29 +2,18 @@
 
 import LinearProgressPending from '@/components/loading/linear-progress-pending';
 import { useProjectStore } from '@/hooks/store/use-project-store';
-import { Container } from '@mui/material';
-import { useEffect, useState, useTransition } from 'react';
+import { trpc } from '@/server/trpc';
 
 function ExploreData() {
-  // const [dataInfo, setDataInfo] = useState<any>(null);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const [isPending, startFetchDataInfo] = useTransition();
-  const [isLoading, setIsLoading] = useState(true);
+  const dataInfo = trpc.analysis.getDataInfo.useQuery(selectedDataOID);
 
-  useEffect(() => {
-    if (selectedDataOID) {
-      startFetchDataInfo(async () => {
-        // const dataInfo = await getDataInfo(selectedDataOID.toString());
-        setIsLoading(false);
-        // setDataInfo(dataInfo);
-      });
-    }
-  }, [selectedDataOID]);
+  console.log(dataInfo.data);
 
   return (
-    <Container>
-      <LinearProgressPending isPending={isPending || isLoading} />
-    </Container>
+    <>
+      <LinearProgressPending isPending={dataInfo.isLoading} />
+    </>
   );
 }
 

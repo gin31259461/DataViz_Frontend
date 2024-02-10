@@ -6,14 +6,15 @@ import StepperProvider from './provider';
 
 async function LiveAnalysisPage() {
   const steps = ['choose data', 'explore data', 'path analysis', 'process analysis', 'infographic', 'done'];
-  const components = [
-    <ChooseData key={0} />,
-    <ExploreData key={1} />,
-    <PathAnalysis key={2} />,
-    <ProcessAnalysis key={3} />,
-  ];
 
-  return <StepperProvider stepLength={6} steps={steps} components={components}></StepperProvider>;
+  return (
+    <StepperProvider stepLength={6} steps={steps}>
+      <ChooseData />
+      <ExploreData />
+      <PathAnalysis />
+      <ProcessAnalysis />
+    </StepperProvider>
+  );
 }
 
 export default LiveAnalysisPage;

@@ -42,6 +42,7 @@ export default function Navbar(props: NavbarProps) {
       }}
     >
       <div className={style['navbar-container']}>
+        <div style={{ width: 20 }}></div>
         <div>
           <Link onClick={handleClose} href={'/'} className={style['link']} title={''}>
             <DataVizIcon color={theme.palette.primary.main}></DataVizIcon>

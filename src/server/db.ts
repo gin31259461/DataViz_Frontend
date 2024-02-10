@@ -17,7 +17,7 @@ export const prismaWriter =
   new PrismaClient({
     datasources: {
       db: {
-        url: 'sqlserver://10.21.24.190;database=DV;user=apiw;password=.apiw.;encrypt=true;trustServerCertificate=true;',
+        url: env.WRITER_URL,
       },
     },
     log: ['query'],
@@ -28,7 +28,7 @@ export const prismaReader =
   new PrismaClient({
     datasources: {
       db: {
-        url: 'sqlserver://10.21.24.190;database=DV;user=apir;password=.apir.;encrypt=true;trustServerCertificate=true;',
+        url: env.READER_URL,
       },
     },
     log: ['query'],

@@ -9,6 +9,7 @@ const Complete = () => {
       sx={{
         display: 'flex',
         width: '100%',
+        height: 'calc(100vh - 100px)',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 2,

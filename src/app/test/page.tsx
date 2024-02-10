@@ -1,9 +1,6 @@
 'use client';
 
-import WordCloud from '@/components/chart/word-cloud';
 import { Box, Container, styled } from '@mui/material';
-
-const data = 'this is a test data';
 
 const StyledBox = styled(Box)({
   display: 'flex',
@@ -15,11 +12,7 @@ const StyledBox = styled(Box)({
 export default function TestPage() {
   return (
     <Container>
-      <StyledBox>
-        <div>
-          <WordCloud width={500} height={300} data={data} />
-        </div>
-      </StyledBox>
+      <StyledBox></StyledBox>
     </Container>
   );
 }

@@ -5,7 +5,6 @@ import AbcIcon from '@mui/icons-material/Abc';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import {
-  Container,
   FormControl,
   FormHelperText,
   Grid,
@@ -70,7 +69,7 @@ const CustomSelect = (props: CustomFromSelectProps) => {
   );
 };
 
-function Configuration() {
+export default function Configuration() {
   const theme = useTheme();
   const columnTypeMapping = useProjectStore((state) => state.columnTypeMapping);
   const dataArgs = useProjectStore((state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>);
@@ -82,8 +81,8 @@ function Configuration() {
   const setDes = useProjectStore((state) => state.setDes);
   const setChartType = useProjectStore((state) => state.setChartType);
 
-  const dataTableCount = trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
-  const firstMemberData = trpc.dataObject.getFirstMemberData.useQuery(selectedDataOID);
+  const dataTableCount = trpc.data.getCountFromDataTable.useQuery(selectedDataOID);
+  const firstMemberData = trpc.data.getFirstMemberData.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (!dataArgs) {
@@ -114,130 +113,104 @@ function Configuration() {
   );
 
   return (
-    <Container sx={{ paddingTop: 5 }}>
-      <Grid container gap={10}>
-        <Grid container gap={3}>
-          <Typography variant="h4">Project setting</Typography>
-          <Grid container>
-            <TextField label="Name" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
-          </Grid>
-          <Grid container>
-            <TextField label="Description" fullWidth multiline value={des} onChange={(e) => setDes(e.target.value)} />
-          </Grid>
+    <Grid container gap={3}>
+      <Grid container>
+        <Typography variant="h5">Data information</Typography>
+      </Grid>
+      <Grid container>
+        <Grid item xs={4}>
+          <Typography variant="h5">
+            Id: <span style={{ color: theme.palette.info.light }}>{selectedDataOID}</span>
+          </Typography>
         </Grid>
-        <Grid container>
-          <Grid item sm={8}>
-            <Typography variant="h4">Chart type</Typography>
-          </Grid>
-          <Grid item sm={4}>
-            <CustomSelect label="type" items={['racing chart']} disabled></CustomSelect>
-          </Grid>
+        <Grid item xs={4}>
+          <Typography variant="h5">
+            Name:{' '}
+            <span style={{ color: theme.palette.info.light }}>{firstMemberData.data && firstMemberData.data.name}</span>{' '}
+          </Typography>
         </Grid>
-        <Grid container>
-          <Typography variant="h4">Data information</Typography>
-        </Grid>
-        <Grid container>
-          <Grid item sm={4}>
-            <Typography variant="h5">
-              ID: <span style={{ color: theme.palette.info.light }}>{selectedDataOID}</span>
-            </Typography>
-          </Grid>
-          <Grid item sm={4}>
-            <Typography variant="h5">
-              Name:{' '}
-              <span style={{ color: theme.palette.info.light }}>
-                {firstMemberData.data && firstMemberData.data.name}
-              </span>{' '}
-            </Typography>
-          </Grid>
-          <Grid item sm={4}>
-            <Typography variant="h5">
-              Rows:{' '}
-              <span style={{ color: theme.palette.info.light }}>{dataTableCount.data && dataTableCount.data}</span>
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Typography variant="h4">Mapping data into specific format</Typography>
-        </Grid>
-        <Grid position={'relative'} top={10} container direction={'column'} alignItems={'center'} gap={5}>
-          <Grid container>
-            <Grid item sm={2}>
-              <DateRangeIcon fontSize={'large'} />
-            </Grid>
-            <Grid item sm={6}>
-              <Typography variant="body1">
-                Select one column as date that is continuous x data of racing chart
-              </Typography>
-            </Grid>
-            <Grid item sm={4}>
-              <CustomSelect
-                required
-                label="date"
-                items={columnTypeMapping?.date}
-                helperText="this is required filed"
-                onChange={onChange}
-                defaultValue={dataArgs?.mapping.date}
-              ></CustomSelect>
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item sm={2}>
-              <AbcIcon fontSize={'large'} />
-            </Grid>
-            <Grid item sm={6}>
-              <Typography variant="body1">Select one column as showing label</Typography>
-            </Grid>
-            <Grid item sm={4}>
-              <CustomSelect
-                required
-                label="name"
-                items={columnTypeMapping?.string}
-                helperText="this is required filed"
-                onChange={onChange}
-                defaultValue={dataArgs?.mapping.name}
-              ></CustomSelect>
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item sm={2}>
-              <NumbersIcon fontSize={'large'} />
-            </Grid>
-            <Grid item sm={6}>
-              <Typography variant="body1">Select one column as value of y</Typography>
-            </Grid>
-            <Grid item sm={4}>
-              <CustomSelect
-                required
-                label="value"
-                items={columnTypeMapping?.number.concat(columnTypeMapping.date)}
-                helperText="this is required filed"
-                onChange={onChange}
-                defaultValue={dataArgs?.mapping.value}
-              ></CustomSelect>
-            </Grid>
-          </Grid>
-          {/* <Grid container>
-            <Grid item sm={2}>
-              <CategoryIcon fontSize={'large'} />
-            </Grid>
-            <Grid item sm={6}>
-              <Typography variant="body1">
-                Select one column as label type
-              </Typography>
-            </Grid>
-            <Grid item sm={4}>
-              <CustomSelect
-                label="category"
-                items={columnTypeMapping?.string}
-                onChange={onChange}
-                defaultValue={dataArgs?.mapping.category}
-              ></CustomSelect>
-            </Grid>
-          </Grid> */}
+        <Grid item xs={4}>
+          <Typography variant="h5">
+            Rows: <span style={{ color: theme.palette.info.light }}>{dataTableCount.data && dataTableCount.data}</span>
+          </Typography>
         </Grid>
       </Grid>
-    </Container>
+      <Grid container gap={3}>
+        <Typography variant="h5">Project setting</Typography>
+        <Grid container>
+          <TextField label="Name" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
+        </Grid>
+        <Grid container>
+          <TextField label="Description" fullWidth multiline value={des} onChange={(e) => setDes(e.target.value)} />
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={6}>
+          <Typography variant="h5">Type</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <CustomSelect label="type" items={['racing chart']} disabled></CustomSelect>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Typography variant="h5">Mapping</Typography>
+      </Grid>
+      <Grid position={'relative'} top={10} container direction={'column'} alignItems={'center'} gap={5}>
+        <Grid container>
+          <Grid item xs={2}>
+            <DateRangeIcon fontSize={'large'} />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body1">Datetime column</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <CustomSelect
+              required
+              label="date"
+              items={columnTypeMapping?.date}
+              helperText="this is required filed"
+              onChange={onChange}
+              defaultValue={dataArgs?.mapping.date}
+            ></CustomSelect>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={2}>
+            <AbcIcon fontSize={'large'} />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body1">Label column</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <CustomSelect
+              required
+              label="name"
+              items={columnTypeMapping?.string}
+              helperText="this is required filed"
+              onChange={onChange}
+              defaultValue={dataArgs?.mapping.name}
+            ></CustomSelect>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={2}>
+            <NumbersIcon fontSize={'large'} />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body1">Value column</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <CustomSelect
+              required
+              label="value"
+              items={columnTypeMapping?.number.concat(columnTypeMapping.date)}
+              helperText="this is required filed"
+              onChange={onChange}
+              defaultValue={dataArgs?.mapping.value}
+            ></CustomSelect>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
-export default Configuration;

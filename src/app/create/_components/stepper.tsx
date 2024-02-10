@@ -1,23 +1,27 @@
 'use client';
 
 import { useSplitLineStyle } from '@/hooks/use-styles';
+import utilStyle from '@/styles/util.module.scss';
 import { colorTokens } from '@/utils/color-tokens';
-import { Box, Button, Grid, Stepper as MuiStepper, Step, StepLabel, useTheme } from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import { Box, Button, IconButton, Stepper as MuiStepper, Step, StepLabel, styled, useTheme } from '@mui/material';
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 
 interface StepperProps {
   steps: string[];
-  components: ReactNode[];
+  children: ReactNode[];
   backButtonDisabled: () => boolean;
   nextButtonDisabled: () => boolean;
   callback: () => Promise<void>;
 }
 
-const Stepper = ({ steps, components, backButtonDisabled, nextButtonDisabled, callback }: StepperProps) => {
-  const stepContext = useContext(CustomStepperContext);
+const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, callback }: StepperProps) => {
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
-  const borderStyle = useSplitLineStyle();
+
+  const stepContext = useContext(CustomStepperContext);
+  const [open, setOpen] = useState(true);
 
   const stepStyle = {
     '& .Mui-active': {
@@ -38,76 +42,85 @@ const Stepper = ({ steps, components, backButtonDisabled, nextButtonDisabled, ca
   };
 
   return (
-    <Grid container>
-      <Grid
-        container
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          padding: 2,
-          height: 140,
-          borderBottom: borderStyle,
+    <Box
+      sx={{
+        display: 'flex',
+      }}
+    >
+      <IconButton
+        sx={{ position: 'fixed', left: 2, top: 10, zIndex: 200 }}
+        onClick={() => {
+          setOpen((prev) => !prev);
         }}
       >
-        <Grid container sx={{ display: 'flex', justifyContent: 'center' }}>
-          <MuiStepper activeStep={stepContext.activeStep} orientation="horizontal" sx={{ ...stepStyle, width: '100%' }}>
+        {open ? <CloseOutlinedIcon sx={{ fontSize: 20 }} /> : <MenuOutlinedIcon sx={{ fontSize: 20 }} />}
+      </IconButton>
+      {open && <div className={utilStyle['backdrop']} onClick={() => setOpen(false)}></div>}
+      <Button
+        disabled={backButtonDisabled()}
+        color="info"
+        sx={{
+          position: 'fixed',
+          left: 20,
+          bottom: 50,
+          zIndex: 50,
+          fontSize: 15,
+        }}
+        onClick={() => stepContext.changeActiveStep('prev')}
+        variant="outlined"
+      >
+        Back
+      </Button>
+      <Button
+        disabled={nextButtonDisabled()}
+        color="info"
+        sx={{
+          position: 'fixed',
+          zIndex: 50,
+          right: 20,
+          bottom: 50,
+          fontSize: 15,
+        }}
+        onClick={async () => {
+          if (stepContext.activeStep === steps.length - 1) await callback();
+          stepContext.changeActiveStep('next');
+        }}
+        variant={'contained'}
+      >
+        {stepContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
+      </Button>
+      <Box
+        sx={{
+          display: open ? 'block' : 'none',
+          position: 'fixed',
+          zIndex: 10,
+          borderRight: useSplitLineStyle(),
+        }}
+      >
+        <Box
+          sx={{
+            height: 'calc(100vh - 60px)',
+            padding: 2,
+            backgroundColor: theme.palette.background.paper,
+          }}
+        >
+          <MuiStepper activeStep={stepContext.activeStep} orientation="vertical" sx={{ ...stepStyle, width: '100%' }}>
             {steps.map((label, index) => (
               <Step key={index}>
                 <StepLabel>{label}</StepLabel>
               </Step>
             ))}
           </MuiStepper>
-        </Grid>
-        <Grid container>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <Button
-              disabled={backButtonDisabled()}
-              color="info"
-              sx={{
-                position: 'absolute',
-                fontSize: 15,
-                left: 20,
-              }}
-              onClick={() => stepContext.changeActiveStep('prev')}
-              variant="outlined"
-            >
-              Back
-            </Button>
-            <Button
-              disabled={nextButtonDisabled()}
-              color="info"
-              sx={{
-                position: 'absolute',
-                fontSize: 15,
-                right: 20,
-              }}
-              onClick={async () => {
-                if (stepContext.activeStep === steps.length - 1) await callback();
-                stepContext.changeActiveStep('next');
-              }}
-              variant={stepContext.activeStep !== steps.length - 1 ? 'outlined' : 'contained'}
-            >
-              {stepContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid
-        container
+        </Box>
+      </Box>
+      <Box
         sx={{
-          display: 'flex',
-          padding: 2,
-          height: 'calc(100vh - 140px - 80px)',
-          overflowX: 'auto',
+          flexGrow: 1,
         }}
       >
-        {components[stepContext.activeStep]}
-      </Grid>
-    </Grid>
+        <StepperContainer>{children[stepContext.activeStep]}</StepperContainer>
+      </Box>
+    </Box>
   );
 };
 
@@ -125,6 +138,7 @@ export const CustomStepperContext = createContext<CustomStepperContextProps>({
 
 export const useCustomStepperAction = (stepLength: number) => {
   const [activeStep, setActiveStep] = useState(0);
+
   const value = useMemo<CustomStepperContextProps>(() => {
     return {
       activeStep: activeStep,
@@ -134,7 +148,13 @@ export const useCustomStepperAction = (stepLength: number) => {
       },
     };
   }, [activeStep, stepLength]);
+
   return value;
 };
+
+export const StepperContainer = styled(Box)({
+  padding: 15,
+  position: 'relative',
+});
 
 export default Stepper;

@@ -8,6 +8,8 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
+    READER_URL: z.string(),
+    WRITER_URL: z.string(),
     NODE_ENV: z.enum(['development', 'test', 'production']),
 
     NEXTAUTH_SECRET: process.env.NODE_ENV === 'production' ? z.string().min(1) : z.string().min(1).optional(),
@@ -48,6 +50,8 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    READER_URL: process.env.READER_URL,
+    WRITER_URL: process.env.WRITER_URL,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,

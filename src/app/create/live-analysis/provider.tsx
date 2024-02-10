@@ -7,7 +7,7 @@ import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_compo
 interface StepperProviderProps {
   stepLength: number;
   steps: string[];
-  components: ReactNode[];
+  children: ReactNode[];
 }
 
 function StepperProvider(props: StepperProviderProps) {
@@ -28,11 +28,12 @@ function StepperProvider(props: StepperProviderProps) {
     <CustomStepperContext.Provider value={stepperValue}>
       <Stepper
         steps={props.steps}
-        components={props.components}
         backButtonDisabled={backButtonDisabled}
         nextButtonDisabled={nextButtonDisabled}
         callback={async () => {}}
-      />
+      >
+        {props.children}
+      </Stepper>
     </CustomStepperContext.Provider>
   );
 }

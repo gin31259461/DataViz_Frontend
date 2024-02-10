@@ -34,13 +34,13 @@ const DataFormDialog = dynamic(() => import('./data-form-dialog'));
 const MessageSnackbar = dynamic(() => import('@/components/message-snackbar'));
 const ConfirmDeleteButton = dynamic(() => import('@/components/button/confirm-delete-button'));
 
-interface DataPanelProps {
+interface DataContainerProps {
   flaskServer: string;
 }
 
 const counts = 10;
 
-export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
+export const DataContainer = ({ flaskServer }: DataContainerProps) => {
   /** constants  */
   const mid = useUserStore((state) => state.mid);
   const theme = useTheme();
@@ -61,17 +61,17 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
 
   const start = page * counts;
 
-  const memberDataCount = trpc.dataObject.getMemberDataCount.useQuery(mid);
-  const someDataObject = trpc.dataObject.getManyMemberData.useQuery({
+  const memberDataCount = trpc.data.getMemberDataCount.useQuery(mid);
+  const someDataObject = trpc.data.getManyMemberData.useQuery({
     order: orderDirection,
     start: start + 1,
     counts: counts,
     mid: mid,
   });
-  const dataTable = trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectDataOID);
-  const currentObjectId = trpc.dataObject.getCurrentObjectId.useQuery();
-  const postData = trpc.dataObject.postData.useMutation();
-  const deleteData = trpc.dataObject.deleteData.useMutation({
+  const dataTable = trpc.data.getTop100ContentFromDataTable.useQuery(selectDataOID);
+  const currentObjectId = trpc.data.getCurrentObjectId.useQuery();
+  const postData = trpc.data.postData.useMutation();
+  const deleteData = trpc.data.deleteData.useMutation({
     onError: (error) => {
       setOpenNewDataDialog(false);
       setMessage(error.message);
@@ -200,7 +200,7 @@ export const DataContainer: React.FC<DataPanelProps> = ({ flaskServer }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {someDataObject.isLoading || someDataObject.isFetching || !someDataObject.data
+            {someDataObject.isLoading || !someDataObject.data
               ? new Array(counts).fill(0).map((_, i) => {
                   return (
                     <TableRow key={i}>

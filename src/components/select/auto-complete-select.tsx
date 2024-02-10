@@ -5,10 +5,19 @@ interface AutoCompleteSelectProps {
   loading: boolean;
   initialValueIndex: number;
   options: string[];
+  label?: string;
   onChange: (value: string) => void;
+  onClear?: () => void;
 }
 
-const AutoCompleteSelect = ({ initialValueIndex, loading, options, onChange }: AutoCompleteSelectProps) => {
+const AutoCompleteSelect = ({
+  initialValueIndex,
+  loading,
+  options,
+  onChange,
+  onClear = () => {},
+  label = 'Choose data',
+}: AutoCompleteSelectProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedValue, setSelectedValue] = useState<string | null>(options[initialValueIndex]);
 
@@ -17,8 +26,11 @@ const AutoCompleteSelect = ({ initialValueIndex, loading, options, onChange }: A
   };
 
   const handleOptionChange = (event: SyntheticEvent, value: string | null) => {
+    console.log(value);
     setSelectedValue(value);
-    if (value) {
+    if (!value) {
+      onClear();
+    } else {
       onChange(value);
     }
   };
@@ -41,7 +53,7 @@ const AutoCompleteSelect = ({ initialValueIndex, loading, options, onChange }: A
       renderInput={(params) => (
         <TextField
           {...params}
-          label="選擇資料"
+          label={label}
           variant="outlined"
           InputProps={{
             ...params.InputProps,

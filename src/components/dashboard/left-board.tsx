@@ -1,9 +1,9 @@
 'use client';
 
 import style from '@/styles/dashboard.module.scss';
-import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import { Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 interface LeftBoardProps {
@@ -12,10 +12,10 @@ interface LeftBoardProps {
   href: string[];
 }
 
-function LeftBoard(props: LeftBoardProps) {
-  const closeWidth = 50;
-  const openWidth = 150;
+const closeWidth = 40;
+const openWidth = 150;
 
+function LeftBoard(props: LeftBoardProps) {
   const theme = useTheme();
   const [drawerWidth, setDrawerWidth] = useState(openWidth);
   const [open, setOpen] = useState(true);
@@ -42,34 +42,26 @@ function LeftBoard(props: LeftBoardProps) {
       }}
       open
     >
-      <Divider />
-      <div style={{ padding: 3 }}>
-        {open ? (
-          <IconButton
-            onClick={() => {
+      <List>
+        <ListItemButton
+          onClick={() => {
+            if (open) {
               setDrawerWidth(closeWidth);
               setOpen(false);
-            }}
-          >
-            <ArrowBackIosNewRoundedIcon />
-          </IconButton>
-        ) : (
-          <IconButton
-            onClick={() => {
+            } else {
               setDrawerWidth(openWidth);
               setOpen(true);
-            }}
-          >
-            <ArrowForwardIosRoundedIcon />
-          </IconButton>
-        )}
-      </div>
-      <Divider />
-      <List>
+            }
+          }}
+          sx={{ padding: 1 }}
+        >
+          <ListItemIcon sx={{ width: 24 }}>{open ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}</ListItemIcon>
+        </ListItemButton>
+        <Divider />
         {props.items.map((item, i) => {
           return (
-            <ListItemButton key={i} href={props.href.at(i) ?? '/'}>
-              <ListItemIcon>{props.icons.at(i) ?? <></>}</ListItemIcon>
+            <ListItemButton sx={{ padding: 1 }} key={i} href={props.href.at(i) ?? '/'}>
+              <ListItemIcon sx={{ width: 24 }}>{props.icons.at(i) ?? <></>}</ListItemIcon>
               <ListItemText primary={item} />
             </ListItemButton>
           );

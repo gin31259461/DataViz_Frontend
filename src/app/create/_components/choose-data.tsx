@@ -5,24 +5,25 @@ import ObjectTable from '@/components/table/object-table';
 import { BasicColumnTypeMapping, useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { trpc } from '@/server/trpc';
-import { Box, LinearProgress, Typography } from '@mui/material';
-import { useEffect, useMemo } from 'react';
+import { LinearProgress, Typography } from '@mui/material';
+import { useEffect } from 'react';
 
 export default function ChooseData() {
   const mid = useUserStore((state) => state.mid);
-  const allMemberData = trpc.dataObject.getAllMemberData.useQuery(mid);
+  const allMemberData = trpc.data.getAllMemberData.useQuery(mid);
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataOID);
+  const setSelectedData = useProjectStore((state) => state.setSelectedData);
   const setColumnTypesMapping = useProjectStore((state) => state.setColumnTypeMapping);
   const clearProjectStore = useProjectStore((state) => state.clear);
 
-  const top100FromDataTable = trpc.dataObject.getTop100ContentFromDataTable.useQuery(selectedDataOID);
-  const rowsCountFromDataTable = trpc.dataObject.getCountFromDataTable.useQuery(selectedDataOID);
+  const top100ContentFromDataTable = trpc.data.getTop100ContentFromDataTable.useQuery(selectedDataOID);
+  const countFromDataTable = trpc.data.getCountFromDataTable.useQuery(selectedDataOID);
 
   useEffect(() => {
-    if (top100FromDataTable.data && top100FromDataTable.data.length > 0) {
-      const columns = Object.keys(top100FromDataTable.data[0]);
+    if (top100ContentFromDataTable.data && top100ContentFromDataTable.data.length > 0) {
+      const columns = Object.keys(top100ContentFromDataTable.data[0]);
       const columnTypesMapping: BasicColumnTypeMapping = {
         string: [],
         number: [],
@@ -30,7 +31,7 @@ export default function ChooseData() {
       };
 
       columns.forEach((col) => {
-        const value = top100FromDataTable.data[0][col];
+        const value = top100ContentFromDataTable.data[0][col];
         if (!isNaN(Date.parse(value)) && new Date(value).getFullYear() <= new Date().getFullYear())
           columnTypesMapping['date'].push(col);
         else if (Number.parseInt(value).toString() === value) columnTypesMapping['number'].push(col);
@@ -39,7 +40,7 @@ export default function ChooseData() {
 
       setColumnTypesMapping(columnTypesMapping);
     }
-  }, [top100FromDataTable, setColumnTypesMapping]);
+  }, [top100ContentFromDataTable, setColumnTypesMapping]);
 
   const handleSelectChange = (value: string) => {
     if (allMemberData.isSuccess) {
@@ -48,23 +49,8 @@ export default function ChooseData() {
     }
   };
 
-  const dataTableInfo = useMemo(() => {
-    return (
-      <Typography sx={{ padding: 2 }} variant="h6">
-        Total row : <strong>{rowsCountFromDataTable.data}</strong>, only show top <strong>100</strong> row
-      </Typography>
-    );
-  }, [rowsCountFromDataTable]);
-
   return (
-    <Box
-      sx={{
-        overflowY: 'auto',
-        padding: 2,
-        width: '100%',
-        position: 'relative',
-      }}
-    >
+    <>
       <AutoCompleteSelect
         options={
           allMemberData.data
@@ -75,15 +61,31 @@ export default function ChooseData() {
         }
         initialValueIndex={allMemberData.data?.findIndex((d) => d.id === selectedDataOID) ?? 0}
         onChange={handleSelectChange}
+        onClear={() => {
+          setSelectedDataOID(undefined);
+          setSelectedData([]);
+        }}
         loading={allMemberData.isLoading}
-      ></AutoCompleteSelect>
-      {selectedDataOID !== -1 && top100FromDataTable.isLoading && <LinearProgress color="info" sx={{ top: 10 }} />}
-      {top100FromDataTable.data && top100FromDataTable.data.length > 0 && (
+      />
+      {selectedDataOID !== -1 && top100ContentFromDataTable.isLoading && (
+        <LinearProgress color="info" sx={{ top: 10 }} />
+      )}
+      {top100ContentFromDataTable.data && top100ContentFromDataTable.data.length > 0 && (
         <div>
-          {dataTableInfo}
-          <ObjectTable headerID="selected-data-table" data={top100FromDataTable.data} />
+          <Typography sx={{ padding: 2 }} variant="h6">
+            Total rows count : <strong>{countFromDataTable.data}</strong>, showing top <strong>100</strong> rows
+          </Typography>
+          <div
+            style={{
+              height: 'calc(100vh - 60px - 200px)',
+              width: '100%',
+              overflowX: 'auto',
+            }}
+          >
+            <ObjectTable headerID="selected-data-table" data={top100ContentFromDataTable.data} />
+          </div>
         </div>
       )}
-    </Box>
+    </>
   );
 }

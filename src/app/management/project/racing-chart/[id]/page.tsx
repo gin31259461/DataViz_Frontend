@@ -20,7 +20,7 @@ function ProjectPage() {
 
   const arg: ArgSchema = JSON.parse((args.data && args.data[currentIndex].CDes) ?? '{}');
 
-  const dataContent = trpc.dataObject.getContentFromDataTable.useQuery(arg.dataId);
+  const dataContent = trpc.data.getContentFromDataTable.useQuery(arg.dataId);
 
   return (
     <Container sx={{ paddingTop: 10, gap: 3, display: 'flex', flexDirection: 'column' }}>

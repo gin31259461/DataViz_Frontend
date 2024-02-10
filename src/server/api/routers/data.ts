@@ -15,7 +15,7 @@ const DataZodSchema = z.object({
 
 export type DataSchema = z.infer<typeof DataZodSchema>;
 
-export const dataObjectRouter = createTRPCRouter({
+export const dataRouter = createTRPCRouter({
   getMemberDataCount: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
     if (!input) return 0;
 

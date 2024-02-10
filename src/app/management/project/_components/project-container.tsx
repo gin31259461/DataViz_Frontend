@@ -136,7 +136,7 @@ export default function ProjectContainer() {
       <div>
         {viewMode === 'grid' ? (
           <Grid container spacing={2} mt={2}>
-            {projects.isLoading || projects.isFetching
+            {projects.isLoading
               ? new Array(12).fill(0).map((_, i) => {
                   return (
                     <Grid key={i} item xs={12} sm={6} md={4}>
@@ -172,6 +172,10 @@ export default function ProjectContainer() {
           <ProjectList>
             {projects.data &&
               projects.data.map((project) => {
+                let pathname: string = '';
+                if (project.type === 'racing-chart') {
+                  pathname = '/racing-chart';
+                }
                 return (
                   <TableRow
                     key={project.id}
@@ -186,14 +190,22 @@ export default function ProjectContainer() {
                     }}
                   >
                     <TableCell padding="none">
-                      <ContextMenu onDelete={async () => await onDelete(project.id)} id={project.id}>
+                      <ContextMenu
+                        path={`/management/project${pathname}`}
+                        onDelete={async () => await onDelete(project.id)}
+                        id={project.id}
+                      >
                         <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
                           {project.title}
                         </div>
                       </ContextMenu>
                     </TableCell>
                     <TableCell padding="none">
-                      <ContextMenu onDelete={async () => await onDelete(project.id)} id={project.id}>
+                      <ContextMenu
+                        path={`/management/project${pathname}`}
+                        onDelete={async () => await onDelete(project.id)}
+                        id={project.id}
+                      >
                         <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
                           {new Date(project.lastModifiedDT).toDateString()}
                         </div>

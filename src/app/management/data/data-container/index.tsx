@@ -28,6 +28,7 @@ import {
 import dynamic from 'next/dynamic';
 import React, { useCallback, useMemo, useState } from 'react';
 import CardButton from '../../../../components/button/card-button';
+import { uploadFile } from '../action';
 
 const ObjectTable = dynamic(() => import('@/components/table/object-table'));
 const ShowDataDialog = dynamic(() => import('./show-data-modal'));
@@ -35,13 +36,9 @@ const DataFormDialog = dynamic(() => import('./data-form-dialog'));
 const MessageSnackbar = dynamic(() => import('@/components/message-snackbar'));
 const ConfirmDeleteButton = dynamic(() => import('@/components/button/confirm-delete-button'));
 
-interface DataContainerProps {
-  flaskServer: string;
-}
-
 const counts = 10;
 
-export const DataContainer = ({ flaskServer }: DataContainerProps) => {
+export const DataContainer = () => {
   /** constants  */
   const mid = useUserStore((state) => state.mid);
   const theme = useTheme();
@@ -70,7 +67,6 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
     mid: mid,
   });
   const dataTable = trpc.data.getTop100ContentFromDataTable.useQuery(selectDataOID);
-  const currentObjectId = trpc.data.getCurrentObjectId.useQuery();
   const postData = trpc.data.postData.useMutation();
   const deleteData = trpc.data.deleteData.useMutation({
     onError: (error) => {
@@ -92,24 +88,17 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
 
   const submitForm = async (formData: FormData) => {
     try {
-      await postData.mutateAsync({
-        mid: mid,
+      const postDataRes = await postData.mutateAsync({
+        ownerId: mid,
         name: formData.get('name')?.toString() ?? '',
         des: formData.get('des')?.toString() ?? '',
       });
 
-      await currentObjectId.refetch();
-
-      if (currentObjectId.data) {
-        formData.append('dataId', (Number(currentObjectId.data) + 1).toString());
-        await fetch(`${flaskServer}/api/file_upload`, {
-          method: 'POST',
-          body: formData,
-        }).then(async (res) => {
-          const data: { message: string } = await res.json();
-          setMessage(data.message);
-          setSubmitSuccess(true);
-        });
+      if (postDataRes) {
+        formData.append('dataId', postDataRes.dataId.toString());
+        const result = await uploadFile(formData);
+        setMessage(result.message);
+        setSubmitSuccess(true);
       }
     } catch (error) {
       setSubmitError(true);
@@ -121,14 +110,17 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
   };
 
   const handleDelete = async (deleteIDs: number[]) => {
-    await deleteData.mutateAsync({
-      mid: mid,
-      oidS: deleteIDs,
-    });
-    setDeleteSuccess(true);
-    setMessage('delete data done');
-    setSelectDataOID(undefined);
-    setDeleteDataOID([]);
+    await deleteData
+      .mutateAsync({
+        mid: mid,
+        oidS: deleteIDs,
+      })
+      .then(async (res) => {
+        setDeleteSuccess(true);
+        setSelectDataOID(undefined);
+        setDeleteDataOID([]);
+        setMessage(res.message);
+      });
 
     await someDataObject.refetch();
     await memberDataCount.refetch();
@@ -144,7 +136,7 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
       <Grid container padding={2}>
         <CardButton
           title="New data"
-          description="Add new dataset into your space"
+          description="Add new dataset"
           icon={<AddIcon />}
           onClick={() => setOpenNewDataDialog(true)}
         ></CardButton>

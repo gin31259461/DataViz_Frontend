@@ -2,6 +2,7 @@ import { bigIntToString } from '@/utils/string';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
+import { ResponseScheme } from './response';
 
 const DataZodSchema = z.object({
   id: z.number(),
@@ -11,6 +12,12 @@ const DataZodSchema = z.object({
   since: z.nullable(z.string()),
   lastModified: z.nullable(z.string()),
   frequency: z.number(),
+});
+
+const UploadDataZodSchema = z.object({
+  ownerId: z.number().optional(),
+  name: z.string(),
+  des: z.string(),
 });
 
 export type DataSchema = z.infer<typeof DataZodSchema>;
@@ -98,31 +105,25 @@ export const dataRouter = createTRPCRouter({
     const result: { last: number }[] = await ctx.prismaReader.$queryRaw`select IDENT_CURRENT('Object') as last`;
     return result[0].last;
   }),
-  postData: publicProcedure
-    .input(
-      z.object({
-        mid: z.number().optional(),
-        name: z.string(),
-        des: z.string(),
-      })
-    )
-    .mutation(async ({ input, ctx }) => {
-      if (!input.mid) return;
+  postData: publicProcedure.input(UploadDataZodSchema).mutation(async ({ input, ctx }) => {
+    if (!input.ownerId) return;
 
-      await ctx.prismaWriter.object.create({
-        data: {
-          Type: 6,
-          CName: input.name,
-          CDes: input.des,
-          nClick: 1,
-          OwnerMID: input.mid,
-          Data: { create: {} },
-        },
-        select: {
-          OID: true,
-        },
-      });
-    }),
+    const currentObject = await ctx.prismaWriter.object.create({
+      data: {
+        Type: 6,
+        CName: input.name,
+        CDes: input.des,
+        nClick: 1,
+        OwnerMID: input.ownerId,
+        Data: { create: {} },
+      },
+      select: {
+        OID: true,
+      },
+    });
+
+    return { dataId: currentObject.OID };
+  }),
   deleteData: publicProcedure
     .input(
       z.object({
@@ -131,7 +132,12 @@ export const dataRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (!input.mid) return;
+      const result: ResponseScheme = { message: 'delete data done' };
+
+      if (!input.mid) {
+        result.message = 'no specific owner id';
+        return result;
+      }
 
       const dataUsedCount = await ctx.prismaReader.oRel.count({
         where: {
@@ -169,5 +175,7 @@ export const dataRouter = createTRPCRouter({
           message: 'There has some data are used in the project',
         });
       }
+
+      return result;
     }),
 });

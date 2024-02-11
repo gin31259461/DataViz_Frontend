@@ -16,10 +16,13 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
 
   const handleSubmit = async () => {
     const formData = new FormData();
+
     if (file instanceof File) formData.append('file', file as File);
     else if (typeof file === 'string') formData.append('url', file as string);
+
     formData.append('name', name);
     formData.append('des', des);
+
     setLoading(true);
     await onSubmit(formData);
     onClose();

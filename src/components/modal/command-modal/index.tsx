@@ -10,9 +10,10 @@ import { NavigationGroup, ProjectGroup, SearchProjectPage } from './cmd-menu';
 import { CommandModalContext } from './provider';
 
 export default function CommandModal() {
-  const theme = useTheme();
   const border = useSplitLineStyle();
+  const theme = useTheme();
   const ref = useRef<HTMLDivElement | null>(null);
+
   const [inputValue, setInputValue] = useState('');
   const ControlCommandModal = useContext(CommandModalContext);
 
@@ -36,6 +37,7 @@ export default function CommandModal() {
   const bounce = () => {
     if (ref.current) {
       ref.current.style.transform = 'scale(0.96)';
+
       setTimeout(() => {
         if (ref.current) {
           ref.current.style.transform = '';

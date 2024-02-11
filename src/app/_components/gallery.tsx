@@ -51,15 +51,20 @@ export const Gallery = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    function resizeEvent() {
+      const element = cardRef.current as HTMLDivElement;
+      if (element && 'offsetWidth' in element) {
+        setWidth(element.offsetWidth);
+      }
+    }
+
     if (cardRef.current) {
       const element = cardRef.current as HTMLDivElement;
       setWidth(element.offsetWidth);
       setLoading(false);
 
-      window.addEventListener('resize', () => {
-        const element = cardRef.current as HTMLDivElement;
-        setWidth(element.offsetWidth);
-      });
+      window.addEventListener('resize', resizeEvent);
+      return () => window.removeEventListener('resize', resizeEvent);
     }
   }, []);
 

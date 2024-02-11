@@ -3,7 +3,7 @@
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import '@/styles/command-modal.scss';
 import { convertOpacityNumberToHexString } from '@/utils/color';
-import { styled, useTheme } from '@mui/material';
+import { modalClasses, styled, useTheme } from '@mui/material';
 import { Command } from 'cmdk';
 import { Fragment, KeyboardEvent, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { NavigationGroup, ProjectGroup, SearchProjectPage } from './cmd-menu';
@@ -68,7 +68,9 @@ export default function CommandModal() {
   useEffect(() => {
     function down(this: Document, event: globalThis.KeyboardEvent) {
       const e = event;
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      const muiDialogElements = document.getElementsByClassName(`${modalClasses.root}`);
+
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey) && muiDialogElements.length === 0) {
         e.preventDefault();
         ControlCommandModal.toggle();
       }

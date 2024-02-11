@@ -12,6 +12,7 @@ import {
   IconButton,
   Stepper as MuiStepper,
   Step,
+  stepIconClasses,
   StepLabel,
   styled,
   useMediaQuery,
@@ -44,19 +45,14 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
   }, [isFloatLeftPanel]);
 
   const stepStyle = {
-    '& .Mui-active': {
-      '& .MuiStepIcon-root': {
+    [`& .${stepIconClasses.active}`]: {
+      [`& .${stepIconClasses.root}`]: {
         color: theme.palette.info.main,
       },
     },
-    '& .Mui-completed': {
-      '& .MuiStepIcon-root': {
+    [`& .${stepIconClasses.completed}`]: {
+      [`& .${stepIconClasses.root}`]: {
         color: colors.greenAccent[500],
-      },
-    },
-    '& .Mui-disabled': {
-      '& .MuiStepIcon-root': {
-        color: theme.palette.action.disabled,
       },
     },
   };

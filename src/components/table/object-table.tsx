@@ -1,3 +1,4 @@
+import { colorTokens } from '@/utils/color-tokens';
 import { Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTable } from 'react-table';
@@ -9,6 +10,8 @@ interface ObjectTableProps {
 
 export default function ObjectTable({ data, headerID }: ObjectTableProps) {
   const theme = useTheme();
+  const color = colorTokens(theme.palette.mode);
+
   const columns = useMemo(
     () =>
       Object.keys(data[0]).map((key) => ({
@@ -22,7 +25,7 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
 
   return (
-    <Table {...getTableProps()} sx={{ position: 'relative' }}>
+    <Table {...getTableProps()}>
       <TableHead id={headerID}>
         {headerGroups.map((headerGroup) => (
           <TableRow key={headerGroup.getHeaderGroupProps().key}>
@@ -31,6 +34,7 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
                 sx={{
                   whiteSpace: 'nowrap',
                   position: 'sticky',
+                  color: color.greenAccent[500],
                   top: 0,
                   backgroundColor: theme.palette.background.paper,
                 }}
@@ -48,7 +52,12 @@ export default function ObjectTable({ data, headerID }: ObjectTableProps) {
           return (
             <TableRow key={row.getRowProps().key}>
               {row.cells.map((cell) => (
-                <TableCell sx={{ whiteSpace: 'nowrap' }} key={cell.getCellProps().key}>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                  key={cell.getCellProps().key}
+                >
                   {cell.render('Cell')}
                 </TableCell>
               ))}

@@ -71,14 +71,13 @@ export default function ChooseData() {
         <LinearProgress color="info" sx={{ top: 10 }} />
       )}
       {top100ContentFromDataTable.data && top100ContentFromDataTable.data.length > 0 && (
-        <div>
-          <Typography sx={{ padding: 2 }} variant="h6">
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography sx={{ padding: 2, whiteSpace: 'nowrap' }} variant="body1">
             Total rows count : <strong>{countFromDataTable.data}</strong>, showing top <strong>100</strong> rows
           </Typography>
           <div
             style={{
-              height: 'calc(100vh - 60px - 200px)',
-              width: '100%',
+              height: 'calc(100vh - 60px - 200px - 60px)',
               overflowX: 'auto',
             }}
           >

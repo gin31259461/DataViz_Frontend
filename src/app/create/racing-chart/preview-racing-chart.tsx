@@ -31,7 +31,7 @@ function PreviewRacingChart() {
   }, [setChartArgs]);
 
   return (
-    <div style={{ width: '100%', height: 'calc(100vh - 100px)', display: 'flex', alignItems: 'center' }}>
+    <div style={{ width: '100%', height: 'calc(100vh - 60px - 80px - 60px)', display: 'flex', alignItems: 'center' }}>
       {chartArgs && selectedData.data && (
         <RacingBarChartEngine
           data={convertToRacingBarChartData(selectedData.data, dataArgs)}

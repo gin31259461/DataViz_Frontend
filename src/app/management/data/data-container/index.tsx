@@ -13,6 +13,7 @@ import {
   IconButton,
   LinearProgress,
   Skeleton,
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -149,7 +150,7 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
         ></CardButton>
       </Grid>
 
-      <Grid container padding={2}>
+      <Grid container padding={2} sx={{ overflow: 'auto' }}>
         <Table>
           <TableHead
             sx={{
@@ -161,7 +162,7 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
                 color: colors.greenAccent[500],
               }}
             >
-              <TableCell align="left" sx={{ color: 'inherit' }}>
+              <CustomTableCell align="left" sx={{ color: 'inherit', whiteSpace: 'nowrap' }}>
                 <div style={{ display: 'flex' }}>
                   ID
                   <TableSortLabel
@@ -170,8 +171,8 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
                     onClick={() => handleSort('id')}
                   ></TableSortLabel>
                 </div>
-              </TableCell>
-              <TableCell sx={{ color: 'inherit' }}>
+              </CustomTableCell>
+              <CustomTableCell sx={{ color: 'inherit', whiteSpace: 'nowrap' }}>
                 <div style={{ display: 'flex' }}>
                   Name
                   <TableSortLabel
@@ -180,8 +181,8 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
                     onClick={() => handleSort('name')}
                   ></TableSortLabel>
                 </div>
-              </TableCell>
-              <TableCell sx={{ color: 'inherit' }}>
+              </CustomTableCell>
+              <CustomTableCell sx={{ color: 'inherit', whiteSpace: 'nowrap' }}>
                 <div style={{ display: 'flex' }}>
                   Last Updated
                   <TableSortLabel
@@ -190,13 +191,13 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
                     onClick={() => handleSort('lastModified')}
                   ></TableSortLabel>
                 </div>
-              </TableCell>
-              <TableCell align="right" sx={{ color: 'inherit' }}>
+              </CustomTableCell>
+              <CustomTableCell align="right" sx={{ color: 'inherit', whiteSpace: 'nowrap' }}>
                 {deleteDataOID.length > 0 && (
                   <ConfirmDeleteButton onConfirm={handleDelete} deleteIDs={deleteDataOID}></ConfirmDeleteButton>
                 )}
                 Actions
-              </TableCell>
+              </CustomTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -204,18 +205,20 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
               ? new Array(counts).fill(0).map((_, i) => {
                   return (
                     <TableRow key={i}>
-                      <TableCell>
+                      <CustomTableCell>
                         <Skeleton />
-                      </TableCell>
-                      <TableCell>
+                      </CustomTableCell>
+                      <CustomTableCell>
                         <Skeleton />
-                      </TableCell>
-                      <TableCell>
+                      </CustomTableCell>
+                      <CustomTableCell>
                         <Skeleton />
-                      </TableCell>
-                      <TableCell sx={{ display: 'flex', justifyContent: 'right' }}>
-                        <Skeleton width={'40%'} />
-                      </TableCell>
+                      </CustomTableCell>
+                      <CustomTableCell>
+                        <div style={{ width: '100%', display: 'flex', justifyContent: 'right' }}>
+                          <Skeleton width={'40%'} />
+                        </div>
+                      </CustomTableCell>
                     </TableRow>
                   );
                 })
@@ -228,10 +231,10 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
                       },
                     }}
                   >
-                    <TableCell>{dataSet.id}</TableCell>
-                    <TableCell>{dataSet.name}</TableCell>
-                    <TableCell>{dataSet.lastModified}</TableCell>
-                    <TableCell align="right">
+                    <CustomTableCell sx={{ whiteSpace: 'nowrap' }}>{dataSet.id}</CustomTableCell>
+                    <CustomTableCell sx={{ whiteSpace: 'nowrap' }}>{dataSet.name}</CustomTableCell>
+                    <CustomTableCell sx={{ whiteSpace: 'nowrap' }}>{dataSet.lastModified}</CustomTableCell>
+                    <CustomTableCell sx={{ whiteSpace: 'nowrap' }} align="right">
                       <Checkbox
                         checked={deleteDataOID.findIndex((value) => value === dataSet.id) >= 0}
                         color="info"
@@ -262,7 +265,7 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
                           <VisibilityIcon />
                         </IconButton>
                       </Tooltip>
-                    </TableCell>
+                    </CustomTableCell>
                   </TableRow>
                 ))}
           </TableBody>
@@ -311,3 +314,8 @@ export const DataContainer = ({ flaskServer }: DataContainerProps) => {
     </Grid>
   );
 };
+
+const CustomTableCell = styled(TableCell)({
+  height: 60,
+  padding: 4,
+});

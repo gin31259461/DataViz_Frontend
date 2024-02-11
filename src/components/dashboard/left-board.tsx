@@ -13,7 +13,7 @@ interface LeftBoardProps {
 }
 
 const closeWidth = 40;
-const openWidth = 150;
+const openWidth = 160;
 
 function LeftBoard(props: LeftBoardProps) {
   const theme = useTheme();

@@ -90,6 +90,7 @@ export default function Navbar(props: NavbarProps) {
                 <MenuOutlinedIcon fontSize={'medium'}></MenuOutlinedIcon>
               )}
             </IconButton>
+            <div style={{ width: 20 }}></div>
           </div>
         </div>
       </div>

@@ -117,20 +117,20 @@ export default function Configuration() {
       <Grid container>
         <Typography variant="h5">Data information</Typography>
       </Grid>
-      <Grid container>
-        <Grid item xs={4}>
-          <Typography variant="h5">
+      <Grid container gap={2}>
+        <Grid container>
+          <Typography variant="body1">
             Id: <span style={{ color: theme.palette.info.light }}>{selectedDataOID}</span>
           </Typography>
         </Grid>
-        <Grid item xs={4}>
-          <Typography variant="h5">
+        <Grid container>
+          <Typography variant="body1">
             Name:{' '}
             <span style={{ color: theme.palette.info.light }}>{firstMemberData.data && firstMemberData.data.name}</span>{' '}
           </Typography>
         </Grid>
-        <Grid item xs={4}>
-          <Typography variant="h5">
+        <Grid container>
+          <Typography variant="body1">
             Rows: <span style={{ color: theme.palette.info.light }}>{dataTableCount.data && dataTableCount.data}</span>
           </Typography>
         </Grid>
@@ -156,14 +156,12 @@ export default function Configuration() {
         <Typography variant="h5">Mapping</Typography>
       </Grid>
       <Grid position={'relative'} top={10} container direction={'column'} alignItems={'center'} gap={5}>
-        <Grid container>
-          <Grid item xs={2}>
-            <DateRangeIcon fontSize={'large'} />
-          </Grid>
-          <Grid item xs={6}>
+        <Grid container gap={2}>
+          <Grid container alignItems={'center'}>
+            <DateRangeIcon color="info" sx={{ fontSize: 24 }} />
             <Typography variant="body1">Datetime column</Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             <CustomSelect
               required
               label="date"
@@ -174,14 +172,12 @@ export default function Configuration() {
             ></CustomSelect>
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs={2}>
-            <AbcIcon fontSize={'large'} />
-          </Grid>
-          <Grid item xs={6}>
+        <Grid container gap={2}>
+          <Grid container alignItems={'center'}>
+            <AbcIcon color="info" sx={{ fontSize: 24 }} />
             <Typography variant="body1">Label column</Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             <CustomSelect
               required
               label="name"
@@ -192,14 +188,12 @@ export default function Configuration() {
             ></CustomSelect>
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs={2}>
-            <NumbersIcon fontSize={'large'} />
-          </Grid>
-          <Grid item xs={6}>
+        <Grid container gap={2}>
+          <Grid container alignItems={'center'}>
+            <NumbersIcon color="info" sx={{ fontSize: 24 }} />
             <Typography variant="body1">Value column</Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             <CustomSelect
               required
               label="value"

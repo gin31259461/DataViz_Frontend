@@ -32,6 +32,7 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
   return (
     <>
       <Dialog
+        fullScreen
         open={open}
         onClose={() => {
           if (!loading) {

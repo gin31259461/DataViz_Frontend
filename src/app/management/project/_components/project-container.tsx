@@ -3,6 +3,7 @@
 import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
 import { useSplitLineStyle } from '@/hooks/use-styles';
+import { EditProjectRequestSchema } from '@/server/api/routers/project';
 import { trpc } from '@/server/trpc';
 import { convertOpacityNumberToHexString } from '@/utils/color';
 import AddIcon from '@mui/icons-material/AddOutlined';
@@ -45,11 +46,17 @@ export default function ProjectContainer() {
   const [sortTarget, setSortTarget] = useState<SortTarget>('name');
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
 
+  const editProject = trpc.project.editProject.useMutation();
   const deleteProject = trpc.project.deleteProject.useMutation();
   const projects = trpc.project.getAllProject.useQuery(session.data ? parseInt(session.data.user.id) : undefined);
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);
+  };
+
+  const onEditConfirm = async (input: EditProjectRequestSchema) => {
+    await editProject.mutateAsync(input);
+    await projects.refetch();
   };
 
   const onDelete = useCallback(
@@ -148,18 +155,9 @@ export default function ProjectContainer() {
                 })
               : projects.data &&
                 projects.data.map((project) => {
-                  let pathname: string = '';
-                  if (project.type === 'racing-chart') {
-                    pathname = '/racing-chart';
-                  }
-
                   return (
                     <Grid key={project.id} item xs={12} sm={6} md={4}>
-                      <ContextMenu
-                        onDelete={async () => await onDelete(project.id)}
-                        path={`/management/project${pathname}`}
-                        id={project.id}
-                      >
+                      <ContextMenu project={project} onDelete={onDelete} onEditConfirm={onEditConfirm}>
                         <div onMouseDown={() => setActiveID(project.id)}>
                           <ProjectCard active={activeID === project.id ? true : false} project={project} />
                         </div>
@@ -172,10 +170,6 @@ export default function ProjectContainer() {
           <ProjectList>
             {projects.data &&
               projects.data.map((project) => {
-                let pathname: string = '';
-                if (project.type === 'racing-chart') {
-                  pathname = '/racing-chart';
-                }
                 return (
                   <TableRow
                     key={project.id}
@@ -190,22 +184,14 @@ export default function ProjectContainer() {
                     }}
                   >
                     <TableCell padding="none">
-                      <ContextMenu
-                        path={`/management/project${pathname}`}
-                        onDelete={async () => await onDelete(project.id)}
-                        id={project.id}
-                      >
+                      <ContextMenu project={project} onDelete={onDelete} onEditConfirm={onEditConfirm}>
                         <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
                           {project.title}
                         </div>
                       </ContextMenu>
                     </TableCell>
                     <TableCell padding="none">
-                      <ContextMenu
-                        path={`/management/project${pathname}`}
-                        onDelete={async () => await onDelete(project.id)}
-                        id={project.id}
-                      >
+                      <ContextMenu project={project} onDelete={onDelete} onEditConfirm={onEditConfirm}>
                         <div style={{ height: 50, padding: 16 }} onMouseDown={() => setActiveID(project.id)}>
                           {new Date(project.lastModifiedDT).toDateString()}
                         </div>

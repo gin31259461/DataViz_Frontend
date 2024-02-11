@@ -1,12 +1,23 @@
 'use client';
 
 import { useSplitLineStyle } from '@/hooks/use-styles';
+import style from '@/styles/stepper.module.scss';
 import utilStyle from '@/styles/util.module.scss';
 import { colorTokens } from '@/utils/color-tokens';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import { Box, Button, IconButton, Stepper as MuiStepper, Step, StepLabel, styled, useTheme } from '@mui/material';
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
+import {
+  Box,
+  Button,
+  IconButton,
+  Stepper as MuiStepper,
+  Step,
+  StepLabel,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
 interface StepperProps {
   steps: string[];
@@ -19,9 +30,18 @@ interface StepperProps {
 const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, callback }: StepperProps) => {
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
+  const isFloatLeftPanel = useMediaQuery('(max-width:700px)');
 
   const stepContext = useContext(CustomStepperContext);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isFloatLeftPanel) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [isFloatLeftPanel]);
 
   const stepStyle = {
     '& .Mui-active': {
@@ -53,16 +73,16 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           setOpen((prev) => !prev);
         }}
       >
-        {open ? <CloseOutlinedIcon sx={{ fontSize: 20 }} /> : <MenuOutlinedIcon sx={{ fontSize: 20 }} />}
+        {isFloatLeftPanel &&
+          (open ? <CloseOutlinedIcon sx={{ fontSize: 20 }} /> : <WidgetsOutlinedIcon sx={{ fontSize: 20 }} />)}
       </IconButton>
-      {open && <div className={utilStyle['backdrop']} onClick={() => setOpen(false)}></div>}
       <Button
         disabled={backButtonDisabled()}
-        color="info"
+        color="secondary"
         sx={{
           position: 'fixed',
           left: 20,
-          bottom: 50,
+          bottom: 20,
           zIndex: 50,
           fontSize: 15,
         }}
@@ -78,7 +98,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           position: 'fixed',
           zIndex: 50,
           right: 20,
-          bottom: 50,
+          bottom: 20,
           fontSize: 15,
         }}
         onClick={async () => {
@@ -89,11 +109,11 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
       >
         {stepContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
       </Button>
+      {isFloatLeftPanel && open && <div className={utilStyle['backdrop']} onClick={() => setOpen(false)}></div>}
       <Box
+        className={style['stepper-left-panel']}
         sx={{
-          display: open ? 'block' : 'none',
-          position: 'fixed',
-          zIndex: 10,
+          transform: open ? '' : isFloatLeftPanel ? 'translate(-100vw, 0)' : '',
           borderRight: useSplitLineStyle(),
         }}
       >
@@ -107,7 +127,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           <MuiStepper activeStep={stepContext.activeStep} orientation="vertical" sx={{ ...stepStyle, width: '100%' }}>
             {steps.map((label, index) => (
               <Step key={index}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel sx={{ whiteSpace: 'nowrap' }}>{label}</StepLabel>
               </Step>
             ))}
           </MuiStepper>
@@ -115,7 +135,10 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
       </Box>
       <Box
         sx={{
+          height: 'calc(100vh - 60px - 80px)',
           flexGrow: 1,
+          paddingLeft: isFloatLeftPanel ? '' : '250px',
+          overflowY: 'auto',
         }}
       >
         <StepperContainer>{children[stepContext.activeStep]}</StepperContainer>

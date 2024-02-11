@@ -1,0 +1,10 @@
+.stepper-left-panel {
+  z-index: 10;
+  transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  position: fixed;
+  width: 250px;
+
+  @media screen and (max-width: 700px) {
+    display: block;
+  }
+}

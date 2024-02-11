@@ -18,8 +18,15 @@ const ArgZodSchema = z.object({
   chartArgs: z.any(),
 });
 
+const EditProjectRequestZodSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  des: z.string(),
+});
+
 export type ProjectSchema = z.infer<typeof ProjectZodSchema>;
 export type ArgSchema = z.infer<typeof ArgZodSchema>;
+export type EditProjectRequestSchema = z.infer<typeof EditProjectRequestZodSchema>;
 
 export const projectRouter = createTRPCRouter({
   createArg: publicProcedure
@@ -123,6 +130,17 @@ export const projectRouter = createTRPCRouter({
       where: { CID: { in: input } },
     });
     return data.map((d) => d.Object);
+  }),
+  editProject: publicProcedure.input(EditProjectRequestZodSchema).mutation(async ({ input, ctx }) => {
+    await ctx.prismaWriter.class.update({
+      data: {
+        EName: input.name,
+        EDes: input.des,
+      },
+      where: {
+        CID: input.id,
+      },
+    });
   }),
   deleteProject: publicProcedure.input(z.number()).mutation(async ({ input, ctx }) => {
     const observations = await ctx.prismaReader.inheritance.findMany({

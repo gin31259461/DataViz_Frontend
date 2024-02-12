@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 const ProjectZodSchema = z.object({
   id: z.number(),
@@ -29,10 +29,9 @@ export type ArgSchema = z.infer<typeof ArgZodSchema>;
 export type EditProjectRequestSchema = z.infer<typeof EditProjectRequestZodSchema>;
 
 export const projectRouter = createTRPCRouter({
-  createArg: publicProcedure
+  createArg: protectedProcedure
     .input(
       z.object({
-        mid: z.number(),
         title: z.string(),
         des: z.string(),
         dataId: z.number(),
@@ -42,7 +41,7 @@ export const projectRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       await ctx.prismaWriter
-        .$executeRaw`exec xp_insertProjectClass ${input.mid}, ${input.title}, ${input.des}, ${input.type}`;
+        .$executeRaw`exec xp_insertProjectClass ${ctx.session.user.id}, ${input.title}, ${input.des}, ${input.type}`;
       const result: { last: number }[] = await ctx.prismaWriter.$queryRaw`select IDENT_CURRENT('Class') as last`;
       const currentCID = result[0].last;
 
@@ -55,7 +54,7 @@ export const projectRouter = createTRPCRouter({
           CDes: JSON.stringify(input.args),
           EName: input.title,
           EDes: input.des,
-          OwnerMID: input.mid,
+          OwnerMID: parseInt(ctx.session.user.id),
           Type: 7,
           ORel_ORel_OID1ToObject: {
             create: { OID2: input.dataId },

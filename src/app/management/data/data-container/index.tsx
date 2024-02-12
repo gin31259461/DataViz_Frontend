@@ -1,6 +1,5 @@
 'use client';
 
-import { useUserStore } from '@/hooks/store/use-user-store';
 import { DataSchema } from '@/server/api/routers/data';
 import { api } from '@/server/trpc/client';
 import { colorTokens } from '@/utils/color-tokens';
@@ -40,7 +39,6 @@ const counts = 10;
 
 export const DataContainer = () => {
   /** constants  */
-  const mid = useUserStore((state) => state.mid);
   const theme = useTheme();
   const colors = colorTokens(theme.palette.mode);
 
@@ -88,7 +86,6 @@ export const DataContainer = () => {
   const submitForm = async (formData: FormData) => {
     try {
       const postDataRes = await postData.mutateAsync({
-        ownerId: mid,
         name: formData.get('name')?.toString() ?? '',
         des: formData.get('des')?.toString() ?? '',
       });
@@ -111,7 +108,6 @@ export const DataContainer = () => {
   const handleDelete = async (deleteIDs: number[]) => {
     await deleteData
       .mutateAsync({
-        mid: mid,
         oidS: deleteIDs,
       })
       .then(async (res) => {

@@ -1,18 +1,8 @@
-'use client';
+import { api } from '@/server/trpc/server';
+import { Container } from '@mui/material';
 
-import { Box, Container, styled } from '@mui/material';
+export default async function TestPage() {
+  const data = await api.data.getAllMemberData.query();
 
-const StyledBox = styled(Box)({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: 600,
-});
-
-export default function TestPage() {
-  return (
-    <Container>
-      <StyledBox></StyledBox>
-    </Container>
-  );
+  return <Container>{data.length > 0 ? JSON.stringify(data[0]) : ''}</Container>;
 }

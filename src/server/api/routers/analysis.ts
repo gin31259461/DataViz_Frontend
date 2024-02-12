@@ -16,12 +16,28 @@ const ProcessPivotAnalysisRequestZodSchema = z.object({
   process: z.custom<(string | string[])[][]>(),
 });
 
+type ColumnType = 'int' | 'float' | 'object';
+
+export type ColumnInfo = {
+  type: ColumnType;
+  values: number | string[];
+};
+
+export type DataInfoSchema = {
+  columns: {
+    [key: string]: ColumnInfo;
+  };
+};
+
 export const analysisRouter = createTRPCRouter({
   getDataInfo: publicProcedure.input(z.number().optional()).query(async ({ input }) => {
-    if (!input) return {};
+    let data: DataInfoSchema = { columns: {} };
+
+    if (!input) return data;
 
     const res = await fetch(`${env.FLASK_URL}/api/get_data_info?dataId=${input}`);
-    const data = await res.json();
+    data = await res.json();
+
     return data;
   }),
   getPathAnalysis: publicProcedure.input(PathAnalysisRequestZodSchema).query(async ({ input }) => {

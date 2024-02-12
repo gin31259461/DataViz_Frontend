@@ -15,7 +15,6 @@ const DataZodSchema = z.object({
 });
 
 const UploadDataZodSchema = z.object({
-  ownerId: z.number().optional(),
   name: z.string(),
   des: z.string(),
 });
@@ -63,12 +62,10 @@ export const dataRouter = createTRPCRouter({
     });
     return data;
   }),
-  getAllMemberData: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
-    if (!input) return [];
-
+  getAllMemberData: protectedProcedure.query(async ({ ctx }) => {
     const result = await ctx.prismaReader.vd_Data.findMany({
       where: {
-        ownerID: { equals: input },
+        ownerID: { equals: parseInt(ctx.session.user.id) },
       },
     });
     return result;
@@ -96,20 +93,14 @@ export const dataRouter = createTRPCRouter({
     const result: { count: number }[] = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
     return result[0].count;
   }),
-  getCurrentObjectId: publicProcedure.query(async ({ ctx }) => {
-    const result: { last: number }[] = await ctx.prismaReader.$queryRaw`select IDENT_CURRENT('Object') as last`;
-    return result[0].last;
-  }),
-  postData: publicProcedure.input(UploadDataZodSchema).mutation(async ({ input, ctx }) => {
-    if (!input.ownerId) return;
-
+  postData: protectedProcedure.input(UploadDataZodSchema).mutation(async ({ input, ctx }) => {
     const currentObject = await ctx.prismaWriter.object.create({
       data: {
         Type: 6,
         CName: input.name,
         CDes: input.des,
         nClick: 1,
-        OwnerMID: input.ownerId,
+        OwnerMID: parseInt(ctx.session.user.id),
         Data: { create: {} },
       },
       select: {
@@ -119,20 +110,14 @@ export const dataRouter = createTRPCRouter({
 
     return { dataId: currentObject.OID };
   }),
-  deleteData: publicProcedure
+  deleteData: protectedProcedure
     .input(
       z.object({
-        mid: z.number().optional(),
         oidS: z.array(z.number()),
       })
     )
     .mutation(async ({ input, ctx }) => {
       const result: ResponseScheme = { message: 'delete data done' };
-
-      if (!input.mid) {
-        result.message = 'no specific owner id';
-        return result;
-      }
 
       const dataUsedCount = await ctx.prismaReader.oRel.count({
         where: {
@@ -155,7 +140,7 @@ export const dataRouter = createTRPCRouter({
             OID: {
               in: input.oidS,
             },
-            OwnerMID: input.mid,
+            OwnerMID: parseInt(ctx.session.user.id),
             Type: 6,
           },
         });

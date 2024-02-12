@@ -7,17 +7,20 @@ import { observable } from '@trpc/server/observable';
 import { type TRPCErrorResponse } from '@trpc/server/rpc';
 import { headers } from 'next/headers';
 import { cache } from 'react';
+import { getServerAuthSession } from '../auth/auth';
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
  * handling a tRPC call from a React Server Component.
  */
-const createContext = cache(() => {
+const createContext = cache(async () => {
+  const session = await getServerAuthSession();
   const heads = new Headers(headers());
   heads.set('x-trpc-source', 'rsc');
 
   return createTRPCContext({
     headers: heads,
+    session: session,
   });
 });
 

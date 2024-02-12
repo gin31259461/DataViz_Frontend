@@ -1,8 +1,9 @@
 'use client';
 
-import LinearProgressPending from '@/components/loading/linear-progress-pending';
+import LoadingWithTitle from '@/components/loading/loading-with-title';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { api } from '@/server/trpc/client';
+import { Grid } from '@mui/material';
 
 function ExploreData() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
@@ -12,7 +13,17 @@ function ExploreData() {
 
   return (
     <>
-      <LinearProgressPending isPending={dataInfo.isLoading} />
+      <LoadingWithTitle title="分析欄位資訊中..." />
+      <Grid container>
+        {dataInfo.data &&
+          Object.keys(dataInfo.data.columns).map((col, i) => {
+            return (
+              <Grid key={i} container>
+                <Grid>{col}</Grid>
+              </Grid>
+            );
+          })}
+      </Grid>
     </>
   );
 }

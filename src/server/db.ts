@@ -1,5 +1,5 @@
 import { env } from '@/env.mjs';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -7,10 +7,6 @@ declare global {
   // eslint-disable-next-line no-var
   var prismaReader: PrismaClient | undefined;
 }
-
-export const prismaMethod = {
-  sql: Prisma.sql,
-};
 
 export const prismaWriter =
   global.prismaWriter ||
@@ -20,7 +16,7 @@ export const prismaWriter =
         url: env.WRITER_URL,
       },
     },
-    log: ['query'],
+    log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 
 export const prismaReader =
@@ -31,7 +27,7 @@ export const prismaReader =
         url: env.READER_URL,
       },
     },
-    log: ['query'],
+    log: env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 
 if (env.NODE_ENV !== 'production') {

@@ -1,7 +1,7 @@
 'use client';
 
 import LinearProgressPending from '@/components/loading/linear-progress-pending';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { Container } from '@mui/material';
 
 const reqData = {
@@ -18,7 +18,7 @@ const reqData = {
 };
 
 function ProcessAnalysis() {
-  const process = trpc.analysis.getProcessPivotAnalysis.useQuery(reqData);
+  const process = api.analysis.getProcessPivotAnalysis.useQuery(reqData);
 
   console.log(process.data);
 

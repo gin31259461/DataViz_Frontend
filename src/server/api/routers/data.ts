@@ -1,7 +1,7 @@
 import { bigIntToString } from '@/utils/string';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { ResponseScheme } from './response';
 
 const DataZodSchema = z.object({
@@ -23,29 +23,24 @@ const UploadDataZodSchema = z.object({
 export type DataSchema = z.infer<typeof DataZodSchema>;
 
 export const dataRouter = createTRPCRouter({
-  getMemberDataCount: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
-    if (!input) return 0;
-
+  getMemberDataCount: protectedProcedure.query(async ({ ctx }) => {
     const count = await ctx.prismaReader.object.count({
       where: {
-        OwnerMID: input,
+        OwnerMID: parseInt(ctx.session.user.id),
         Type: 6,
       },
     });
     return count;
   }),
-  getManyMemberData: publicProcedure
+  getManyMemberData: protectedProcedure
     .input(
       z.object({
         order: z.string(),
         start: z.number(),
         counts: z.number(),
-        mid: z.number().optional(),
       })
     )
     .query(async ({ input, ctx }) => {
-      if (!input) return [];
-
       const data: DataSchema[] = await ctx.prismaReader.vd_Data.findMany({
         orderBy: {
           id: input.order as 'asc' | 'desc',
@@ -53,7 +48,7 @@ export const dataRouter = createTRPCRouter({
         skip: Number(input.start) - 1,
         take: Number(input.counts),
         where: {
-          ownerID: input.mid,
+          ownerID: parseInt(ctx.session.user.id),
         },
       });
       return data;

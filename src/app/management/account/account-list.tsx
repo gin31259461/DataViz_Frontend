@@ -1,6 +1,6 @@
 'use client';
 
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { BuiltInProviderType } from 'next-auth/providers';
 import { LiteralUnion, signIn, useSession } from 'next-auth/react';
@@ -15,9 +15,9 @@ export const AccountListItem = (props: AccountListItemProps) => {
   const { data } = useSession();
   const [loading, setLoading] = useState(false);
   const [activeProvider, setActiveProvider] = useState<LiteralUnion<BuiltInProviderType> | undefined>(undefined);
-  const accounts = trpc.user.getLinkedAccount.useQuery(data ? parseInt(data?.user.id) : undefined).data;
+  const accounts = api.user.getLinkedAccount.useQuery(data ? parseInt(data?.user.id) : undefined).data;
   const connectStatus = accounts?.findIndex((account) => account.provider === props.provider) === -1 ? false : true;
-  const unLinkAccount = trpc.user.unLinkAccount.useMutation();
+  const unLinkAccount = api.user.unLinkAccount.useMutation();
 
   const handleConnect = async () => {
     setLoading(true);

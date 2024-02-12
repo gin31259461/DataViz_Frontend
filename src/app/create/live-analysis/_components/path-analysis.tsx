@@ -1,7 +1,7 @@
 'use client';
 
 import LinearProgressPending from '@/components/loading/linear-progress-pending';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { Container } from '@mui/material';
 
 const reqData = {
@@ -20,7 +20,7 @@ const reqData = {
 };
 
 function PathAnalysis() {
-  const paths = trpc.analysis.getPathAnalysis.useQuery(reqData);
+  const paths = api.analysis.getPathAnalysis.useQuery(reqData);
 
   console.log(paths.data);
 

@@ -1,26 +1,40 @@
-import { inferAsyncReturnType, initTRPC } from '@trpc/server';
-import * as trpcNext from '@trpc/server/adapters/next';
+import { initTRPC, TRPCError } from '@trpc/server';
+import { Session } from 'next-auth';
+import { ZodError } from 'zod';
 import { prismaReader, prismaWriter } from '../db';
 
-export const createContext = async (opts?: trpcNext.CreateNextContextOptions) => {
-  const req = opts?.req;
-  const res = opts?.res;
-
+export const createTRPCContext = async (opt: { headers: Headers; session?: Session | null }) => {
   return {
-    req,
-    res,
-    prismaWriter: prismaWriter,
-    prismaReader: prismaReader,
+    ...opt,
+    prismaReader,
+    prismaWriter,
   };
 };
 
-type Context = inferAsyncReturnType<typeof createContext>;
-
-export const createTRPCContext = async (/*opts: FetchCreateContextFnOptions*/) => {
-  return createContext();
-};
-
-const t = initTRPC.context<Context>().create();
+const t = initTRPC.context<typeof createTRPCContext>().create({
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    };
+  },
+});
 
 export const createTRPCRouter = t.router;
+
 export const publicProcedure = t.procedure;
+
+export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});

@@ -4,12 +4,12 @@ import RacingBarChartEngine, {
   RacingBarChartMapping,
 } from '@/components/chart-engine/racing-bar-chart-engine';
 import { DataArgsProps, useProjectStore } from '@/hooks/store/use-project-store';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { useEffect } from 'react';
 
 function PreviewRacingChart() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const selectedData = trpc.data.getContentFromDataTable.useQuery(selectedDataOID);
+  const selectedData = api.data.getContentFromDataTable.useQuery(selectedDataOID);
   const dataArgs = useProjectStore<DataArgsProps<RacingBarChartMapping>>(
     (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>
   );

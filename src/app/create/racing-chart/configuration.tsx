@@ -1,6 +1,6 @@
 import { RacingBarChartMapping } from '@/components/chart-engine/racing-bar-chart-engine';
 import { DataArgsProps, useProjectStore } from '@/hooks/store/use-project-store';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import AbcIcon from '@mui/icons-material/Abc';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -81,8 +81,8 @@ export default function Configuration() {
   const setDes = useProjectStore((state) => state.setDes);
   const setChartType = useProjectStore((state) => state.setChartType);
 
-  const dataTableCount = trpc.data.getCountFromDataTable.useQuery(selectedDataOID);
-  const firstMemberData = trpc.data.getFirstMemberData.useQuery(selectedDataOID);
+  const dataTableCount = api.data.getCountFromDataTable.useQuery(selectedDataOID);
+  const firstMemberData = api.data.getFirstMemberData.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (!dataArgs) {

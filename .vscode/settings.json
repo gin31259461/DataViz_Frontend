@@ -10,6 +10,7 @@
     "executesql",
     "PCID",
     "sqlserver",
+    "superjson",
     "tanstack",
     "visx"
   ]

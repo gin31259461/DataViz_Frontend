@@ -4,13 +4,13 @@ import AutoCompleteSelect from '@/components/select/auto-complete-select';
 import ObjectTable from '@/components/table/object-table';
 import { BasicColumnTypeMapping, useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { LinearProgress, Typography } from '@mui/material';
 import { useEffect } from 'react';
 
 export default function ChooseData() {
   const mid = useUserStore((state) => state.mid);
-  const allMemberData = trpc.data.getAllMemberData.useQuery(mid);
+  const allMemberData = api.data.getAllMemberData.useQuery(mid);
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataOID);
@@ -18,8 +18,8 @@ export default function ChooseData() {
   const setColumnTypesMapping = useProjectStore((state) => state.setColumnTypeMapping);
   const clearProjectStore = useProjectStore((state) => state.clear);
 
-  const top100ContentFromDataTable = trpc.data.getTop100ContentFromDataTable.useQuery(selectedDataOID);
-  const countFromDataTable = trpc.data.getCountFromDataTable.useQuery(selectedDataOID);
+  const top100ContentFromDataTable = api.data.getTop100ContentFromDataTable.useQuery(selectedDataOID);
+  const countFromDataTable = api.data.getCountFromDataTable.useQuery(selectedDataOID);
 
   useEffect(() => {
     if (top100ContentFromDataTable.data && top100ContentFromDataTable.data.length > 0) {

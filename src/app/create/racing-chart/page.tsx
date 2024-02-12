@@ -2,7 +2,7 @@
 
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChooseData from '../_components/choose-data';
@@ -14,7 +14,7 @@ import PreviewRacingChart from './preview-racing-chart';
 
 function CreateRacingBarChartPage() {
   const router = useRouter();
-  const createArg = trpc.project.createArg.useMutation();
+  const createArg = api.project.createArg.useMutation();
   const mid = useUserStore((state) => state.mid);
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const title = useProjectStore((state) => state.title);
@@ -23,7 +23,7 @@ function CreateRacingBarChartPage() {
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const dataArgs = useProjectStore((state) => state.dataArgs);
   const clear = useProjectStore((state) => state.clear);
-  const lastProjectId = trpc.project.getLastProjectId.useQuery(mid);
+  const lastProjectId = api.project.getLastProjectId.useQuery(mid);
   const [done, setDone] = useState(false);
 
   const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];

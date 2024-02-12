@@ -4,7 +4,7 @@ import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { EditProjectRequestSchema } from '@/server/api/routers/project';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { convertOpacityNumberToHexString } from '@/utils/color';
 import AddIcon from '@mui/icons-material/AddOutlined';
 import GridViewIcon from '@mui/icons-material/GridViewOutlined';
@@ -46,9 +46,9 @@ export default function ProjectContainer() {
   const [sortTarget, setSortTarget] = useState<SortTarget>('name');
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
 
-  const editProject = trpc.project.editProject.useMutation();
-  const deleteProject = trpc.project.deleteProject.useMutation();
-  const projects = trpc.project.getAllProject.useQuery(session.data ? parseInt(session.data.user.id) : undefined);
+  const editProject = api.project.editProject.useMutation();
+  const deleteProject = api.project.deleteProject.useMutation();
+  const projects = api.project.getAllProject.useQuery(session.data ? parseInt(session.data.user.id) : undefined);
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);

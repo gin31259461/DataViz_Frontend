@@ -8,19 +8,19 @@ import RacingBarChartEngine, {
 import Loader from '@/components/loading/loader';
 import { DataArgsProps } from '@/hooks/store/use-project-store';
 import { ArgSchema } from '@/server/api/routers/project';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { Container, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 
 function ProjectPage() {
   const currentIndex = 0;
   const projectId = parseInt(useParams().id as string);
-  const observations = trpc.project.getProjectObservations.useQuery(projectId);
-  const args = trpc.project.getArgsFromObservations.useQuery(observations.data && observations.data.map((d) => d.CID));
+  const observations = api.project.getProjectObservations.useQuery(projectId);
+  const args = api.project.getArgsFromObservations.useQuery(observations.data && observations.data.map((d) => d.CID));
 
   const arg: ArgSchema = JSON.parse((args.data && args.data[currentIndex].CDes) ?? '{}');
 
-  const dataContent = trpc.data.getContentFromDataTable.useQuery(arg.dataId);
+  const dataContent = api.data.getContentFromDataTable.useQuery(arg.dataId);
 
   return (
     <Container sx={{ paddingTop: 10, gap: 3, display: 'flex', flexDirection: 'column' }}>

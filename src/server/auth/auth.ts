@@ -1,5 +1,5 @@
 import { env } from '@/env.mjs';
-import { type DefaultSession, type NextAuthOptions } from 'next-auth';
+import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GitHubProvider from 'next-auth/providers/github';
@@ -49,67 +49,6 @@ export const authOptions: NextAuthOptions = {
       };
     },
     signIn: async () => {
-      // TODO: 登入的時候會先呼叫這個 function，如果 return true 代表執行登入動作，現在需要處理 email 重複的狀況。
-      // const signedAccount = await prismaWriter.account.findUnique({
-      //   select: {
-      //     provider: true,
-      //     providerAccountId: true,
-      //   },
-      //   where: {
-      //     provider_providerAccountId: {
-      //       provider: account?.provider ?? '',
-      //       providerAccountId: account?.providerAccountId ?? '',
-      //     },
-      //   },
-      // });
-
-      // const signedMember = await prismaWriter.member.findUnique({
-      //   select: {
-      //     MID: true,
-      //     Account: true,
-      //     EMail: true,
-      //     Valid: true,
-      //     CID: true,
-      //   },
-      //   where: {
-      //     EMail: user.email ?? '',
-      //   },
-      // });
-
-      // if (signedMember && signedMember.CID == null) {
-      //   await prismaWriter.$executeRaw`exec [dbo].[xp_insertMemberClass] ${signedMember.MID}`;
-      // }
-
-      // if (signedMember && !signedAccount && account) {
-      //   const obj = await prismaWriter.object.create({
-      //     data: {
-      //       Type: 2,
-      //       CName: user.name,
-      //       EDes: JSON.stringify(defaultSetting),
-      //       Member: {
-      //         create: {
-      //           Valid: false,
-      //           Status: 1,
-      //           Image: user.image,
-      //         },
-      //       },
-      //     },
-      //     select: {
-      //       OID: true,
-      //     },
-      //   });
-
-      //   await prismaWriter.account.create({
-      //     data: {
-      //       MID: obj.OID,
-      //       ...account,
-      //     },
-      //   });
-      //   return `/signup?provider=${account?.provider}&username=${signedMember.Account}&email=${signedMember.EMail}&MID=${obj.OID}`;
-      // } else if (signedMember && signedAccount && !signedMember.Valid) {
-      //   return `/signup?provider=${account?.provider}&MID=${signedMember.MID}`;
-      // }
-
       return true;
     },
   },
@@ -145,3 +84,5 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 };
+
+export const getServerAuthSession = () => getServerSession(authOptions);

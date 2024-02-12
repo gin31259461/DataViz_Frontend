@@ -2,7 +2,7 @@
 
 import { useUserStore } from '@/hooks/store/use-user-store';
 import { DataSchema } from '@/server/api/routers/data';
-import { trpc } from '@/server/trpc';
+import { api } from '@/server/trpc/client';
 import { colorTokens } from '@/utils/color-tokens';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -59,16 +59,15 @@ export const DataContainer = () => {
 
   const start = page * counts;
 
-  const memberDataCount = trpc.data.getMemberDataCount.useQuery(mid);
-  const someDataObject = trpc.data.getManyMemberData.useQuery({
+  const memberDataCount = api.data.getMemberDataCount.useQuery();
+  const someDataObject = api.data.getManyMemberData.useQuery({
     order: orderDirection,
     start: start + 1,
     counts: counts,
-    mid: mid,
   });
-  const dataTable = trpc.data.getTop100ContentFromDataTable.useQuery(selectDataOID);
-  const postData = trpc.data.postData.useMutation();
-  const deleteData = trpc.data.deleteData.useMutation({
+  const dataTable = api.data.getTop100ContentFromDataTable.useQuery(selectDataOID);
+  const postData = api.data.postData.useMutation();
+  const deleteData = api.data.deleteData.useMutation({
     onError: (error) => {
       setOpenNewDataDialog(false);
       setMessage(error.message);

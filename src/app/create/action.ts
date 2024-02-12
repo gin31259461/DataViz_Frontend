@@ -2,6 +2,6 @@
 
 import { revalidatePath } from 'next/cache';
 
-export async function revalidateProject() {
+export const revalidateProject = async () => {
   revalidatePath('/management/project');
-}
+};

@@ -33,7 +33,7 @@ import { uploadFile } from '../action';
 const ObjectTable = dynamic(() => import('@/components/table/object-table'));
 const ShowDataDialog = dynamic(() => import('./show-data-modal'));
 const DataFormDialog = dynamic(() => import('./data-form-dialog'));
-const MessageSnackbar = dynamic(() => import('@/components/message-snackbar'));
+const MessageSnackbar = dynamic(() => import('@/components/snackbar/message-snackbar'));
 const ConfirmDeleteButton = dynamic(() => import('@/components/button/confirm-delete-button'));
 
 const counts = 10;

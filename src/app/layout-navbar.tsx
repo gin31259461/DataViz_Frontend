@@ -27,7 +27,7 @@ export default function LayoutNavbar() {
   const { data, status } = useSession();
   const [signOutModalOpen, setSignOutModalOpen] = useState(false);
   const colorMode = useContext(ColorModeContext);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const avatarClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

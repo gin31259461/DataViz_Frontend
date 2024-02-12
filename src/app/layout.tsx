@@ -8,7 +8,7 @@ import { ReactNode } from 'react';
 import { Provider } from '../components/provider';
 import { TrpcProvider } from '../components/provider/trpc-provider';
 import style from '../styles/rootLayout.module.scss';
-import LayoutNavbar from './_components/layout-navbar';
+import LayoutNavbar from './layout-navbar';
 
 export const metadata = {
   title: 'DataViz',

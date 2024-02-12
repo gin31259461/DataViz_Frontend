@@ -18,15 +18,18 @@ export default function ConfirmDeleteButton({ deleteIDs: deleteOIDs, onConfirm, 
   const [loading, setLoading] = useState(false);
 
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     if (!loading) setOpen(false);
   };
+
   const handleConfirm = async () => {
     setLoading(true);
     await onConfirm(deleteOIDs);
     handleClose();
     setLoading(false);
   };
+
   const handleCancel = () => {
     if (onCancel) {
       onCancel();

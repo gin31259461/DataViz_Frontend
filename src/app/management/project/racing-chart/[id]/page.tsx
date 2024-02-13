@@ -8,7 +8,7 @@ import RacingBarChartEngine, {
 import Loader from '@/components/loading/loader';
 import { DataArgsProps } from '@/hooks/store/use-project-store';
 import { ArgSchema } from '@/server/api/routers/project';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { Container, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 

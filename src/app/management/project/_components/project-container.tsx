@@ -4,7 +4,7 @@ import CardButton from '@/components/button/card-button';
 import IconCardButton from '@/components/button/icon-card-button';
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { EditProjectRequestSchema } from '@/server/api/routers/project';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { convertOpacityNumberToHexString } from '@/utils/color';
 import AddIcon from '@mui/icons-material/AddOutlined';
 import GridViewIcon from '@mui/icons-material/GridViewOutlined';
@@ -26,9 +26,8 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { redirect, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import ProjectCard from './project-card';
 import ContextMenu from './project-context-menu';
 import ProjectList from './project-list';
@@ -39,7 +38,6 @@ type SortTarget = 'name' | 'dateCreated' | 'lastViewed';
 export default function ProjectContainer() {
   const theme = useTheme();
   const router = useRouter();
-  const session = useSession();
 
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [activeID, setActiveID] = useState<number | null>(null);
@@ -48,7 +46,7 @@ export default function ProjectContainer() {
 
   const editProject = api.project.editProject.useMutation();
   const deleteProject = api.project.deleteProject.useMutation();
-  const projects = api.project.getAllProject.useQuery(session.data ? parseInt(session.data.user.id) : undefined);
+  const projects = api.project.getAllProject.useQuery();
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortTarget(event.target.value as SortTarget);
@@ -66,6 +64,16 @@ export default function ProjectContainer() {
     },
     [deleteProject, projects]
   );
+
+  useEffect(() => {
+    if (projects.isError && projects.error.data) {
+      const code = projects.error.data.code;
+
+      if (code === 'UNAUTHORIZED') {
+        redirect('/login');
+      }
+    }
+  }, [projects.isError, projects.error]);
 
   return (
     <Box padding={2}>
@@ -143,7 +151,7 @@ export default function ProjectContainer() {
       <div>
         {viewMode === 'grid' ? (
           <Grid container spacing={2} mt={2}>
-            {projects.isLoading
+            {projects.isLoading || !projects.data
               ? new Array(12).fill(0).map((_, i) => {
                   return (
                     <Grid key={i} item xs={12} sm={6} md={4}>
@@ -153,8 +161,7 @@ export default function ProjectContainer() {
                     </Grid>
                   );
                 })
-              : projects.data &&
-                projects.data.map((project) => {
+              : projects.data.map((project) => {
                   return (
                     <Grid key={project.id} item xs={12} sm={6} md={4}>
                       <ContextMenu project={project} onDelete={onDelete} onEditConfirm={onEditConfirm}>

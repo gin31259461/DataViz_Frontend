@@ -1,6 +1,6 @@
 import { RacingBarChartMapping } from '@/components/chart-engine/racing-bar-chart-engine';
 import { DataArgsProps, useProjectStore } from '@/hooks/store/use-project-store';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import AbcIcon from '@mui/icons-material/Abc';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import NumbersIcon from '@mui/icons-material/Numbers';

@@ -7,6 +7,8 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
+    BASE_URL: z.string(),
+    PORT: z.string(),
     DATABASE_URL: z.string(),
     READER_URL: z.string(),
     WRITER_URL: z.string(),
@@ -34,7 +36,6 @@ export const env = createEnv({
     WKESSO_CLIENT_SECRET: z.string(),
     WKESSO_CALLBACK_URL: z.string().url(),
     FLASK_URL: z.string().url(),
-    TRPC_CLIENT_HTTP_BATCH_LINK: z.string().url(),
   },
 
   /**
@@ -49,6 +50,8 @@ export const env = createEnv({
    * middleware) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    BASE_URL: process.env.BASE_URL,
+    PORT: process.env.PORT,
     DATABASE_URL: process.env.DATABASE_URL,
     READER_URL: process.env.READER_URL,
     WRITER_URL: process.env.WRITER_URL,
@@ -67,7 +70,6 @@ export const env = createEnv({
     WKESSO_CLIENT_SECRET: process.env.WKESSO_CLIENT_SECRET,
     WKESSO_CALLBACK_URL: process.env.WKESSO_CALLBACK_URL,
     FLASK_URL: process.env.FLASK_URL,
-    TRPC_CLIENT_HTTP_BATCH_LINK: process.env.TRPC_CLIENT_HTTP_BATCH_LINK,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

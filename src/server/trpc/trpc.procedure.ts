@@ -2,6 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import { Session } from 'next-auth';
 import { ZodError } from 'zod';
 import { prismaReader, prismaWriter } from '../db';
+import { transformer } from './shared';
 
 export const createTRPCContext = async (opt: { headers: Headers; session?: Session | null }) => {
   return {
@@ -12,6 +13,7 @@ export const createTRPCContext = async (opt: { headers: Headers; session?: Sessi
 };
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
+  transformer,
   errorFormatter({ shape, error }) {
     return {
       ...shape,

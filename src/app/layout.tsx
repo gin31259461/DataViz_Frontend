@@ -1,6 +1,5 @@
 import CommandModal from '@/components/modal/command-modal';
 import { NavbarProvider } from '@/components/navbar/navbar-provider';
-import { env } from '@/env.mjs';
 import { authOptions } from '@/server/auth/auth';
 import '@/styles/global.scss';
 import { getServerSession, Session } from 'next-auth';
@@ -33,7 +32,7 @@ export default async function RootLayout(props: RootLayoutProps) {
   return (
     <html lang="en" className={style['custom-font']}>
       <body className="scrollbar-container">
-        <TrpcProvider httpBatchLink={env.TRPC_CLIENT_HTTP_BATCH_LINK}>
+        <TrpcProvider>
           <Provider session={session}>
             <div>
               <NavbarProvider>

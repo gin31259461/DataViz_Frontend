@@ -1,7 +1,6 @@
 'use client';
 
-import { useUserStore } from '@/hooks/store/use-user-store';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DatasetOutlinedIcon from '@mui/icons-material/DatasetOutlined';
@@ -76,8 +75,7 @@ export const ProjectGroup = () => {
 };
 
 export const SearchProjectPage = () => {
-  const mid = useUserStore((state) => state.mid);
-  const projects = api.project.getAllProject.useQuery(mid);
+  const projects = api.project.getAllProject.useQuery();
   const ControlCommandModal = useContext(CommandModalContext);
   const router = useRouter();
 

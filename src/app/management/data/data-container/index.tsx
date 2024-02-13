@@ -1,7 +1,7 @@
 'use client';
 
 import { DataSchema } from '@/server/api/routers/data';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { colorTokens } from '@/utils/color-tokens';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,7 +25,8 @@ import {
   useTheme,
 } from '@mui/material';
 import dynamic from 'next/dynamic';
-import React, { useCallback, useMemo, useState } from 'react';
+import { redirect } from 'next/navigation';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CardButton from '../../../../components/button/card-button';
 import { uploadFile } from '../action';
 
@@ -58,7 +59,7 @@ export const DataContainer = () => {
   const start = page * counts;
 
   const memberDataCount = api.data.getMemberDataCount.useQuery();
-  const someDataObject = api.data.getManyMemberData.useQuery({
+  const manyMemberData = api.data.getManyMemberData.useQuery({
     order: orderDirection,
     start: start + 1,
     counts: counts,
@@ -101,7 +102,7 @@ export const DataContainer = () => {
       setMessage('upload error, please try again later');
     }
 
-    await someDataObject.refetch();
+    await manyMemberData.refetch();
     await memberDataCount.refetch();
   };
 
@@ -117,7 +118,7 @@ export const DataContainer = () => {
         setMessage(res.message);
       });
 
-    await someDataObject.refetch();
+    await manyMemberData.refetch();
     await memberDataCount.refetch();
   };
 
@@ -125,6 +126,16 @@ export const DataContainer = () => {
     if (dataTable.data) return <ObjectTable data={dataTable.data}></ObjectTable>;
     return null;
   }, [dataTable]);
+
+  useEffect(() => {
+    if (manyMemberData.isError && manyMemberData.error.data) {
+      const code = manyMemberData.error.data.code;
+
+      if (code === 'UNAUTHORIZED') {
+        redirect('/login');
+      }
+    }
+  }, [manyMemberData.isError, manyMemberData.error]);
 
   return (
     <Grid>
@@ -188,7 +199,7 @@ export const DataContainer = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {someDataObject.isLoading || !someDataObject.data
+            {manyMemberData.isLoading || !manyMemberData.data
               ? new Array(counts).fill(0).map((_, i) => {
                   return (
                     <TableRow key={i}>
@@ -209,7 +220,7 @@ export const DataContainer = () => {
                     </TableRow>
                   );
                 })
-              : someDataObject.data.map((dataSet) => (
+              : manyMemberData.data.map((dataSet) => (
                   <TableRow
                     key={dataSet.id}
                     sx={{
@@ -273,8 +284,8 @@ export const DataContainer = () => {
       </Grid>
 
       <ShowDataDialog
-        title={someDataObject.data?.find((d) => d.id === selectDataOID)?.name}
-        description={someDataObject.data?.find((d) => d.id === selectDataOID)?.description}
+        title={manyMemberData.data?.find((d) => d.id === selectDataOID)?.name}
+        description={manyMemberData.data?.find((d) => d.id === selectDataOID)?.description}
         dataInfo={'Preview top 100 rows'}
         open={openDialog}
         onClose={() => setOpenDialog(false)}

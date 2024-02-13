@@ -5,14 +5,13 @@ import { ReactNode } from 'react';
 import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_components/stepper';
 
 interface StepperProviderProps {
-  stepLength: number;
   steps: string[];
   children: ReactNode[];
 }
 
 function StepperProvider(props: StepperProviderProps) {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const stepperValue = useCustomStepperAction(props.stepLength);
+  const stepperValue = useCustomStepperAction(props.steps.length);
 
   const backButtonDisabled = () => {
     if (stepperValue.activeStep !== 0) return false;

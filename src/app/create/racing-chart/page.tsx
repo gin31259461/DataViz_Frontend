@@ -2,7 +2,7 @@
 
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { useUserStore } from '@/hooks/store/use-user-store';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChooseData from '../_components/choose-data';

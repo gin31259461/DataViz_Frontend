@@ -79,7 +79,7 @@ function RacingBarChartEngine(props: { data: FrameDataProps[]; args: RacingBarCh
     <Container>
       <div ref={ChartContainerRef} style={{ display: 'flex' }}>
         {keyframes.length > 0 && chartContainerOffset && (
-          <Suspense fallback={<LoadingWithTitle title="Generating racing bar chart" />}>
+          <Suspense fallback={<LoadingWithTitle>Generating racing bar chart</LoadingWithTitle>}>
             <RacingBarChart
               {...props.args}
               keyframes={keyframes}

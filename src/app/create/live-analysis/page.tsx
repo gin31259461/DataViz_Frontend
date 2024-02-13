@@ -8,7 +8,7 @@ async function LiveAnalysisPage() {
   const steps = ['choose data', 'explore data', 'path analysis', 'process analysis', 'infographic', 'done'];
 
   return (
-    <StepperProvider stepLength={6} steps={steps}>
+    <StepperProvider steps={steps}>
       <ChooseData />
       <ExploreData />
       <PathAnalysis />

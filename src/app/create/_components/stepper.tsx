@@ -33,7 +33,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
   const colors = colorTokens(theme.palette.mode);
   const isFloatLeftPanel = useMediaQuery('(max-width:700px)');
 
-  const stepContext = useContext(CustomStepperContext);
+  const stepperContext = useContext(CustomStepperContext);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           (open ? <CloseOutlinedIcon sx={{ fontSize: 20 }} /> : <WidgetsOutlinedIcon sx={{ fontSize: 20 }} />)}
       </IconButton>
       <Button
-        disabled={backButtonDisabled()}
+        disabled={backButtonDisabled() || stepperContext.backButtonDisabled}
         color="secondary"
         sx={{
           position: 'fixed',
@@ -82,13 +82,13 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           zIndex: 50,
           fontSize: 15,
         }}
-        onClick={() => stepContext.changeActiveStep('prev')}
+        onClick={() => stepperContext.changeActiveStep('prev')}
         variant="outlined"
       >
         Back
       </Button>
       <Button
-        disabled={nextButtonDisabled()}
+        disabled={nextButtonDisabled() || stepperContext.nextButtonDisabled}
         color="info"
         sx={{
           position: 'fixed',
@@ -98,12 +98,12 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           fontSize: 15,
         }}
         onClick={async () => {
-          if (stepContext.activeStep === steps.length - 1) await callback();
-          stepContext.changeActiveStep('next');
+          if (stepperContext.activeStep === steps.length - 1) await callback();
+          stepperContext.changeActiveStep('next');
         }}
         variant={'contained'}
       >
-        {stepContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
+        {stepperContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
       </Button>
       {isFloatLeftPanel && open && <div className={utilStyle['backdrop']} onClick={() => setOpen(false)}></div>}
       <Box
@@ -120,7 +120,11 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
             backgroundColor: theme.palette.background.paper,
           }}
         >
-          <MuiStepper activeStep={stepContext.activeStep} orientation="vertical" sx={{ ...stepStyle, width: '100%' }}>
+          <MuiStepper
+            activeStep={stepperContext.activeStep}
+            orientation="vertical"
+            sx={{ ...stepStyle, width: '100%' }}
+          >
             {steps.map((label, index) => (
               <Step key={index}>
                 <StepLabel sx={{ whiteSpace: 'nowrap' }}>{label}</StepLabel>
@@ -137,7 +141,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           overflowY: 'auto',
         }}
       >
-        <StepperContainer>{children[stepContext.activeStep]}</StepperContainer>
+        <StepperContainer>{children[stepperContext.activeStep]}</StepperContainer>
       </Box>
     </Box>
   );
@@ -147,26 +151,44 @@ type StepAction = 'next' | 'prev';
 
 type CustomStepperContextProps = {
   activeStep: number;
+  backButtonDisabled: boolean;
+  nextButtonDisabled: boolean;
   changeActiveStep: (action: StepAction) => void;
+  changeBackButtonDisabled: (status: boolean) => void;
+  changeNextButtonDisabled: (status: boolean) => void;
 };
 
 export const CustomStepperContext = createContext<CustomStepperContextProps>({
   activeStep: 0,
+  backButtonDisabled: false,
+  nextButtonDisabled: false,
   changeActiveStep: () => {},
+  changeBackButtonDisabled: () => {},
+  changeNextButtonDisabled: () => {},
 });
 
 export const useCustomStepperAction = (stepLength: number) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [backButtonDisabled, setBackButtonDisabled] = useState(false);
+  const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
 
   const value = useMemo<CustomStepperContextProps>(() => {
     return {
-      activeStep: activeStep,
-      changeActiveStep: (action) => {
+      activeStep,
+      backButtonDisabled,
+      nextButtonDisabled,
+      changeActiveStep(action) {
         if (action === 'next') setActiveStep((prev) => (prev < stepLength - 1 ? prev + 1 : prev));
         else if (action === 'prev') setActiveStep((prev) => (prev > 0 ? prev - 1 : prev));
       },
+      changeBackButtonDisabled(status) {
+        setBackButtonDisabled(status);
+      },
+      changeNextButtonDisabled(status) {
+        setNextButtonDisabled(status);
+      },
     };
-  }, [activeStep, stepLength]);
+  }, [activeStep, stepLength, backButtonDisabled, nextButtonDisabled]);
 
   return value;
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSplitLineStyle } from '@/hooks/use-styles';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { emailValidation } from '@/utils/validation';
 import { Box, Button, CircularProgress, Container, Paper, TextField, Typography, useTheme } from '@mui/material';
 import { signIn, useSession } from 'next-auth/react';

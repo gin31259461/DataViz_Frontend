@@ -3,14 +3,12 @@
 import AutoCompleteSelect from '@/components/select/auto-complete-select';
 import ObjectTable from '@/components/table/object-table';
 import { BasicColumnTypeMapping, useProjectStore } from '@/hooks/store/use-project-store';
-import { useUserStore } from '@/hooks/store/use-user-store';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { LinearProgress, Typography } from '@mui/material';
 import { useEffect } from 'react';
 
 export default function ChooseData() {
-  const mid = useUserStore((state) => state.mid);
-  const allMemberData = api.data.getAllMemberData.useQuery(mid);
+  const allMemberData = api.data.getAllMemberData.useQuery();
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataOID);

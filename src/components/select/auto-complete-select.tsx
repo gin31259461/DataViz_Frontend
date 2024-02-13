@@ -3,23 +3,25 @@ import { Fragment, SyntheticEvent, useState } from 'react';
 
 interface AutoCompleteSelectProps {
   loading: boolean;
-  initialValueIndex: number;
+  initialValueIndex?: number;
   options: string[];
-  label?: string;
+  children?: React.ReactNode;
   onChange: (value: string) => void;
   onClear?: () => void;
 }
 
 const AutoCompleteSelect = ({
-  initialValueIndex,
+  initialValueIndex = 0,
   loading,
   options,
   onChange,
+  children = 'Choose data',
   onClear = () => {},
-  label = 'Choose data',
 }: AutoCompleteSelectProps) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [selectedValue, setSelectedValue] = useState<string | null>(options[initialValueIndex]);
+  const [selectedValue, setSelectedValue] = useState<string | null>(
+    options.length > 0 ? options[initialValueIndex] : ''
+  );
 
   const handleInputChange = (event: SyntheticEvent<Element>, value: string) => {
     setInputValue(value);
@@ -53,13 +55,13 @@ const AutoCompleteSelect = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          label={label}
+          label={children}
           variant="outlined"
           InputProps={{
             ...params.InputProps,
             endAdornment: (
               <Fragment>
-                {loading && <CircularProgress color="inherit" size={20} />}
+                {loading && <CircularProgress color="info" size={20} />}
                 {params.InputProps.endAdornment}
               </Fragment>
             ),

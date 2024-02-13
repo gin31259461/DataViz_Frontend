@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../../trpc/trpc.procedure';
 
 const ProjectZodSchema = z.object({
   id: z.number(),
@@ -88,17 +88,15 @@ export const projectRouter = createTRPCRouter({
 
     return null;
   }),
-  getAllProject: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
+  getAllProject: protectedProcedure.query(async ({ ctx }) => {
     let data: ProjectSchema[] = [];
-
-    if (!input) return data;
 
     const member = await ctx.prismaReader.member.findFirst({
       select: {
         Account: true,
       },
       where: {
-        MID: input,
+        MID: parseInt(ctx.session.user.id),
       },
     });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { BuiltInProviderType } from 'next-auth/providers';
 import { LiteralUnion, signIn, useSession } from 'next-auth/react';

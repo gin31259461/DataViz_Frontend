@@ -8,10 +8,11 @@ import { useState } from 'react';
 
 interface MultiSelectProps {
   options: string[];
+  children?: React.ReactNode;
   onChange: (selectedValues: string[]) => void;
 }
 
-const MultiSelect = ({ options, onChange }: MultiSelectProps) => {
+const MultiSelect = ({ options, onChange, children }: MultiSelectProps) => {
   const [selectedValues, setSelectedValues] = useState<string[]>(options);
 
   const handleSelectChange = (event: SelectChangeEvent<string[]>) => {
@@ -22,13 +23,13 @@ const MultiSelect = ({ options, onChange }: MultiSelectProps) => {
 
   return (
     <FormControl fullWidth>
-      <InputLabel>Select options</InputLabel>
+      <InputLabel>{children ?? 'options'}</InputLabel>
       <Select
         multiple
         value={selectedValues}
         onChange={handleSelectChange}
         renderValue={(selected) => (selected as string[]).join(', ')}
-        label="Select options"
+        label={children ?? 'options'}
       >
         {options
           .sort((a, b) => Number(a) - Number(b))

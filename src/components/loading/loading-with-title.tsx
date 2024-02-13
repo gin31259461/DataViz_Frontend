@@ -2,10 +2,10 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react';
 
 interface LoadingWithTitleProps {
-  title: string;
+  children: React.ReactNode;
 }
 
-const LoadingWithTitle: React.FC<LoadingWithTitleProps> = ({ title }) => {
+const LoadingWithTitle: React.FC<LoadingWithTitleProps> = ({ children }) => {
   return (
     <Box
       sx={{
@@ -16,7 +16,7 @@ const LoadingWithTitle: React.FC<LoadingWithTitleProps> = ({ title }) => {
         gap: 2,
       }}
     >
-      <Typography variant="h6">{title}</Typography>
+      <Typography variant="h6">{children}</Typography>
       <CircularProgress color="info" />
     </Box>
   );

@@ -1,6 +1,6 @@
 import { env } from '@/env.mjs';
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, publicProcedure } from '../../trpc/trpc.procedure';
 
 const PathAnalysisRequestZodSchema = z.object({
   dataId: z.number(),
@@ -16,7 +16,7 @@ const ProcessPivotAnalysisRequestZodSchema = z.object({
   process: z.custom<(string | string[])[][]>(),
 });
 
-type ColumnType = 'int' | 'float' | 'object';
+type ColumnType = 'number' | 'float' | 'string';
 
 export type ColumnInfo = {
   type: ColumnType;
@@ -24,6 +24,12 @@ export type ColumnInfo = {
 };
 
 export type DataInfoSchema = {
+  info: {
+    id: string;
+    rows: number;
+    name: string;
+    des: string;
+  };
   columns: {
     [key: string]: ColumnInfo;
   };
@@ -31,7 +37,7 @@ export type DataInfoSchema = {
 
 export const analysisRouter = createTRPCRouter({
   getDataInfo: publicProcedure.input(z.number().optional()).query(async ({ input }) => {
-    let data: DataInfoSchema = { columns: {} };
+    let data: DataInfoSchema = { columns: {}, info: { id: '', rows: 0, name: '', des: '' } };
 
     if (!input) return data;
 

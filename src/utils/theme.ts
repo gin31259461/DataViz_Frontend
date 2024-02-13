@@ -1,10 +1,10 @@
 'use client';
 
-import { createTheme } from '@mui/material';
+import { createTheme, ThemeOptions } from '@mui/material';
 import { createContext, useMemo, useState } from 'react';
 import { colorTokens } from './color-tokens';
 
-export const themeSettings = (mode: 'dark' | 'light') => {
+export const themeSettings = (mode: 'dark' | 'light'): ThemeOptions => {
   const colors = colorTokens(mode);
   return {
     palette: {

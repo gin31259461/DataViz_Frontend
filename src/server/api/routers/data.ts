@@ -1,7 +1,7 @@
 import { bigIntToString } from '@/utils/string';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../../trpc/trpc.procedure';
 import { ResponseScheme } from './response';
 
 const DataZodSchema = z.object({

@@ -1,8 +1,7 @@
 'use client';
 
-import LinearProgressPending from '@/components/loading/linear-progress-pending';
-import { api } from '@/server/trpc/client';
-import { Container } from '@mui/material';
+import LoadingWithTitle from '@/components/loading/loading-with-title';
+import { api } from '@/server/trpc/trpc.client';
 
 const reqData = {
   dataId: 769,
@@ -23,9 +22,9 @@ function ProcessAnalysis() {
   console.log(process.data);
 
   return (
-    <Container>
-      <LinearProgressPending isPending={process.isLoading || process.isFetching} />
-    </Container>
+    <>
+      <LoadingWithTitle>正在進行路徑樞紐分析...</LoadingWithTitle>
+    </>
   );
 }
 

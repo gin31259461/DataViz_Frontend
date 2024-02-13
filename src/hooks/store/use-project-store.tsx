@@ -18,6 +18,7 @@ export type ColumnTypeMappingProps = BasicColumnTypeMapping;
 export interface ProjectStoreProps {
   title: string;
   des: string;
+  target: string | undefined;
   selectedDataOID: number | undefined;
   selectedData: object | undefined;
   chartType: ChartTypes | undefined;
@@ -26,6 +27,7 @@ export interface ProjectStoreProps {
   columnTypeMapping: ColumnTypeMappingProps | undefined;
   setTitle: (title: string) => void;
   setDes: (des: string) => void;
+  setTarget: (target: string) => void;
   setSelectedDataOID: (oid: number | undefined) => void;
   setSelectedData: (data: object) => void;
   setChartType: (chartType: ChartTypes) => void;
@@ -38,6 +40,7 @@ export interface ProjectStoreProps {
 export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   title: 'unnamed',
   des: '',
+  target: undefined,
   selectedDataOID: undefined,
   selectedData: [],
   chartType: undefined,
@@ -46,6 +49,7 @@ export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   columnTypeMapping: undefined,
   setTitle: (title: string) => set({ title: title }),
   setDes: (des: string) => set({ des: des }),
+  setTarget: (target: string) => set({ target: target }),
   setSelectedDataOID: (oid) =>
     set({
       selectedDataOID: oid,

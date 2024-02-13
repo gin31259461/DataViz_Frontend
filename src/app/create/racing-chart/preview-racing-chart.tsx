@@ -4,7 +4,7 @@ import RacingBarChartEngine, {
   RacingBarChartMapping,
 } from '@/components/chart-engine/racing-bar-chart-engine';
 import { DataArgsProps, useProjectStore } from '@/hooks/store/use-project-store';
-import { api } from '@/server/trpc/client';
+import { api } from '@/server/trpc/trpc.client';
 import { useEffect } from 'react';
 
 function PreviewRacingChart() {

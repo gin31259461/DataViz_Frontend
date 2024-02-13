@@ -1,8 +1,9 @@
 'use client';
 
-import LinearProgressPending from '@/components/loading/linear-progress-pending';
-import { api } from '@/server/trpc/client';
-import { Container } from '@mui/material';
+import LoadingWithTitle from '@/components/loading/loading-with-title';
+import { api } from '@/server/trpc/trpc.client';
+import { useContext, useEffect } from 'react';
+import { CustomStepperContext } from '../../_components/stepper';
 
 const reqData = {
   dataId: 769,
@@ -20,14 +21,25 @@ const reqData = {
 };
 
 function PathAnalysis() {
+  const stepperContext = useContext(CustomStepperContext);
   const paths = api.analysis.getPathAnalysis.useQuery(reqData);
 
   console.log(paths.data);
 
+  useEffect(() => {
+    if (paths.isLoading) {
+      stepperContext.changeBackButtonDisabled(true);
+      stepperContext.changeNextButtonDisabled(true);
+    } else {
+      stepperContext.changeBackButtonDisabled(false);
+      stepperContext.changeNextButtonDisabled(false);
+    }
+  }, [stepperContext, paths.isLoading]);
+
   return (
-    <Container>
-      <LinearProgressPending isPending={paths.isLoading || paths.isFetching} />
-    </Container>
+    <>
+      <LoadingWithTitle>正在進行資料路徑分析...</LoadingWithTitle>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import { api } from '@/server/trpc/server';
+import { api } from '@/server/trpc/trpc.server';
 import { Container } from '@mui/material';
 
 export default async function TestPage() {

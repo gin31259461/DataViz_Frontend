@@ -1,6 +1,5 @@
 'use client';
 
-import { useUserStore } from '@/hooks/store/use-user-store';
 import { ColorModeContext, useMode } from '@/utils/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Session } from 'next-auth';
@@ -16,11 +15,6 @@ interface ProviderProps {
 export function Provider({ children, session }: ProviderProps) {
   const { theme, colorMode } = useMode();
   const ControlCommandModal = useCommandModal();
-  const setMID = useUserStore((state) => state.setMID);
-
-  if (session) {
-    setMID(parseInt(session.user.id));
-  }
 
   return (
     <ColorModeContext.Provider value={colorMode}>

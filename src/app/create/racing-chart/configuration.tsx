@@ -98,7 +98,7 @@ export default function Configuration() {
   }, [dataArgs, columnTypeMapping, setDataArgs]);
 
   useEffect(() => {
-    setChartType('racing-bar-chart');
+    setChartType('racing-chart');
   }, [setChartType]);
 
   const onChange = useCallback(
@@ -197,7 +197,7 @@ export default function Configuration() {
             <CustomSelect
               required
               label="value"
-              items={columnTypeMapping?.number.concat(columnTypeMapping.date)}
+              items={columnTypeMapping?.number}
               helperText="this is required filed"
               onChange={onChange}
               defaultValue={dataArgs?.mapping.value}

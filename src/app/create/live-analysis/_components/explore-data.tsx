@@ -1,10 +1,14 @@
 'use client';
 
+import CardButton from '@/components/button/card-button';
 import LoadingWithTitle from '@/components/loading/loading-with-title';
 import AutoCompleteSelect from '@/components/select/auto-complete-select';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { api } from '@/server/trpc/trpc.client';
-import { Divider, Grid, styled, Typography, useTheme } from '@mui/material';
+import { addOpacityToColor } from '@/utils/color';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { Dialog, DialogContent, DialogTitle, Divider, Grid, styled, Typography, useTheme } from '@mui/material';
+import { useState } from 'react';
 
 function ExploreData() {
   const theme = useTheme();
@@ -12,8 +16,7 @@ function ExploreData() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
   const setTarget = useProjectStore((state) => state.setTarget);
   const dataInfo = api.analysis.getDataInfo.useQuery(selectedDataOID);
-
-  console.log(dataInfo.data);
+  const [conceptDialogOpen, setConceptDialogOpen] = useState(false);
 
   return (
     <>
@@ -123,7 +126,20 @@ function ExploreData() {
           </Grid>
 
           <Grid container>
-            <Typography variant="h5">Concept hierarchy</Typography>G
+            <Typography variant="h5">Concept hierarchy</Typography>
+          </Grid>
+
+          <Grid container>
+            <CardButton
+              sx={{ backgroundColor: addOpacityToColor(theme.palette.background.paper, 20) }}
+              icon={<AddOutlinedIcon />}
+              title="Add new concept"
+              onClick={() => setConceptDialogOpen(true)}
+            />
+            <Dialog open={conceptDialogOpen} onClose={() => setConceptDialogOpen(false)}>
+              <DialogTitle>Add new concept</DialogTitle>
+              <DialogContent></DialogContent>
+            </Dialog>
           </Grid>
 
           <Grid container>

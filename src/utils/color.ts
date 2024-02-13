@@ -11,3 +11,9 @@ export const convertOpacityNumberToHexString = (percentage: number): string => {
   // 回傳十六進位 alpha 字串
   return hexAlpha;
 };
+
+export const addOpacityToColor = (color: string, opacity: number) => {
+  const newColor = `#${convertOpacityNumberToHexString(opacity)}${color.slice(1)}`;
+
+  return newColor;
+};

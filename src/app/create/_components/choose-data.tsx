@@ -28,11 +28,18 @@ export default function ChooseData() {
         date: [],
       };
 
+      if (!(top100ContentFromDataTable.data.length > 0)) {
+        setColumnTypesMapping(columnTypesMapping);
+        return;
+      }
+
       columns.forEach((col) => {
         const value = top100ContentFromDataTable.data[0][col];
+
         if (!isNaN(Date.parse(value)) && new Date(value).getFullYear() <= new Date().getFullYear())
           columnTypesMapping['date'].push(col);
-        else if (Number.parseInt(value).toString() === value) columnTypesMapping['number'].push(col);
+        else if (Number.parseInt(value).toString() === value || typeof value === 'number')
+          columnTypesMapping['number'].push(col);
         else columnTypesMapping['string'].push(col);
       });
 

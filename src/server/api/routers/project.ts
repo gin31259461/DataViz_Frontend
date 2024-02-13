@@ -67,6 +67,23 @@ export const projectRouter = createTRPCRouter({
           },
         },
       });
+
+      const member = await ctx.prismaReader.member.findFirst({
+        select: {
+          Account: true,
+        },
+        where: {
+          MID: parseInt(ctx.session.user.id),
+        },
+      });
+
+      if (member) {
+        const sqlStr = `select top 1 id from vd_project_${member.Account} order by id desc`;
+        const data: ProjectSchema[] = await ctx.prismaReader.$queryRaw`exec sp_executesql ${sqlStr}`;
+        return data.length > 0 ? data[0].id : undefined;
+      }
+
+      return undefined;
     }),
   getLastProjectId: publicProcedure.input(z.number().optional()).query(async ({ input, ctx }) => {
     if (!input) return null;

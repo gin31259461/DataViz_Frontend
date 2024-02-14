@@ -77,9 +77,9 @@ export default function ProjectContainer() {
 
   return (
     <Box padding={2}>
-      <Box
+      <Grid
+        container
         sx={{
-          display: 'flex',
           flexDirection: 'column',
           backgroundColor: theme.palette.background.default,
           borderBottom: `${useSplitLineStyle()}`,
@@ -97,11 +97,10 @@ export default function ProjectContainer() {
             ></CardButton>
           </Grid>
 
-          <Dialog open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
+          <Dialog fullWidth open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
             <DialogTitle>Create new project</DialogTitle>
             <DialogContent
               sx={{
-                width: 400,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 1,
@@ -124,18 +123,16 @@ export default function ProjectContainer() {
           </Dialog>
         </Grid>
 
-        <Grid container height={50} justifyContent="flex-end" alignItems={'flex-end'}>
-          <div style={{ marginRight: 10 }}>
-            <FormControl variant="standard">
-              <InputLabel>Sort by: </InputLabel>
-              <Select sx={{ border: 'none' }} value={sortTarget} onChange={handleSortChange}>
-                <MenuItem value="name">Name</MenuItem>
-                <MenuItem value="dateCreated">Date created</MenuItem>
-                <MenuItem value="lastViewed">Last viewed</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div style={{ marginRight: 5 }}>
+        <Grid container gap={1} justifyContent="flex-end" alignItems={'flex-end'} height={50}>
+          <FormControl variant="standard">
+            <InputLabel>Sort by: </InputLabel>
+            <Select label={'Sort by:'} value={sortTarget} onChange={handleSortChange}>
+              <MenuItem value="name">Name</MenuItem>
+              <MenuItem value="dateCreated">Date created</MenuItem>
+              <MenuItem value="lastViewed">Last viewed</MenuItem>
+            </Select>
+          </FormControl>
+          <div>
             <IconCardButton title="Grid view" onClick={() => setViewMode('grid')}>
               {viewMode === 'list' ? <GridViewIcon /> : <GridViewIcon color="secondary" />}
             </IconCardButton>
@@ -146,7 +143,7 @@ export default function ProjectContainer() {
             </IconCardButton>
           </div>
         </Grid>
-      </Box>
+      </Grid>
 
       <div>
         {viewMode === 'grid' ? (

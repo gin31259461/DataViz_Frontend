@@ -5,7 +5,7 @@ import { api } from '@/server/trpc/trpc.client';
 import { useRouter } from 'next/navigation';
 import ChooseData from '../_components/choose-data';
 import Complete from '../_components/complete';
-import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_components/stepper';
+import Stepper, { StepperContext, useCustomStepperAction } from '../_components/stepper';
 import { revalidateProject } from '../action';
 import Configuration from './configuration';
 import PreviewRacingChart from './preview-racing-chart';
@@ -13,7 +13,7 @@ import PreviewRacingChart from './preview-racing-chart';
 function CreateRacingBarChartPage() {
   const router = useRouter();
   const createArg = api.project.createArg.useMutation();
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
   const title = useProjectStore((state) => state.title);
   const des = useProjectStore((state) => state.des);
   const chartType = useProjectStore((state) => state.chartType);
@@ -58,7 +58,7 @@ function CreateRacingBarChartPage() {
   };
 
   return (
-    <CustomStepperContext.Provider value={stepperValue}>
+    <StepperContext.Provider value={stepperValue}>
       <Stepper
         steps={steps}
         backButtonDisabled={backButtonDisabled}
@@ -70,7 +70,7 @@ function CreateRacingBarChartPage() {
         <PreviewRacingChart />
         <Complete />
       </Stepper>
-    </CustomStepperContext.Provider>
+    </StepperContext.Provider>
   );
 }
 export default CreateRacingBarChartPage;

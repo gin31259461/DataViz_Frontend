@@ -2,7 +2,7 @@
 
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { ReactNode } from 'react';
-import Stepper, { CustomStepperContext, useCustomStepperAction } from '../_components/stepper';
+import Stepper, { StepperContext, useCustomStepperAction } from '../_components/stepper';
 
 interface StepperProviderProps {
   steps: string[];
@@ -10,7 +10,7 @@ interface StepperProviderProps {
 }
 
 function StepperProvider(props: StepperProviderProps) {
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
   const stepperValue = useCustomStepperAction(props.steps.length);
 
   const backButtonDisabled = () => {
@@ -24,7 +24,7 @@ function StepperProvider(props: StepperProviderProps) {
   };
 
   return (
-    <CustomStepperContext.Provider value={stepperValue}>
+    <StepperContext.Provider value={stepperValue}>
       <Stepper
         steps={props.steps}
         backButtonDisabled={backButtonDisabled}
@@ -33,7 +33,7 @@ function StepperProvider(props: StepperProviderProps) {
       >
         {props.children}
       </Stepper>
-    </CustomStepperContext.Provider>
+    </StepperContext.Provider>
   );
 }
 

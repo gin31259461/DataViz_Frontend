@@ -10,8 +10,8 @@ import { useEffect } from 'react';
 export default function ChooseData() {
   const allMemberData = api.data.getAllMemberData.useQuery();
 
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataOID);
+  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
+  const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataId);
   const setSelectedData = useProjectStore((state) => state.setSelectedData);
   const setColumnTypesMapping = useProjectStore((state) => state.setColumnTypeMapping);
   const clearProjectStore = useProjectStore((state) => state.clear);
@@ -57,21 +57,20 @@ export default function ChooseData() {
   return (
     <>
       <AutoCompleteSelect
-        options={
-          allMemberData.data
-            ?.sort((a, b) => {
-              return b.id - a.id;
-            })
-            .map((d) => d.id.toString() + ' : ' + d.name) ?? []
-        }
-        initialValueIndex={allMemberData.data?.findIndex((d) => d.id === selectedDataOID) ?? 0}
+        label="Choose data"
         onChange={handleSelectChange}
         onClear={() => {
           setSelectedDataOID(undefined);
           setSelectedData([]);
         }}
         loading={allMemberData.isLoading}
-      />
+      >
+        {allMemberData.data
+          ?.sort((a, b) => {
+            return b.id - a.id;
+          })
+          .map((d) => d.id.toString() + ' : ' + d.name) ?? []}
+      </AutoCompleteSelect>
       {selectedDataOID !== -1 && top100ContentFromDataTable.isLoading && (
         <LinearProgress color="info" sx={{ top: 10 }} />
       )}

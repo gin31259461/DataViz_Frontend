@@ -8,7 +8,7 @@ import { api } from '@/server/trpc/trpc.client';
 import { useEffect } from 'react';
 
 function PreviewRacingChart() {
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
   const selectedData = api.data.getContentFromDataTable.useQuery(selectedDataOID);
   const dataArgs = useProjectStore<DataArgsProps<RacingBarChartMapping>>(
     (state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>

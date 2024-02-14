@@ -74,7 +74,7 @@ export default function Configuration() {
   const columnTypeMapping = useProjectStore((state) => state.columnTypeMapping);
   const dataArgs = useProjectStore((state) => state.dataArgs as DataArgsProps<RacingBarChartMapping>);
   const setDataArgs = useProjectStore((state) => state.setDataArgs);
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
+  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
   const title = useProjectStore((state) => state.title);
   const des = useProjectStore((state) => state.des);
   const setTitle = useProjectStore((state) => state.setTitle);

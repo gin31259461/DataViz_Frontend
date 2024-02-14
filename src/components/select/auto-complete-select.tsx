@@ -2,46 +2,51 @@ import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 import { Fragment, SyntheticEvent, useState } from 'react';
 
 interface AutoCompleteSelectProps {
-  loading: boolean;
-  initialValueIndex?: number;
-  options: string[];
-  children?: React.ReactNode;
-  onChange: (value: string) => void;
+  loading?: boolean;
+  initialValue?: string;
+  children?: string[];
+  label?: React.ReactNode;
+  onChange?: (value: string) => void;
   onClear?: () => void;
 }
 
 const AutoCompleteSelect = ({
-  initialValueIndex = 0,
-  loading,
-  options,
-  onChange,
-  children = 'Choose data',
+  initialValue,
+  loading = false,
+  children = [],
+  onChange = () => {},
+  label = 'Options',
   onClear = () => {},
 }: AutoCompleteSelectProps) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [selectedValue, setSelectedValue] = useState<string | null>(
-    options.length > 0 ? options[initialValueIndex] : ''
-  );
+  const [selectedValue, setSelectedValue] = useState<string | null>(() => {
+    if (initialValue && children.length > 0) {
+      const index = children.findIndex((value) => value === initialValue);
+
+      if (index >= 0) {
+        return children[index];
+      }
+    }
+
+    return null;
+  });
 
   const handleInputChange = (event: SyntheticEvent<Element>, value: string) => {
     setInputValue(value);
   };
 
   const handleOptionChange = (event: SyntheticEvent, value: string | null) => {
-    console.log(value);
     setSelectedValue(value);
-    if (!value) {
-      onClear();
-    } else {
-      onChange(value);
-    }
+
+    if (value) onChange(value);
+    else onClear();
   };
 
   return (
     <Autocomplete
-      value={selectedValue || null}
+      value={selectedValue}
       inputValue={inputValue}
-      options={options}
+      options={children}
       onChange={handleOptionChange}
       onInputChange={handleInputChange}
       loading={loading}
@@ -55,7 +60,7 @@ const AutoCompleteSelect = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          label={children}
+          label={label}
           variant="outlined"
           InputProps={{
             ...params.InputProps,

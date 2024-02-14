@@ -1,22 +1,30 @@
 'use client';
 
-import CardButton from '@/components/button/card-button';
+import { GridContainerDivider } from '@/components/divider/grid-container-divider';
 import LoadingWithTitle from '@/components/loading/loading-with-title';
-import AutoCompleteSelect from '@/components/select/auto-complete-select';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { api } from '@/server/trpc/trpc.client';
-import { addOpacityToColor } from '@/utils/color';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { Dialog, DialogContent, DialogTitle, Divider, Grid, styled, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { Grid, Typography, useTheme } from '@mui/material';
+import { useContext, useEffect } from 'react';
+import { StepperContext } from '../../_components/stepper';
 
-function ExploreData() {
+export default function ExploreData() {
   const theme = useTheme();
 
-  const selectedDataOID = useProjectStore((state) => state.selectedDataOID);
-  const setTarget = useProjectStore((state) => state.setTarget);
-  const dataInfo = api.analysis.getDataInfo.useQuery(selectedDataOID);
-  const [conceptDialogOpen, setConceptDialogOpen] = useState(false);
+  const stepperContext = useContext(StepperContext);
+
+  const selectedDataId = useProjectStore((state) => state.selectedDataId);
+  const setDataInfo = useProjectStore((state) => state.setDataInfo);
+
+  const dataInfo = api.analysis.getDataInfo.useQuery(selectedDataId);
+
+  useEffect(() => {
+    if (dataInfo.data) setDataInfo(dataInfo.data);
+  }, [dataInfo.data, setDataInfo]);
+
+  useEffect(() => {
+    stepperContext.setIsLoading(dataInfo.isLoading);
+  }, [dataInfo.isLoading, stepperContext]);
 
   return (
     <>
@@ -27,31 +35,28 @@ function ExploreData() {
           {dataInfo.data && (
             <>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Grid item xs={6}>
-                  <Typography variant="h4">Id</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="h5">{dataInfo.data.info.id}</Typography>
-                </Grid>
+                <Typography variant="h4">Data information</Typography>
               </Grid>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Grid item xs={6}>
-                  <Typography variant="h4">Size (rows)</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="h5">{dataInfo.data.info.rows}</Typography>
-                </Grid>
-              </Grid>
-              <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Grid item xs={6}>
-                  <Typography variant="h4">Name</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="h5">{dataInfo.data.info.name}</Typography>
-                </Grid>
+                <Typography variant="h5">Id</Typography>
               </Grid>
               <Grid container>
-                <Typography variant="h4">Description</Typography>
+                <Typography variant="body1">{dataInfo.data.info.id}</Typography>
+              </Grid>
+              <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h5">Size (rows)</Typography>
+              </Grid>
+              <Grid container>
+                <Typography variant="body1">{dataInfo.data.info.rows}</Typography>
+              </Grid>
+              <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h5">Name</Typography>
+              </Grid>
+              <Grid container>
+                <Typography variant="body1">{dataInfo.data.info.name}</Typography>
+              </Grid>
+              <Grid container>
+                <Typography variant="h5">Description</Typography>
               </Grid>
               <Grid container>
                 {dataInfo.data.info.des === '' ? (
@@ -65,9 +70,7 @@ function ExploreData() {
             </>
           )}
 
-          <Grid container>
-            <CustomDivider></CustomDivider>
-          </Grid>
+          <GridContainerDivider />
 
           <Grid container>
             <Typography variant="h4">Columns</Typography>
@@ -92,58 +95,10 @@ function ExploreData() {
               );
             })}
 
-          <Grid container>
-            <CustomDivider>For next step</CustomDivider>
-          </Grid>
+          <GridContainerDivider />
 
-          <Grid container>
-            <Typography variant="h4">Path analysis configuration</Typography>
-          </Grid>
-
-          <Grid container>
-            <Typography variant="h5">Target</Typography>
-          </Grid>
-
-          <Grid container>
-            <Grid item xs={12}>
-              <AutoCompleteSelect
-                loading={false}
-                options={
-                  dataInfo.data
-                    ? Object.keys(dataInfo.data.columns).filter((col) => {
-                        const info = dataInfo.data.columns[col];
-                        return info.type === 'number' || info.type === 'float';
-                      })
-                    : []
-                }
-                onChange={(value) => {
-                  setTarget(value);
-                }}
-              >
-                選擇分析目標 (數值型欄位)
-              </AutoCompleteSelect>
-            </Grid>
-          </Grid>
-
-          <Grid container>
-            <Typography variant="h5">Concept hierarchy</Typography>
-          </Grid>
-
-          <Grid container>
-            <CardButton
-              sx={{ backgroundColor: addOpacityToColor(theme.palette.background.paper, 20) }}
-              icon={<AddOutlinedIcon />}
-              title="Add new concept"
-              onClick={() => setConceptDialogOpen(true)}
-            />
-            <Dialog open={conceptDialogOpen} onClose={() => setConceptDialogOpen(false)}>
-              <DialogTitle>Add new concept</DialogTitle>
-              <DialogContent></DialogContent>
-            </Dialog>
-          </Grid>
-
-          <Grid container>
-            <Typography variant="h4" color={theme.palette.info.main}>
+          <Grid container justifyContent={'center'}>
+            <Typography variant="h5" color={theme.palette.info.main}>
               到底了!
             </Typography>
           </Grid>
@@ -152,10 +107,3 @@ function ExploreData() {
     </>
   );
 }
-
-const CustomDivider = styled(Divider)({
-  textAlign: 'center',
-  width: '100%',
-});
-
-export default ExploreData;

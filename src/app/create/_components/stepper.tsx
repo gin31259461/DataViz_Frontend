@@ -33,7 +33,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
   const colors = colorTokens(theme.palette.mode);
   const isFloatLeftPanel = useMediaQuery('(max-width:700px)');
 
-  const stepperContext = useContext(CustomStepperContext);
+  const stepperContext = useContext(StepperContext);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           (open ? <CloseOutlinedIcon sx={{ fontSize: 20 }} /> : <WidgetsOutlinedIcon sx={{ fontSize: 20 }} />)}
       </IconButton>
       <Button
-        disabled={backButtonDisabled() || stepperContext.backButtonDisabled}
+        disabled={backButtonDisabled() || stepperContext.backButtonDisabled || stepperContext.isLoading}
         color="secondary"
         sx={{
           position: 'fixed',
@@ -88,7 +88,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
         Back
       </Button>
       <Button
-        disabled={nextButtonDisabled() || stepperContext.nextButtonDisabled}
+        disabled={nextButtonDisabled() || stepperContext.nextButtonDisabled || stepperContext.isLoading}
         color="info"
         sx={{
           position: 'fixed',
@@ -149,19 +149,23 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
 
 type StepAction = 'next' | 'prev';
 
-type CustomStepperContextProps = {
+type StepperContextProps = {
   activeStep: number;
   backButtonDisabled: boolean;
   nextButtonDisabled: boolean;
+  isLoading: boolean;
+  setIsLoading(status: boolean): void;
   changeActiveStep: (action: StepAction) => void;
   changeBackButtonDisabled: (status: boolean) => void;
   changeNextButtonDisabled: (status: boolean) => void;
 };
 
-export const CustomStepperContext = createContext<CustomStepperContextProps>({
+export const StepperContext = createContext<StepperContextProps>({
   activeStep: 0,
   backButtonDisabled: false,
   nextButtonDisabled: false,
+  isLoading: false,
+  setIsLoading: () => {},
   changeActiveStep: () => {},
   changeBackButtonDisabled: () => {},
   changeNextButtonDisabled: () => {},
@@ -169,14 +173,19 @@ export const CustomStepperContext = createContext<CustomStepperContextProps>({
 
 export const useCustomStepperAction = (stepLength: number) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [backButtonDisabled, setBackButtonDisabled] = useState(false);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
 
-  const value = useMemo<CustomStepperContextProps>(() => {
+  const value = useMemo<StepperContextProps>(() => {
     return {
       activeStep,
       backButtonDisabled,
       nextButtonDisabled,
+      isLoading,
+      setIsLoading(status) {
+        setIsLoading(status);
+      },
       changeActiveStep(action) {
         if (action === 'next') setActiveStep((prev) => (prev < stepLength - 1 ? prev + 1 : prev));
         else if (action === 'prev') setActiveStep((prev) => (prev > 0 ? prev - 1 : prev));
@@ -188,7 +197,7 @@ export const useCustomStepperAction = (stepLength: number) => {
         setNextButtonDisabled(status);
       },
     };
-  }, [activeStep, stepLength, backButtonDisabled, nextButtonDisabled]);
+  }, [activeStep, stepLength, backButtonDisabled, nextButtonDisabled, isLoading]);
 
   return value;
 };

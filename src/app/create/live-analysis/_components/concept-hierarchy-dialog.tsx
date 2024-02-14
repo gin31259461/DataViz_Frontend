@@ -46,7 +46,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
 
   return (
     <Dialog open={props.open} onClose={props.onClose} fullWidth>
-      <DialogTitle>Add new concept</DialogTitle>
+      <DialogTitle>新增層次概念</DialogTitle>
       <DialogContent>
         <Box sx={{ padding: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <AutoCompleteSelect
@@ -55,12 +55,12 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
               setConceptHierarchyMapping({});
               setSelectedConcept(value);
             }}
-            label="Column"
+            label="欄位"
           >
             {props.conceptOptions}
           </AutoCompleteSelect>
 
-          <Typography>Tags</Typography>
+          <Typography>標籤</Typography>
           <TextField
             fullWidth
             placeholder="ex. 高中以下,大專,研究所"
@@ -68,10 +68,10 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             value={tagValueInput}
           ></TextField>
           <Button onClick={() => setTags(tagValueInput.split(','))} color="info">
-            Add tag
+            新增層次標籤
           </Button>
 
-          <Typography>Order</Typography>
+          <Typography>順序</Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             {tags.map((tag, i) => (
               <Typography color={theme.palette.info.main} key={i}>
@@ -80,7 +80,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             ))}
           </Box>
 
-          <Typography>Hierarchy</Typography>
+          <Typography>層次</Typography>
           {selectedConcept &&
             dataInfo &&
             (dataInfo.columns[selectedConcept].values as string[]).map((value, i) => {
@@ -91,6 +91,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
                   </Grid>
                   <Grid item xs={6}>
                     <AutoCompleteSelect
+                      label="選擇層次標籤"
                       initialValue={conceptHierarchyMapping[value]}
                       onChange={(tag) => {
                         setConceptHierarchyMapping((prev) => ({ ...prev, [value]: tag }));
@@ -111,7 +112,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             handleClear();
           }}
         >
-          Cancel
+          取消
         </Button>
         <Button
           onClick={() => {
@@ -122,7 +123,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             }
           }}
         >
-          Confirm
+          確認
         </Button>
       </DialogActions>
     </Dialog>

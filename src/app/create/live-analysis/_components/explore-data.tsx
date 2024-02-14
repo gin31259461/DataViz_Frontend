@@ -35,28 +35,31 @@ export default function ExploreData() {
           {dataInfo.data && (
             <>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h4">Data information</Typography>
+                <Typography variant="h4">資料內容</Typography>
               </Grid>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h5">Id</Typography>
+                <Typography variant="body1">展示資料的一些基本的資訊</Typography>
+              </Grid>
+              <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h5">流水號</Typography>
               </Grid>
               <Grid container>
                 <Typography variant="body1">{dataInfo.data.info.id}</Typography>
               </Grid>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h5">Size (rows)</Typography>
+                <Typography variant="h5">大小</Typography>
               </Grid>
               <Grid container>
                 <Typography variant="body1">{dataInfo.data.info.rows}</Typography>
               </Grid>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h5">Name</Typography>
+                <Typography variant="h5">名稱</Typography>
               </Grid>
               <Grid container>
                 <Typography variant="body1">{dataInfo.data.info.name}</Typography>
               </Grid>
               <Grid container>
-                <Typography variant="h5">Description</Typography>
+                <Typography variant="h5">描述</Typography>
               </Grid>
               <Grid container>
                 {dataInfo.data.info.des === '' ? (
@@ -73,11 +76,11 @@ export default function ExploreData() {
           <GridContainerDivider />
 
           <Grid container>
-            <Typography variant="h4">Columns</Typography>
+            <Typography variant="h4">欄位資訊</Typography>
           </Grid>
           <Grid container>
             <Typography variant="body1" color={theme.palette.info.main}>
-              If there has datetime format string, system will parse it automatically
+              如果這個欄位是時間的字串，系統在分析的時候會自動轉換
             </Typography>
           </Grid>
           {dataInfo.data &&

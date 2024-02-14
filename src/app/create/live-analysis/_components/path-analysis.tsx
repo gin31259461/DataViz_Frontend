@@ -67,11 +67,11 @@ function PathAnalysis() {
     <>
       <Grid container gap={4}>
         <Grid container>
-          <Typography variant="h4">Path analysis configuration</Typography>
+          <Typography variant="h4">路徑分析設定</Typography>
         </Grid>
 
         <Grid container>
-          <Typography variant="h5">Target</Typography>
+          <Typography variant="h5">分析目標 (必要)</Typography>
         </Grid>
 
         <Grid container>
@@ -96,12 +96,12 @@ function PathAnalysis() {
         </Grid>
 
         <Grid container>
-          <Typography variant="h5">Skip values</Typography>
+          <Typography variant="h5">忽略某些值 (可選)</Typography>
         </Grid>
 
         <Grid container>
           <Typography color={theme.palette.info.main} variant="body1">
-            choose some value that you don't want it to be analyzed
+            選擇欄位中不想要被分析的值。
           </Typography>
         </Grid>
 
@@ -116,7 +116,10 @@ function PathAnalysis() {
                       {col}
                     </Grid>
                     <Grid item xs={6}>
-                      <MultiSelect onChange={(values) => setSkipValues({ ...skipValues, [col]: values })}>
+                      <MultiSelect
+                        label="忽略哪些值?"
+                        onChange={(values) => setSkipValues({ ...skipValues, [col]: values })}
+                      >
                         {dataInfo.columns[col].values as string[]}
                       </MultiSelect>
                     </Grid>
@@ -126,7 +129,13 @@ function PathAnalysis() {
         </Grid>
 
         <Grid container>
-          <Typography variant="h5">Concept hierarchy</Typography>
+          <Typography variant="h5">層次概念 (可選)</Typography>
+        </Grid>
+
+        <Grid container>
+          <Typography variant="body1" color={theme.palette.info.main}>
+            為欄位中的值設定層次概念，使值被歸類到指定的層次概念中。
+          </Typography>
         </Grid>
 
         <Grid container gap={3}>
@@ -155,7 +164,7 @@ function PathAnalysis() {
 
         <Grid container>
           <CardButton
-            title="Add new concept hierarchy"
+            title="新增層次概念"
             icon={<AddOutlinedIcon />}
             onClick={() => setConceptHierarchyDialogOpen(true)}
           />
@@ -191,7 +200,7 @@ function PathAnalysis() {
             variant="contained"
             onClick={startAnalysis}
           >
-            Start analyze
+            開始分析
           </Button>
         </Grid>
 

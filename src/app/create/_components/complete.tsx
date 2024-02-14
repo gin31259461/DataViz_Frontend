@@ -15,7 +15,7 @@ const Complete = () => {
         gap: 2,
       }}
     >
-      <Typography variant="h4">All completed</Typography>
+      <Typography variant="h4">完成專案設定!</Typography>
       <DoneAllIcon color="info" sx={{ fontSize: 50 }} />
     </Box>
   );

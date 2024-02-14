@@ -4,14 +4,14 @@ import CardButton from '@/components/button/card-button';
 import { GridContainerDivider } from '@/components/divider/grid-container-divider';
 import LoadingWithTitle from '@/components/loading/loading-with-title';
 import AutoCompleteSelect from '@/components/select/auto-complete-select';
-import MultiSelect from '@/components/select/muti-select';
+import MultiSelect from '@/components/select/multi-select';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { api } from '@/server/trpc/trpc.client';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { StepperContext } from '../../_components/stepper';
-import AddConceptDialog from './add-concept-dialog';
+import AddConceptDialog from './concept-hierarchy-dialog';
 
 // 高中以下,大專,研究所
 function PathAnalysis() {

@@ -1,11 +1,6 @@
 import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
 
-// interface Option {
-//   value: string;
-//   label: string;
-// }
-
 interface MultiSelectProps {
   label?: string;
   children?: string[];

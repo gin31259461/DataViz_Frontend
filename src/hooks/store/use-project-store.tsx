@@ -1,4 +1,4 @@
-import { DataInfoSchema } from '@/server/api/routers/analysis';
+import { DataInfoSchema, PathAnalysisResultSchema, PathInstanceScheme } from '@/server/api/routers/analysis';
 import { create } from 'zustand';
 
 export interface BasicColumnTypeMapping {
@@ -12,7 +12,9 @@ export type ProjectTypes = 'racing-chart' | 'path-analysis' | 'process-analysis'
 export interface DataArgsProps<T> {
   mapping: T;
 }
+
 export type ChartArgsProps = object;
+
 export type ColumnTypeMappingProps = BasicColumnTypeMapping;
 
 export type ConceptHierarchyObject = {
@@ -21,20 +23,9 @@ export type ConceptHierarchyObject = {
     order: string[];
   };
 };
+
 export type SkipValuesObject = {
   [k: string]: string[];
-};
-export type ProcessInstance = [string, string[]];
-export type PathAnalysisData = {
-  [k: string]: {
-    class: string;
-    entropy: number;
-    features: { [k: string]: string[] };
-    labels: string[];
-    process: ProcessInstance[];
-    samples: number[];
-    target: string;
-  }[];
 };
 
 export interface ProjectStoreProps {
@@ -58,12 +49,14 @@ export interface ProjectStoreProps {
   target: string | undefined;
   conceptHierarchy: ConceptHierarchyObject;
   skipValues: SkipValuesObject;
-  paths: object;
+  paths: PathAnalysisResultSchema | undefined;
+  selectedPath: PathInstanceScheme | undefined;
 
   setTarget: (target: string | undefined) => void;
   setConceptHierarchy: (concept: ConceptHierarchyObject) => void;
   setSkipValues: (skipValue: SkipValuesObject) => void;
-  setPaths: (paths: object) => void;
+  setPaths: (paths: PathAnalysisResultSchema) => void;
+  setSelectedPath: (path: PathInstanceScheme) => void;
 
   // Analysis-3 process analysis
 
@@ -115,7 +108,8 @@ export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   target: undefined,
   conceptHierarchy: {},
   skipValues: {},
-  paths: {},
+  paths: undefined,
+  selectedPath: undefined,
 
   setTarget(target: string | undefined) {
     set({ target: target });
@@ -128,6 +122,9 @@ export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   },
   setPaths(paths) {
     set({ paths });
+  },
+  setSelectedPath(selectedPath) {
+    set({ selectedPath });
   },
 
   // Analysis-3 process analysis
@@ -162,11 +159,25 @@ export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   // Shared
   clear() {
     set({
+      // Project properties
+      title: 'unnamed',
+      des: '',
+
+      // Analysis-1 explore data
+      selectedDataId: undefined,
+      selectedData: [],
+      dataInfo: undefined,
+
+      // Analysis-2 path analysis
       target: undefined,
       conceptHierarchy: {},
       skipValues: {},
-      selectedDataId: undefined,
-      selectedData: [],
+      paths: undefined,
+      selectedPath: undefined,
+
+      // Analysis-3 process analysis
+
+      // Infographic properties
       chartType: undefined,
       chartArgs: undefined,
       dataArgs: undefined,

@@ -1,3 +1,5 @@
+import { BarGraphDataInstance } from '@/components/chart/bar-graph';
+import { CircleGraphDataInstance } from '@/components/chart/circle-graph';
 import { env } from '@/env.mjs';
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../../trpc/trpc.procedure';
@@ -36,6 +38,30 @@ export type DataInfoSchema = {
   columns: Record<string, ColumnInfo>;
 };
 
+export type ProcessInstance = [string, string[]];
+
+export type PathInstanceScheme = {
+  class: string;
+  entropy: number;
+  features: { [k: string]: string[] };
+  labels: string[];
+  process: ProcessInstance[];
+  samples: number[];
+  target: string;
+};
+
+export type PathAnalysisResultSchema = Record<string, PathInstanceScheme[]>;
+
+export type ProcessPivotAnalysisResultInstanceSchema = {
+  split_feature: string;
+  chart_data: {
+    before_split_count: BarGraphDataInstance[];
+    before_split_rate: CircleGraphDataInstance[];
+    after_split_count: BarGraphDataInstance[];
+    after_split_rate: CircleGraphDataInstance[];
+  };
+};
+
 export const analysisRouter = createTRPCRouter({
   getDataInfo: publicProcedure.input(z.number().optional()).query(async ({ input }) => {
     let data: DataInfoSchema = { columns: {}, info: { id: '', rows: 0, name: '', des: '' } };
@@ -56,21 +82,25 @@ export const analysisRouter = createTRPCRouter({
       method: 'POST',
     });
 
-    const data = await res.json();
+    const data: PathAnalysisResultSchema = await res.json();
 
     return data;
   }),
-  getProcessPivotAnalysis: publicProcedure.input(ProcessPivotAnalysisRequestZodSchema).query(async ({ input }) => {
-    const res = await fetch(`${env.FLASK_URL}/api/process_pivot_analysis`, {
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(input),
-      method: 'POST',
-    });
+  getProcessPivotAnalysis: publicProcedure
+    .input(ProcessPivotAnalysisRequestZodSchema.optional())
+    .query(async ({ input }) => {
+      if (!input) return [];
 
-    const data = await res.json();
+      const res = await fetch(`${env.FLASK_URL}/api/process_pivot_analysis`, {
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(input),
+        method: 'POST',
+      });
 
-    return data;
-  }),
+      const data: ProcessPivotAnalysisResultInstanceSchema[] = await res.json();
+
+      return data;
+    }),
 });

@@ -94,7 +94,7 @@ export default function AccountMenu({
             <ListItemIcon>
               <SettingsIcon fontSize="small" />
             </ListItemIcon>
-            Settings
+            設定
           </MenuItem>,
         ]}
 
@@ -102,7 +102,7 @@ export default function AccountMenu({
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          {authenticated ? 'Logout' : 'Login'}
+          {authenticated ? '登出' : '登入'}
         </MenuItem>
       </Menu>
     </>

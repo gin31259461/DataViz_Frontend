@@ -36,10 +36,10 @@ export const ConfirmModal = ({ onConfirm, onCancel, open, title, children, onClo
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button sx={{ color: 'inherit' }} onClick={handleCancel}>
-          Cancel
+          取消
         </Button>
         <Button sx={{ color: 'inherit' }} onClick={handleConfirm}>
-          {loading ? <CircularProgress color="info" size={20} /> : 'Confirm'}
+          {loading ? <CircularProgress color="info" size={20} /> : '確認'}
         </Button>
       </DialogActions>
     </Dialog>

@@ -11,8 +11,7 @@ export default function ChooseData() {
   const allMemberData = api.data.getAllMemberData.useQuery();
 
   const selectedDataOID = useProjectStore((state) => state.selectedDataId);
-  const setSelectedDataOID = useProjectStore((state) => state.setSelectedDataId);
-  const setSelectedData = useProjectStore((state) => state.setSelectedData);
+  const setSelectedDataId = useProjectStore((state) => state.setSelectedDataId);
   const setColumnTypesMapping = useProjectStore((state) => state.setColumnTypeMapping);
   const clearProjectStore = useProjectStore((state) => state.clear);
 
@@ -48,20 +47,18 @@ export default function ChooseData() {
   }, [top100ContentFromDataTable, setColumnTypesMapping]);
 
   const handleSelectChange = (value: string) => {
-    if (allMemberData.isSuccess) {
-      clearProjectStore();
-      setSelectedDataOID(parseInt(value.split(':')[0]));
-    }
+    clearProjectStore();
+    setSelectedDataId(parseInt(value.split(':')[0]));
   };
 
   return (
     <>
       <AutoCompleteSelect
-        label="Choose data"
+        required
+        label="選擇資料"
         onChange={handleSelectChange}
         onClear={() => {
-          setSelectedDataOID(undefined);
-          setSelectedData([]);
+          clearProjectStore();
         }}
         loading={allMemberData.isLoading}
       >
@@ -77,7 +74,7 @@ export default function ChooseData() {
       {top100ContentFromDataTable.data && top100ContentFromDataTable.data.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Typography sx={{ padding: 2, whiteSpace: 'nowrap' }} variant="body1">
-            Total rows count : <strong>{countFromDataTable.data}</strong>, showing top <strong>100</strong> rows
+            資料大小 (行數) : <strong>{countFromDataTable.data}</strong>，顯示前 <strong>100</strong> 行
           </Typography>
           <div
             style={{

@@ -8,12 +8,12 @@ import MultiSelect from '@/components/select/multi-select';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { api } from '@/server/trpc/trpc.client';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { Button, Grid, Typography, useTheme } from '@mui/material';
+import { Button, Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { StepperContext } from '../../_components/stepper';
 import AddConceptDialog from './concept-hierarchy-dialog';
+import PathAnalysisResult from './path-analysis-result';
 
-// 高中以下,大專,研究所
 function PathAnalysis() {
   const theme = useTheme();
 
@@ -27,9 +27,9 @@ function PathAnalysis() {
   const selectedDataId = useProjectStore((state) => state.selectedDataId);
   const conceptHierarchy = useProjectStore((state) => state.conceptHierarchy);
   const setConceptHierarchy = useProjectStore((state) => state.setConceptHierarchy);
+  const setPaths = useProjectStore((state) => state.setPaths);
 
   const [conceptHierarchyDialogOpen, setConceptHierarchyDialogOpen] = useState(false);
-  const [readyToAnalyze, setReadyToAnalyze] = useState(false);
 
   const analysis = api.analysis.getPathAnalysis.useMutation();
 
@@ -43,7 +43,18 @@ function PathAnalysis() {
       };
 
       const data = await analysis.mutateAsync(reqData);
+
+      Object.keys(data).forEach((target) =>
+        data[target].sort((a, b) => {
+          return (
+            b.samples[b.labels.findIndex((label) => label === target)] -
+            a.samples[a.labels.findIndex((label) => label === target)]
+          );
+        })
+      );
+
       console.log(data);
+      setPaths(data);
     }
   };
 
@@ -54,14 +65,6 @@ function PathAnalysis() {
   useEffect(() => {
     stepperContext.setIsLoading(analysis.isLoading);
   }, [stepperContext, analysis.isLoading, target]);
-
-  useEffect(() => {
-    if (!target) {
-      setReadyToAnalyze(false);
-    } else {
-      setReadyToAnalyze(true);
-    }
-  }, [stepperContext, target]);
 
   return (
     <>
@@ -77,6 +80,7 @@ function PathAnalysis() {
         <Grid container>
           <Grid item xs={12}>
             <AutoCompleteSelect
+              required
               initialValue={target}
               loading={false}
               onChange={(value) => {
@@ -134,33 +138,37 @@ function PathAnalysis() {
 
         <Grid container>
           <Typography variant="body1" color={theme.palette.info.main}>
-            為欄位中的值設定層次概念，使值被歸類到指定的層次概念中。
+            為欄位中的值設定層次概念，歸類值到指定的層次概念中。
           </Typography>
         </Grid>
 
-        <Grid container gap={3}>
-          {conceptHierarchy &&
-            Object.keys(conceptHierarchy).map((col, i) => {
-              return (
-                <Grid container key={`${col}-${i}`} gap={2}>
-                  <Grid container gap={2}>
-                    <Typography color={theme.palette.info.main}>{col}</Typography>
-                    <Grid container>
-                      {conceptHierarchy[col].order.map((tag, j) => {
-                        return (
-                          <Grid item xs={4} key={`${col}-${i}-${tag}-${j}`}>
-                            <Typography color={theme.palette.secondary.main}>{tag}</Typography>
-                            <Typography>{conceptHierarchy[col].hierarchy[tag].join(', ')}</Typography>
-                          </Grid>
-                        );
-                      })}
+        {Object.keys(conceptHierarchy).length > 0 && (
+          <Grid container>
+            <Card>
+              <CardContent>
+                {Object.keys(conceptHierarchy).map((col, i) => {
+                  return (
+                    <Grid container key={`${col}-${i}`} gap={2}>
+                      <Grid container gap={2}>
+                        <Typography color={theme.palette.info.main}>{col}</Typography>
+                        <Grid container>
+                          {conceptHierarchy[col].order.map((tag, j) => {
+                            return (
+                              <Grid item xs={4} key={`${col}-${i}-${tag}-${j}`}>
+                                <Typography color={theme.palette.secondary.main}>{tag}</Typography>
+                                <Typography>{conceptHierarchy[col].hierarchy[tag].join(', ')}</Typography>
+                              </Grid>
+                            );
+                          })}
+                        </Grid>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                  <GridContainerDivider />
-                </Grid>
-              );
-            })}
-        </Grid>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
 
         <Grid container>
           <CardButton
@@ -194,17 +202,14 @@ function PathAnalysis() {
         <GridContainerDivider />
 
         <Grid container justifyContent={'center'}>
-          <Button
-            disabled={analysis.isLoading || !readyToAnalyze}
-            color="info"
-            variant="contained"
-            onClick={startAnalysis}
-          >
+          <Button disabled={analysis.isLoading || !target} color="info" variant="contained" onClick={startAnalysis}>
             開始分析
           </Button>
         </Grid>
 
         {analysis.isLoading && <LoadingWithTitle>正在進行資料路徑分析...</LoadingWithTitle>}
+
+        <PathAnalysisResult />
 
         <GridContainerDivider />
 

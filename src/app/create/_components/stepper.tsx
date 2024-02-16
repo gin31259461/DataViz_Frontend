@@ -4,6 +4,7 @@ import { useSplitLineStyle } from '@/hooks/use-styles';
 import style from '@/styles/stepper.module.scss';
 import utilStyle from '@/styles/util.module.scss';
 import { colorTokens } from '@/utils/color-tokens';
+import { scrollAllTop } from '@/utils/scroll';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import {
@@ -18,7 +19,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 interface StepperProps {
   steps: string[];
@@ -34,6 +35,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
   const isFloatLeftPanel = useMediaQuery('(max-width:700px)');
 
   const stepperContext = useContext(StepperContext);
+  const mainContentRef = useRef<typeof Box | null>(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -82,10 +84,16 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
           zIndex: 50,
           fontSize: 15,
         }}
-        onClick={() => stepperContext.changeActiveStep('prev')}
+        onClick={() => {
+          stepperContext.changeActiveStep('prev');
+
+          if (mainContentRef.current) {
+            scrollAllTop(mainContentRef);
+          }
+        }}
         variant="outlined"
       >
-        Back
+        上一步
       </Button>
       <Button
         disabled={nextButtonDisabled() || stepperContext.nextButtonDisabled || stepperContext.isLoading}
@@ -100,10 +108,14 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
         onClick={async () => {
           if (stepperContext.activeStep === steps.length - 1) await callback();
           stepperContext.changeActiveStep('next');
+
+          if (mainContentRef.current) {
+            scrollAllTop(mainContentRef);
+          }
         }}
         variant={'contained'}
       >
-        {stepperContext.activeStep !== steps.length - 1 ? 'Next' : 'Confirm'}
+        {stepperContext.activeStep !== steps.length - 1 ? '下一步' : '確認'}
       </Button>
       {isFloatLeftPanel && open && <div className={utilStyle['backdrop']} onClick={() => setOpen(false)}></div>}
       <Box
@@ -134,6 +146,7 @@ const Stepper = ({ steps, children, backButtonDisabled, nextButtonDisabled, call
         </Box>
       </Box>
       <Box
+        ref={mainContentRef}
         sx={{
           height: 'calc(100vh - 60px - 80px)',
           flexGrow: 1,

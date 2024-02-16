@@ -10,8 +10,10 @@ interface StepperProviderProps {
 }
 
 function StepperProvider(props: StepperProviderProps) {
-  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
   const stepperValue = useCustomStepperAction(props.steps.length);
+
+  const selectedDataOID = useProjectStore((state) => state.selectedDataId);
+  const selectedPath = useProjectStore((state) => state.selectedPath);
 
   const backButtonDisabled = () => {
     if (stepperValue.activeStep !== 0) return false;
@@ -19,7 +21,9 @@ function StepperProvider(props: StepperProviderProps) {
   };
 
   const nextButtonDisabled = () => {
-    if (!selectedDataOID) return true;
+    if ((stepperValue.activeStep === 0 && !selectedDataOID) || (stepperValue.activeStep === 2 && !selectedPath))
+      return true;
+
     return false;
   };
 

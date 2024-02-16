@@ -90,15 +90,14 @@ export default function ProjectContainer() {
         <Grid container gap={2}>
           <Grid container>
             <CardButton
-              title="New project"
-              description="Create various projects"
+              title="新增專案"
               icon={<AddIcon color="secondary" fontSize="large" />}
               onClick={() => setNewProjectDialogOpen(true)}
             ></CardButton>
           </Grid>
 
           <Dialog fullWidth open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
-            <DialogTitle>Create new project</DialogTitle>
+            <DialogTitle>新增專案</DialogTitle>
             <DialogContent
               sx={{
                 display: 'flex',
@@ -107,14 +106,14 @@ export default function ProjectContainer() {
               }}
             >
               <CardButton
-                title="New racing chart project"
+                title="Racing chart 專案"
                 icon={<TimelineIcon color="info" />}
                 description=""
                 onClick={() => router.push('/create/racing-chart')}
               ></CardButton>
 
               <CardButton
-                title="New live analysis project"
+                title="動態分析專案"
                 icon={<TimelineIcon color="info" />}
                 description=""
                 onClick={() => router.push('/create/live-analysis')}

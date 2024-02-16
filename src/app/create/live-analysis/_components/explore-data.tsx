@@ -41,7 +41,7 @@ export default function ExploreData() {
                 <Typography variant="body1">展示資料的一些基本的資訊</Typography>
               </Grid>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h5">流水號</Typography>
+                <Typography variant="h5">ID</Typography>
               </Grid>
               <Grid container>
                 <Typography variant="body1">{dataInfo.data.info.id}</Typography>
@@ -64,7 +64,7 @@ export default function ExploreData() {
               <Grid container>
                 {dataInfo.data.info.des === '' ? (
                   <Typography variant="body1" color={theme.palette.info.main}>
-                    Description is empty
+                    沒有描述
                   </Typography>
                 ) : (
                   <Typography variant="body1">{dataInfo.data.info.des}</Typography>

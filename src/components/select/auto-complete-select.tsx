@@ -6,12 +6,14 @@ interface AutoCompleteSelectProps {
   initialValue?: string;
   children?: string[];
   label?: React.ReactNode;
+  required?: boolean;
   onChange?: (value: string) => void;
   onClear?: () => void;
 }
 
 const AutoCompleteSelect = ({
   initialValue,
+  required = false,
   loading = false,
   children = [],
   onChange = () => {},
@@ -60,6 +62,8 @@ const AutoCompleteSelect = ({
       renderInput={(params) => (
         <TextField
           {...params}
+          error={required && !params.inputProps.value}
+          required={required}
           label={label}
           variant="outlined"
           InputProps={{

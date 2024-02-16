@@ -50,6 +50,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
       <DialogContent>
         <Box sx={{ padding: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <AutoCompleteSelect
+            required
             initialValue={selectedConcept}
             onChange={(value) => {
               setConceptHierarchyMapping({});
@@ -60,18 +61,18 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             {props.conceptOptions}
           </AutoCompleteSelect>
 
-          <Typography>標籤</Typography>
+          <Typography variant="h6">標籤</Typography>
           <TextField
             fullWidth
-            placeholder="ex. 高中以下,大專,研究所"
+            placeholder="ex. 高中以下 大專 研究所"
             onChange={handleTagsInput}
             value={tagValueInput}
           ></TextField>
-          <Button onClick={() => setTags(tagValueInput.split(','))} color="info">
+          <Button onClick={() => setTags(tagValueInput.split(' '))} color="info">
             新增層次標籤
           </Button>
 
-          <Typography>順序</Typography>
+          <Typography variant="h6">順序</Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             {tags.map((tag, i) => (
               <Typography color={theme.palette.info.main} key={i}>
@@ -80,7 +81,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             ))}
           </Box>
 
-          <Typography>層次</Typography>
+          <Typography variant="h6">層次</Typography>
           {selectedConcept &&
             dataInfo &&
             (dataInfo.columns[selectedConcept].values as string[]).map((value, i) => {
@@ -91,6 +92,7 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
                   </Grid>
                   <Grid item xs={6}>
                     <AutoCompleteSelect
+                      required
                       label="選擇層次標籤"
                       initialValue={conceptHierarchyMapping[value]}
                       onChange={(tag) => {
@@ -115,6 +117,14 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
           取消
         </Button>
         <Button
+          disabled={
+            !(
+              selectedConcept &&
+              dataInfo &&
+              Object.keys(conceptHierarchyMapping).length ===
+                (dataInfo.columns[selectedConcept].values as string[]).length
+            )
+          }
           onClick={() => {
             if (props.onConfirm && props.onClose && selectedConcept) {
               props.onConfirm(selectedConcept, tags, conceptHierarchyMapping);

@@ -6,7 +6,7 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
 import { ReactNode } from 'react';
 
-const items = ['Data', 'Project', 'Profile', 'Account', 'Settings'];
+const items = ['資料', '專案', '個人', '帳戶', '設定'];
 const icons = [
   <DatasetRoundedIcon key={0} />,
   <ShowChartRoundedIcon key={1} />,

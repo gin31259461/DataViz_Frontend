@@ -51,7 +51,7 @@ export default function OpenCMDKButton() {
         color: theme.palette.grey[500],
       }}
     >
-      Search something...
+      搜尋...
       <kbd
         style={{
           border: useSplitLineStyle(),

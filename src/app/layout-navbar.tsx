@@ -15,10 +15,10 @@ import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useContext, useState } from 'react';
 
-const dropDownMenuItemList = ['Data', 'Project', 'Settings'];
+const dropDownMenuItemList = ['資料', '專案', '設定'];
 const dropDownMenuItemHref = ['/management/data', '/management/project', '/management/settings'];
 
-const navbarMenuItemList = ['Data', 'Project', 'Settings'];
+const navbarMenuItemList = ['資料', '專案', '設定'];
 const navbarMenuItemHref = ['/management/data', '/management/project', '/management/settings'];
 
 export default function LayoutNavbar() {
@@ -53,7 +53,7 @@ export default function LayoutNavbar() {
               }}
               color="primary"
             >
-              Feedback
+              反饋
             </Button>
             {status === 'unauthenticated' && (
               <Button
@@ -64,7 +64,7 @@ export default function LayoutNavbar() {
                 variant="contained"
                 onClick={() => router.push('/login')}
               >
-                Login
+                登入
               </Button>
             )}
             <OpenCMDKButton />
@@ -110,9 +110,9 @@ export default function LayoutNavbar() {
         onConfirm={async () => {
           signOut({ callbackUrl: '/' });
         }}
-        title="Logout"
+        title="登出"
       >
-        Are you sure to logout?
+        確定要登出?
       </ConfirmModal>
     </>
   );

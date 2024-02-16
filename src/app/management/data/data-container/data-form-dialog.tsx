@@ -44,18 +44,18 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
           }
         }}
       >
-        <DialogTitle>Add new data</DialogTitle>
+        <DialogTitle>新增資料</DialogTitle>
         <DialogContent>
           <TextField
             sx={{ marginTop: 5 }}
-            label="Name"
+            label="名稱"
             fullWidth
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <TextField
             sx={{ marginTop: 5 }}
-            label="Description"
+            label="描述"
             fullWidth
             multiline
             value={des}
@@ -83,10 +83,10 @@ export default function DataFormModal({ open, onClose, onSubmit }: DataFormDialo
               setFile(null);
             }}
           >
-            Cancel
+            取消
           </Button>
           <Button sx={{ color: 'inherit' }} onClick={handleSubmit} disabled={file === null || loading}>
-            {loading ? <CircularProgress color="info" size={20} /> : 'Submit'}
+            {loading ? <CircularProgress color="info" size={20} /> : '新增'}
           </Button>
         </DialogActions>
       </Dialog>

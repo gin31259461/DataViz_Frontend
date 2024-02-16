@@ -21,7 +21,7 @@ function CreateRacingBarChartPage() {
   const dataArgs = useProjectStore((state) => state.dataArgs);
   const clear = useProjectStore((state) => state.clear);
 
-  const steps = ['Select data', 'Configuration', 'Preview racing bar chart', 'Completed'];
+  const steps = ['選擇資料', '設定', '預覽 racing chart', '完成!'];
   const stepperValue = useCustomStepperAction(steps.length);
 
   const backButtonDisabled = () => {

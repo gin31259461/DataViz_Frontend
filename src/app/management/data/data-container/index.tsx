@@ -140,12 +140,7 @@ export const DataContainer = () => {
   return (
     <Grid>
       <Grid container padding={2}>
-        <CardButton
-          title="New data"
-          description="Add new dataset"
-          icon={<AddIcon />}
-          onClick={() => setOpenNewDataDialog(true)}
-        ></CardButton>
+        <CardButton title="新增資料" icon={<AddIcon />} onClick={() => setOpenNewDataDialog(true)}></CardButton>
       </Grid>
 
       <Grid container padding={2} sx={{ overflow: 'auto' }}>
@@ -172,7 +167,7 @@ export const DataContainer = () => {
               </CustomTableCell>
               <CustomTableCell sx={{ color: 'inherit', whiteSpace: 'nowrap' }}>
                 <div style={{ display: 'flex' }}>
-                  Name
+                  名稱
                   <TableSortLabel
                     active={orderBy === 'name'}
                     direction={orderDirection}
@@ -182,7 +177,7 @@ export const DataContainer = () => {
               </CustomTableCell>
               <CustomTableCell sx={{ color: 'inherit', whiteSpace: 'nowrap' }}>
                 <div style={{ display: 'flex' }}>
-                  Last Updated
+                  上次更新
                   <TableSortLabel
                     active={orderBy === 'lastModified'}
                     direction={orderDirection}
@@ -194,7 +189,7 @@ export const DataContainer = () => {
                 {deleteDataOID.length > 0 && (
                   <ConfirmDeleteButton onConfirm={handleDelete} deleteIDs={deleteDataOID}></ConfirmDeleteButton>
                 )}
-                Actions
+                操作
               </CustomTableCell>
             </TableRow>
           </TableHead>

@@ -39,7 +39,7 @@ interface CircleGraphProps {
 }
 
 let tooltipTimeout: number;
-const defaultMargin = { top: 20, right: 20, bottom: 20, left: 20 };
+const defaultMargin = { top: 40, right: 20, bottom: 20, left: 20 };
 const getLabel = (d: CircleGraphDataInstance) => d.label;
 const getValue = (d: CircleGraphDataInstance) => d.value;
 

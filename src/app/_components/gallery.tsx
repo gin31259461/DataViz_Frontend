@@ -62,10 +62,9 @@ export const Gallery = () => {
       const element = cardRef.current as HTMLDivElement;
       setWidth(element.offsetWidth);
       setLoading(false);
-
-      window.addEventListener('resize', resizeEvent);
-      return () => window.removeEventListener('resize', resizeEvent);
     }
+
+    window.addEventListener('resize', resizeEvent);
   }, []);
 
   const GalleryCard = ({ title, children, childrenMinHeight, refObject }: GalleryCardProps) => {

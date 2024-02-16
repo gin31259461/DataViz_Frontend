@@ -2,15 +2,15 @@ import { Box, Button, Slide, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 
 type SliderProps = {
-  components: ReactNode[];
+  children: ReactNode[];
 };
 
-const Slider = ({ components }: SliderProps) => {
+const Slider = ({ children }: SliderProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'up' | 'down'>('left');
 
   const handleNext = () => {
-    setCurrentPage((prevPage) => (prevPage < components.length - 1 ? prevPage + 1 : prevPage));
+    setCurrentPage((prevPage) => (prevPage < children.length - 1 ? prevPage + 1 : prevPage));
     setSlideDirection('left');
   };
 
@@ -31,7 +31,7 @@ const Slider = ({ components }: SliderProps) => {
         gap: 2,
       }}
     >
-      {components.map((component, index) => (
+      {children.map((component, index) => (
         <Slide
           key={index}
           direction={slideDirection}
@@ -65,9 +65,9 @@ const Slider = ({ components }: SliderProps) => {
           上一個
         </Button>
         <Typography variant="body1">
-          第 {currentPage + 1} 頁 / 共 {components.length} 頁
+          第 {currentPage + 1} 頁 / 共 {children.length} 頁
         </Typography>
-        <Button variant="outlined" onClick={handleNext} color="info" disabled={currentPage === components.length - 1}>
+        <Button variant="outlined" onClick={handleNext} color="info" disabled={currentPage === children.length - 1}>
           下一個
         </Button>
       </Box>

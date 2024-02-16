@@ -1,7 +1,7 @@
 'use client';
 
 import CardButton from '@/components/button/card-button';
-import { GridContainerDivider } from '@/components/divider/grid-container-divider';
+import { GridContainerDivider } from '@/components/grid/grid-container-divider';
 import LoadingWithTitle from '@/components/loading/loading-with-title';
 import AutoCompleteSelect from '@/components/select/auto-complete-select';
 import MultiSelect from '@/components/select/multi-select';

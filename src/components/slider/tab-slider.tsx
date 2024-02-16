@@ -1,17 +1,14 @@
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { Box, Paper, Slide, Tab, Tabs } from '@mui/material';
-import { ReactNode, SyntheticEvent, useState } from 'react';
+import { MutableRefObject, SyntheticEvent, useState } from 'react';
 
-export type TabItem = {
-  label: string;
-  content: ReactNode;
+type TabProps = {
+  labels: string[];
+  children: React.ReactNode[] | null;
+  mainContentRef?: MutableRefObject<typeof Box | null>;
 };
 
-interface TabProps {
-  tabs: TabItem[];
-}
-
-const TabSlider = ({ tabs }: TabProps) => {
+const TabSlider = (props: TabProps) => {
   const [activeTab, setActiveTab] = useState(0);
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | 'up' | 'down'>('left');
   const borderStyle = useSplitLineStyle();
@@ -34,37 +31,31 @@ const TabSlider = ({ tabs }: TabProps) => {
           indicatorColor="secondary"
           scrollButtons="auto"
         >
-          {tabs.map((tab, index) => (
-            <Tab key={index} label={tab.label} />
+          {props.labels.map((label, i) => (
+            <Tab key={`${label}-${i}`} label={label} />
           ))}
         </Tabs>
       </Paper>
-      {tabs.map((tab, i) => {
-        return (
-          <Box
-            key={i}
-            sx={{
-              mt: 2,
-              display: i === activeTab ? 'flex' : 'none',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 2,
-              overflow: 'hidden',
-            }}
-          >
-            <Slide direction={slideDirection} in={activeTab === i} mountOnEnter unmountOnExit timeout={500}>
-              <Box
-                sx={{
-                  maxWidth: '100%',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {tab.content}
-              </Box>
-            </Slide>
-          </Box>
-        );
-      })}
+      {props.children &&
+        props.children.map((node, i) => {
+          return (
+            <Box
+              key={i}
+              ref={props.mainContentRef}
+              sx={{
+                display: i === activeTab ? 'flex' : 'none',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 2,
+                overflow: 'hidden',
+              }}
+            >
+              <Slide direction={slideDirection} in={activeTab === i} mountOnEnter unmountOnExit timeout={500}>
+                <Box>{node}</Box>
+              </Slide>
+            </Box>
+          );
+        })}
     </Box>
   );
 };

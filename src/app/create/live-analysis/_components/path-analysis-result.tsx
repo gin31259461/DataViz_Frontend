@@ -1,4 +1,4 @@
-import { GridContainerDivider } from '@/components/divider/grid-container-divider';
+import { GridContainerDivider } from '@/components/grid/grid-container-divider';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { useSplitLineStyle } from '@/hooks/use-styles';
 import { Card, CardActionArea, CardContent, Grid, Typography, useTheme } from '@mui/material';

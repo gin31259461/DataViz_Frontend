@@ -72,14 +72,21 @@ const AddConceptDialog = (props: AddConceptDialogProps) => {
             新增層次標籤
           </Button>
 
-          <Typography variant="h6">順序</Typography>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            {tags.map((tag, i) => (
-              <Typography color={theme.palette.info.main} key={i}>
-                {tag}
-              </Typography>
-            ))}
-          </Box>
+          <Typography variant="h6">排序</Typography>
+
+          {tags.length > 0 ? (
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              {tags.map((tag, i) => (
+                <Typography color={theme.palette.info.main} key={i}>
+                  {tag}
+                </Typography>
+              ))}
+            </Box>
+          ) : (
+            <Typography variant="body1" color={theme.palette.info.main}>
+              還沒有標籤。
+            </Typography>
+          )}
 
           <Typography variant="h6">層次</Typography>
           {selectedConcept &&

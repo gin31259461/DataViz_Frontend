@@ -1,6 +1,7 @@
 'use client';
 
 import CardButton from '@/components/button/card-button';
+import { GridContainer } from '@/components/grid/grid-container';
 import { GridContainerDivider } from '@/components/grid/grid-container-divider';
 import LoadingWithTitle from '@/components/loading/loading-with-title';
 import AutoCompleteSelect from '@/components/select/auto-complete-select';
@@ -100,12 +101,12 @@ function PathAnalysis() {
         </Grid>
 
         <Grid container>
-          <Typography variant="h5">忽略某些值 (可選)</Typography>
+          <Typography variant="h5">忽略值 (可選)</Typography>
         </Grid>
 
         <Grid container>
           <Typography color={theme.palette.info.main} variant="body1">
-            選擇欄位中不想要被分析的值。
+            選擇欄位中的值排除在分析之外。
           </Typography>
         </Grid>
 
@@ -154,9 +155,13 @@ function PathAnalysis() {
                         <Grid container>
                           {conceptHierarchy[col].order.map((tag, j) => {
                             return (
-                              <Grid item xs={4} key={`${col}-${i}-${tag}-${j}`}>
-                                <Typography color={theme.palette.secondary.main}>{tag}</Typography>
-                                <Typography>{conceptHierarchy[col].hierarchy[tag].join(', ')}</Typography>
+                              <Grid item xs={12} key={`${col}-${i}-${tag}-${j}`}>
+                                <GridContainer>
+                                  <Typography color={theme.palette.secondary.main}>{tag}</Typography>
+                                </GridContainer>
+                                <GridContainer>
+                                  <Typography>{conceptHierarchy[col].hierarchy[tag].join(' ')}</Typography>
+                                </GridContainer>
                               </Grid>
                             );
                           })}

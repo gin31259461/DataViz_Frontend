@@ -48,7 +48,7 @@ export default function Login() {
             onClick={() => handleSignIn(provider.toLowerCase())}
             key={i}
           >
-            {`Sign in with ${provider}`}
+            {`使用 ${provider} 登入`}
           </Button>
         );
       })}

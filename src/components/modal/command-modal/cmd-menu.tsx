@@ -27,26 +27,26 @@ const usePageItemSelected = () => {
 export const NavigationGroup = () => {
   const selectedHandler = usePageItemSelected();
   return (
-    <Command.Group heading="Navigation">
-      <CommandModalItem value="home" shortcut="G H" onSelect={() => selectedHandler('/')}>
+    <Command.Group heading="導航">
+      <CommandModalItem value="首頁" shortcut="G H" onSelect={() => selectedHandler('/')}>
         <HomeOutlinedIcon />
-        Home
+        首頁
       </CommandModalItem>
-      <CommandModalItem value="data" onSelect={() => selectedHandler('/management/data')}>
+      <CommandModalItem value="資料" onSelect={() => selectedHandler('/management/data')}>
         <DatasetOutlinedIcon />
-        Data
+        資料
       </CommandModalItem>
-      <CommandModalItem value="project" onSelect={() => selectedHandler('/management/project')}>
+      <CommandModalItem value="專案" onSelect={() => selectedHandler('/management/project')}>
         <ShowChartOutlinedIcon />
-        Project
+        專案
       </CommandModalItem>
-      <CommandModalItem value="profile" onSelect={() => selectedHandler('/management/profile')}>
+      <CommandModalItem value="個人" onSelect={() => selectedHandler('/management/profile')}>
         <AccountBoxOutlinedIcon />
-        Profile
+        個人
       </CommandModalItem>
-      <CommandModalItem value="settings" onSelect={() => selectedHandler('/management/settings')}>
+      <CommandModalItem value="設定" onSelect={() => selectedHandler('/management/settings')}>
         <SettingsOutlinedIcon />
-        Settings
+        設定
       </CommandModalItem>
     </Command.Group>
   );
@@ -57,18 +57,18 @@ export const ProjectGroup = () => {
   const selectedHandler = usePageItemSelected();
 
   return (
-    <Command.Group heading="Project">
+    <Command.Group heading="專案">
       <CommandModalItem
-        value="search project"
+        value="搜尋專案"
         shortcut="S P"
         onSelect={() => ControlCommandModal.setPages([...ControlCommandModal.pages, 'project'])}
       >
         <SearchOutlinedIcon />
-        Search Project
+        搜尋專案
       </CommandModalItem>
-      <CommandModalItem value="new project" shortcut="N P" onSelect={() => selectedHandler('/management/project')}>
+      <CommandModalItem value="新增專案" shortcut="N P" onSelect={() => selectedHandler('/management/project')}>
         <AddOutlinedIcon />
-        New Project
+        新增專案
       </CommandModalItem>
     </Command.Group>
   );

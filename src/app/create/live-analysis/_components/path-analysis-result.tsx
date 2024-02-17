@@ -1,3 +1,4 @@
+import { GridContainer } from '@/components/grid/grid-container';
 import { GridContainerDivider } from '@/components/grid/grid-container-divider';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { useSplitLineStyle } from '@/hooks/use-styles';
@@ -68,8 +69,14 @@ export default function PathAnalysisResult() {
                                   {Object.keys(data.features).map((feature) => {
                                     return (
                                       <Grid container key={`${path}-${i}-${feature}`} gap={1}>
-                                        <Typography>{feature} :</Typography>
-                                        <Typography>{data.features[feature].join(', ')}</Typography>
+                                        <GridContainer>
+                                          <Typography color={theme.palette.secondary.main}>
+                                            <strong>{feature}</strong>
+                                          </Typography>
+                                        </GridContainer>
+                                        <GridContainer>
+                                          <Typography>{data.features[feature].join(' ')}</Typography>
+                                        </GridContainer>
                                       </Grid>
                                     );
                                   })}

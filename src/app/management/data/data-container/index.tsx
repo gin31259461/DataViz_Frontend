@@ -29,9 +29,9 @@ import { redirect } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CardButton from '../../../../components/button/card-button';
 import { uploadFile } from '../action';
+import ShowDataDialog from './show-data-dialog';
 
 const ObjectTable = dynamic(() => import('@/components/table/object-table'));
-const ShowDataDialog = dynamic(() => import('./show-data-modal'));
 const DataFormDialog = dynamic(() => import('./data-form-dialog'));
 const MessageSnackbar = dynamic(() => import('@/components/snackbar/message-snackbar'));
 const ConfirmDeleteButton = dynamic(() => import('@/components/button/confirm-delete-button'));
@@ -281,7 +281,7 @@ export const DataContainer = () => {
       <ShowDataDialog
         title={manyMemberData.data?.find((d) => d.id === selectDataOID)?.name}
         description={manyMemberData.data?.find((d) => d.id === selectDataOID)?.description}
-        dataInfo={'Preview top 100 rows'}
+        dataInfo={'預覽前 100 筆資料'}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
       >

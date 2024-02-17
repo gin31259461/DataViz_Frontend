@@ -7,10 +7,13 @@ import { Grid } from '@visx/grid';
 import { Group } from '@visx/group';
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale';
 import { schemeTableau10 } from 'd3-scale-chromatic';
-import { AxisBottom } from '../utils/axis-bottom';
-import { AxisLeft } from '../utils/axis-left';
-import { Legend } from '../utils/legend';
-import { useTooltip } from '../utils/tooltip';
+import { useRef } from 'react';
+import { AxisBottom } from '../components/axis-bottom';
+import { AxisLeft } from '../components/axis-left';
+import { Legend } from '../components/legend';
+import { useTooltip } from '../components/tooltip';
+import { useContainerWidth } from '../hooks/use-container-width';
+import { sortBarGraphData } from '../utils/sort';
 import { BarGroup } from './bar-group';
 import { BarStack } from './bar-stack';
 
@@ -42,7 +45,7 @@ interface BarGraphProps {
   legend?: boolean;
   horizontal?: boolean;
   animate?: boolean;
-  width: number | undefined;
+  width?: number;
   height: number | undefined;
   events?: boolean;
   margin?: {
@@ -72,6 +75,11 @@ export default function BarGraph({
 }: BarGraphProps) {
   const theme = useTheme();
 
+  const outerContainerRef = useRef<HTMLDivElement | null>(null);
+  const containerWidth = useContainerWidth(outerContainerRef);
+
+  width = width ?? containerWidth;
+
   const {
     tooltipOpen,
     tooltipTop,
@@ -84,7 +92,7 @@ export default function BarGraph({
     containerRef,
   } = useTooltip<BarGraphTooltipData>();
 
-  if (width === undefined || height === undefined) {
+  if (height === undefined) {
     return null;
   }
 
@@ -93,6 +101,7 @@ export default function BarGraph({
   if (!margin.top) margin.top = defaultMargin.top;
   if (!margin.bottom) margin.bottom = defaultMargin.bottom;
 
+  data = sortBarGraphData(data);
   const getX = (d: BarGraphDataInstance) => d.x;
   // groups
   const keys = Object.keys(data[0].group);
@@ -141,7 +150,7 @@ export default function BarGraph({
   }));
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', display: 'flex', flexGrow: 1 }} ref={outerContainerRef}>
       <svg ref={containerRef} width={width} height={height}>
         {grid && (
           <Grid

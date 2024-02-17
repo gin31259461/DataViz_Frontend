@@ -38,9 +38,6 @@ export default function ExploreData() {
                 <Typography variant="h4">資料內容</Typography>
               </Grid>
               <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="body1">展示資料的一些基本的資訊</Typography>
-              </Grid>
-              <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant="h5">ID</Typography>
               </Grid>
               <Grid container>
@@ -64,7 +61,7 @@ export default function ExploreData() {
               <Grid container>
                 {dataInfo.data.info.des === '' ? (
                   <Typography variant="body1" color={theme.palette.info.main}>
-                    沒有描述
+                    沒有描述。
                   </Typography>
                 ) : (
                   <Typography variant="body1">{dataInfo.data.info.des}</Typography>
@@ -80,7 +77,7 @@ export default function ExploreData() {
           </Grid>
           <Grid container>
             <Typography variant="body1" color={theme.palette.info.main}>
-              如果這個欄位是時間的字串，系統在分析的時候會自動轉換
+              如果這個欄位是時間的字串，系統在分析的時候會自動轉換。
             </Typography>
           </Grid>
           {dataInfo.data &&
@@ -92,7 +89,9 @@ export default function ExploreData() {
                     <Typography>{col}</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography color={theme.palette.secondary.main}>{info.type}</Typography>
+                    <Typography>
+                      <strong>{info.type}</strong>
+                    </Typography>
                   </Grid>
                 </Grid>
               );

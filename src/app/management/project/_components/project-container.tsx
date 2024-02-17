@@ -95,40 +95,15 @@ export default function ProjectContainer() {
               onClick={() => setNewProjectDialogOpen(true)}
             ></CardButton>
           </Grid>
-
-          <Dialog fullWidth open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
-            <DialogTitle>新增專案</DialogTitle>
-            <DialogContent
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-              }}
-            >
-              <CardButton
-                title="Racing chart 專案"
-                icon={<TimelineIcon color="info" />}
-                description=""
-                onClick={() => router.push('/create/racing-chart')}
-              ></CardButton>
-
-              <CardButton
-                title="動態分析專案"
-                icon={<TimelineIcon color="info" />}
-                description=""
-                onClick={() => router.push('/create/live-analysis')}
-              ></CardButton>
-            </DialogContent>
-          </Dialog>
         </Grid>
 
-        <Grid container gap={1} justifyContent="flex-end" alignItems={'flex-end'} height={50}>
-          <FormControl variant="standard">
-            <InputLabel>Sort by: </InputLabel>
-            <Select label={'Sort by:'} value={sortTarget} onChange={handleSortChange}>
-              <MenuItem value="name">Name</MenuItem>
-              <MenuItem value="dateCreated">Date created</MenuItem>
-              <MenuItem value="lastViewed">Last viewed</MenuItem>
+        <Grid container gap={1} sx={{ justifyContent: 'flex-end', alignItems: 'flex-end' }} height={50}>
+          <FormControl variant="standard" sx={{ minWidth: 150 }}>
+            <InputLabel variant="standard">排序</InputLabel>
+            <Select label={'排序'} value={sortTarget} onChange={handleSortChange}>
+              <MenuItem value="name">名稱</MenuItem>
+              <MenuItem value="dateCreated">創建時間</MenuItem>
+              <MenuItem value="lastViewed">上次修改時間</MenuItem>
             </Select>
           </FormControl>
           <div>
@@ -206,6 +181,31 @@ export default function ProjectContainer() {
           </ProjectList>
         )}
       </div>
+
+      <Dialog fullWidth open={newProjectDialogOpen} onClose={() => setNewProjectDialogOpen(false)}>
+        <DialogTitle>新增專案</DialogTitle>
+        <DialogContent
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+          }}
+        >
+          <CardButton
+            title="Racing chart 專案"
+            icon={<TimelineIcon color="info" />}
+            description=""
+            onClick={() => router.push('/create/racing-chart')}
+          ></CardButton>
+
+          <CardButton
+            title="動態分析專案"
+            icon={<TimelineIcon color="info" />}
+            description=""
+            onClick={() => router.push('/create/live-analysis')}
+          ></CardButton>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }

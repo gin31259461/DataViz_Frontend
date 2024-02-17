@@ -5,12 +5,17 @@ import { colorTokens } from '@/utils/color-tokens';
 import { useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-export default function TypingText() {
+type TypingTextProps = {
+  children: string[];
+};
+
+export const TypingText = (props: TypingTextProps) => {
+  const limit = props.children.length;
   const theme = useTheme();
 
   const [typingAnimation, setTypingAnimation] = useState(true);
-  const [textFlag, setTextFlag] = useState(true);
   const [stopTypingFlag, setStopTypingFlag] = useState(false);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   const color = colorTokens(theme.palette.mode);
 
@@ -18,7 +23,7 @@ export default function TypingText() {
     let intervalID: ReturnType<typeof setInterval>;
     let timeoutID: ReturnType<typeof setInterval>;
     if (typingAnimation) {
-      setTextFlag((prev) => !prev);
+      setCurrentTextIndex((prev) => (prev + 1 < limit ? prev + 1 : 0));
       intervalID = setInterval(() => {
         setTypingAnimation(() => false);
       }, 5000);
@@ -35,7 +40,7 @@ export default function TypingText() {
       clearInterval(intervalID);
       clearInterval(timeoutID);
     };
-  }, [typingAnimation]);
+  }, [typingAnimation, limit]);
 
   useEffect(() => {
     if (document.getElementById('typing-text') !== null) {
@@ -55,7 +60,9 @@ export default function TypingText() {
         (stopTypingFlag ? effect['flash-border'] : '')
       }
     >
-      {textFlag ? 'Data Visualization' : 'Beautiful Infographic'}
+      {props.children.length > 0 && props.children[currentTextIndex]}
     </div>
   );
-}
+};
+
+export default TypingText;

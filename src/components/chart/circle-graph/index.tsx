@@ -5,8 +5,11 @@ import { EventType } from '@visx/event/lib/types';
 import { Group } from '@visx/group';
 import { scaleOrdinal } from '@visx/scale';
 import { schemeTableau10 } from 'd3-scale-chromatic';
-import { Legend } from '../utils/legend';
-import { useTooltip } from '../utils/tooltip';
+import { useRef } from 'react';
+import { Legend } from '../components/legend';
+import { useTooltip } from '../components/tooltip';
+import { useContainerWidth } from '../hooks/use-container-width';
+import { sortCircleGraphData } from '../utils/sort';
 import { AnimatedPie } from './animated-pie';
 import { Pie } from './pie';
 
@@ -26,7 +29,7 @@ export type CircleGraphDataInstance = {
 interface CircleGraphProps {
   data: CircleGraphDataInstance[];
   mode?: CircleGraphMode;
-  width: number | undefined;
+  width?: number;
   height: number | undefined;
   events?: boolean;
   animate?: boolean;
@@ -51,6 +54,11 @@ export default function CircleGraph({
   height,
   margin = defaultMargin,
 }: CircleGraphProps) {
+  const outerContainerRef = useRef<HTMLDivElement | null>(null);
+  const containerWidth = useContainerWidth(outerContainerRef);
+
+  width = width ?? containerWidth;
+
   const {
     tooltipOpen,
     tooltipTop,
@@ -63,7 +71,7 @@ export default function CircleGraph({
     containerRef,
   } = useTooltip<CircleGraphTooltipData>();
 
-  if (width === undefined || height === undefined) return null;
+  if (height === undefined) return null;
 
   if (!margin.left) margin.left = defaultMargin.left;
   if (!margin.right) margin.right = defaultMargin.right;
@@ -76,6 +84,7 @@ export default function CircleGraph({
   const centerY = innerHeight / 2;
   const centerX = innerWidth / 2;
 
+  data = sortCircleGraphData(data);
   const labels = data.map(getLabel);
 
   const colorScale = scaleOrdinal({
@@ -84,7 +93,7 @@ export default function CircleGraph({
   });
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', display: 'flex', flexGrow: 1 }} ref={outerContainerRef}>
       <svg ref={containerRef} width={width} height={height}>
         <Group top={centerY + margin.top} left={centerX + margin.left}>
           <Pie

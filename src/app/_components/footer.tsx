@@ -1,6 +1,4 @@
-import FacebookIcon from '@mui/icons-material/Facebook';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import { Container, Grid, Link, Typography } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 
 export default function Footer() {
   return (
@@ -13,51 +11,14 @@ export default function Footer() {
         }}
       >
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
-              About Us
+              關於我們
             </Typography>
             <Typography variant="body2" component="p">
-              WKE (Web Knowledge Extraction) Lab. WKE focuses on developing Web information systems (WIS) for various
-              domain requirements. By integrating systems and modules about web/text mining methods developed in WKE,
-              WIS can be enhanced to advanced intelligent information systems.
+              WKE ( Web Knowledge Extraction ) 實驗室專注於為不同領域需求開發 Web 信息系統 (WIS)。通過整合 WKE
+              開發的有關網頁/文本探勘方法的系統和模塊，可以升級 WIS 為先進的智能信息系統。
             </Typography>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <Typography variant="h6" gutterBottom>
-              Resources
-            </Typography>
-            <ul>
-              <li>
-                <Link color="textSecondary" href="#">
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link color="textSecondary" href="#">
-                  Support
-                </Link>
-              </li>
-              <li>
-                <Link color="textSecondary" href="#">
-                  Terms of Service
-                </Link>
-              </li>
-            </ul>
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <Typography variant="h6" gutterBottom>
-              Follow Us
-            </Typography>
-            <Link href="https://github.com/gin31259461" color="inherit" target="_blank">
-              <GitHubIcon sx={{ marginRight: 1 }} />
-              GitHub
-            </Link>
-            <br />
-            <Link href="/" color="inherit" target="_blank">
-              <FacebookIcon sx={{ marginRight: 1 }} />
-              Facebook
-            </Link>
           </Grid>
         </Grid>
         <Typography variant="body2" color="textSecondary" align="center" marginTop="2vh">

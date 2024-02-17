@@ -66,17 +66,17 @@ export default function ContextMenu({ children, maxWidth, onDelete, onEditConfir
         open={Boolean(anchorPosition)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onClick={() => router.push(`${path}/${project.id}`)}>Open</MenuItem>
-        <MenuItem onClick={() => setEditOpen(true)}>Edit</MenuItem>
-        <MenuItem onClick={() => setDeleteModalOpen(true)}>Delete</MenuItem>
+        <MenuItem onClick={() => router.push(`${path}/${project.id}`)}>開啟</MenuItem>
+        <MenuItem onClick={() => setEditOpen(true)}>編輯</MenuItem>
+        <MenuItem onClick={() => setDeleteModalOpen(true)}>刪除</MenuItem>
       </Menu>
 
       <Dialog fullScreen open={editOpen} onClose={onEditDialogClose}>
-        <DialogTitle>Edit project</DialogTitle>
+        <DialogTitle>編輯專案</DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2 }}>
             <TextField
-              label="Name"
+              label="名稱"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
@@ -84,7 +84,7 @@ export default function ContextMenu({ children, maxWidth, onDelete, onEditConfir
             />
             <TextField
               multiline
-              label="Description"
+              label="描述"
               value={des}
               onChange={(e) => {
                 setDes(e.target.value);
@@ -93,27 +93,27 @@ export default function ContextMenu({ children, maxWidth, onDelete, onEditConfir
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onEditDialogClose}>Cancel</Button>
+          <Button onClick={onEditDialogClose}>取消</Button>
           <Button
             onClick={async () => {
               await onEditConfirm({ id: project.id, name: name, des: des });
               setEditOpen(false);
             }}
           >
-            Confirm
+            確認
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmModal
         open={deleteModalOpen}
-        title="Delete project"
+        title="刪除專案"
         onConfirm={async () => {
           await onDelete(project.id);
         }}
         onClose={() => setDeleteModalOpen(false)}
       >
-        Are you sure you want to delete this project?
+        確定要刪除此專案?
       </ConfirmModal>
     </div>
   );

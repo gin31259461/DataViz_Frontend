@@ -14,9 +14,10 @@ import {
 } from '@visx/tooltip';
 import { bisector, extent, max } from '@visx/vendor/d3-array';
 import { timeFormat } from '@visx/vendor/d3-time-format';
-import { MouseEvent, TouchEvent } from 'react';
-import { AxisBottom } from '../utils/axis-bottom';
-import { AxisLeft } from '../utils/axis-left';
+import { MouseEvent, TouchEvent, useRef } from 'react';
+import { AxisBottom } from '../components/axis-bottom';
+import { AxisLeft } from '../components/axis-left';
+import { useContainerWidth } from '../hooks/use-container-width';
 import { AreaClosed } from './area-closed';
 import { LinePath } from './line-path';
 
@@ -39,7 +40,7 @@ interface AreaGraphProps {
   axisLeft?: boolean;
   animate?: boolean;
   grid?: boolean;
-  width: number | undefined;
+  width?: number;
   height: number | undefined;
   events?: boolean;
   timeFormatString?: string;
@@ -69,6 +70,11 @@ export default function AreaGraph({
   width,
   height,
 }: AreaGraphProps) {
+  const outerContainerRef = useRef<HTMLDivElement | null>(null);
+  const containerWidth = useContainerWidth(outerContainerRef);
+
+  width = width ?? containerWidth;
+
   const theme = useTheme();
   const { showTooltip, hideTooltip, tooltipData, tooltipTop = 0, tooltipLeft = 0 } = useTooltip<AreaGraphTooltipData>();
 
@@ -123,7 +129,7 @@ export default function AreaGraph({
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', display: 'flex', flexGrow: 1 }} ref={outerContainerRef}>
       <svg width={width} height={height}>
         <LinearGradient id="area-gradient" from={fillColor} to={fillColor} toOpacity={0.1} />
         <Group>

@@ -70,9 +70,7 @@ export default function PathAnalysisResult() {
                                     return (
                                       <Grid container key={`${path}-${i}-${feature}`} gap={1}>
                                         <GridContainer>
-                                          <Typography color={theme.palette.secondary.main}>
-                                            <strong>{feature}</strong>
-                                          </Typography>
+                                          <Typography color={theme.palette.secondary.main}>{feature}</Typography>
                                         </GridContainer>
                                         <GridContainer>
                                           <Typography>{data.features[feature].join(' ')}</Typography>

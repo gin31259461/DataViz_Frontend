@@ -1,4 +1,10 @@
-import { DataInfoSchema, PathAnalysisResultSchema, PathInstanceScheme } from '@/server/api/routers/analysis';
+import {
+  DataInfoSchema,
+  PathAnalysisResultSchema,
+  PathInstanceScheme,
+  ProcessPivotAnalysisResultInstanceSchema,
+} from '@/server/api/routers/analysis';
+import { ProjectCategories } from '@/server/api/routers/project';
 import { create } from 'zustand';
 
 export interface BasicColumnTypeMapping {
@@ -6,8 +12,6 @@ export interface BasicColumnTypeMapping {
   number: string[];
   date: string[];
 }
-
-export type ProjectTypes = 'racing-chart' | 'path-analysis' | 'process-analysis';
 
 export interface DataArgsProps<T> {
   mapping: T;
@@ -59,14 +63,17 @@ export interface ProjectStoreProps {
   setSelectedPath: (path: PathInstanceScheme) => void;
 
   // Analysis-3 process analysis
+  process: ProcessPivotAnalysisResultInstanceSchema[];
+
+  setProcess: (process: ProcessPivotAnalysisResultInstanceSchema[]) => void;
 
   // Infographic properties
-  chartType: ProjectTypes | undefined;
+  chartType: ProjectCategories | undefined;
   chartArgs: ChartArgsProps | undefined;
   dataArgs: DataArgsProps<object> | undefined;
   columnTypeMapping: ColumnTypeMappingProps | undefined;
 
-  setChartType: (chartType: ProjectTypes) => void;
+  setChartType: (chartType: ProjectCategories) => void;
   setChartArgs: (chartArgs: object) => void;
   setDataArgs: (dataArgs: DataArgsProps<object>) => void;
   setColumnTypeMapping: (columnTypeMapping: ColumnTypeMappingProps) => void;
@@ -128,6 +135,11 @@ export const useProjectStore = create<ProjectStoreProps>()((set) => ({
   },
 
   // Analysis-3 process analysis
+  process: [],
+
+  setProcess(process) {
+    set({ process });
+  },
 
   // Infographic properties
   chartType: undefined,
@@ -176,6 +188,7 @@ export const useProjectStore = create<ProjectStoreProps>()((set) => ({
       selectedPath: undefined,
 
       // Analysis-3 process analysis
+      process: [],
 
       // Infographic properties
       chartType: undefined,

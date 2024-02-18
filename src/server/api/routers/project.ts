@@ -1,3 +1,4 @@
+import { ChartCategories } from '@/components/chart';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../../trpc/trpc.procedure';
 
@@ -11,12 +12,14 @@ const ProjectZodSchema = z.object({
   lastModifiedDT: z.string(),
 });
 
-const ArgZodSchema = z.object({
-  dataId: z.number(),
-  chartType: z.string(),
-  dataArgs: z.any(),
-  chartArgs: z.any(),
-});
+export type ArgSchema<T, U> = {
+  dataId: number;
+  chartType: ChartCategories[];
+  dataArgs: T;
+  chartArgs: U;
+};
+
+const ArgZodSchema = z.custom<ArgSchema<unknown, unknown>>();
 
 const EditProjectRequestZodSchema = z.object({
   id: z.number(),
@@ -24,8 +27,8 @@ const EditProjectRequestZodSchema = z.object({
   des: z.string(),
 });
 
+export type ProjectCategories = 'racing-chart' | 'path-analysis';
 export type ProjectSchema = z.infer<typeof ProjectZodSchema>;
-export type ArgSchema = z.infer<typeof ArgZodSchema>;
 export type EditProjectRequestSchema = z.infer<typeof EditProjectRequestZodSchema>;
 
 export const projectRouter = createTRPCRouter({
@@ -35,7 +38,7 @@ export const projectRouter = createTRPCRouter({
         title: z.string(),
         des: z.string(),
         dataId: z.number(),
-        type: z.string(),
+        type: z.custom<ProjectCategories>(),
         args: ArgZodSchema,
       })
     )

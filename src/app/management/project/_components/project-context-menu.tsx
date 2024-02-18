@@ -33,8 +33,11 @@ export default function ContextMenu({ children, maxWidth, onDelete, onEditConfir
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   let path: string = '';
+
   if (project.type === 'racing-chart') {
     path = '/management/project/racing-chart';
+  } else if (project.type === 'path-analysis') {
+    path = '/management/project/path-analysis';
   }
 
   const handleContextMenu = (event: MouseEvent<HTMLElement>) => {

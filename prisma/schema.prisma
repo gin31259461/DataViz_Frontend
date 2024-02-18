@@ -311,7 +311,7 @@ model Object {
   OID                    Int         @id(map: "PK_Object") @default(autoincrement())
   Type                   Int         @db.SmallInt
   CName                  String?     @db.NVarChar(255)
-  CDes                   String?     @db.NVarChar(800)
+  CDes                   String?     @db.NVarChar(Max)
   EName                  String?     @db.NVarChar(255)
   EDes                   String?     @db.NVarChar(800)
   Since                  DateTime    @default(now(), map: "DF__Object__Since__3A81B327") @db.DateTime

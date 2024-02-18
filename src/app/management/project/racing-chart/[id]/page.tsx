@@ -17,8 +17,9 @@ function ProjectPage() {
   const projectId = parseInt(useParams().id as string);
   const observations = api.project.getProjectObservations.useQuery(projectId);
   const args = api.project.getArgsFromObservations.useQuery(observations.data && observations.data.map((d) => d.CID));
-
-  const arg: ArgSchema = JSON.parse((args.data && args.data[currentIndex].CDes) ?? '{}');
+  const arg: ArgSchema<DataArgsProps<RacingBarChartMapping>, RacingBarChartArgs> = JSON.parse(
+    (args.data && args.data[currentIndex].CDes) ?? '{}'
+  );
 
   const dataContent = api.data.getContentFromDataTable.useQuery(arg.dataId);
 
@@ -30,8 +31,8 @@ function ProjectPage() {
             {args.data[currentIndex].EName}
           </Typography>
           <RacingBarChartEngine
-            data={convertToRacingBarChartData(dataContent.data, arg.dataArgs as DataArgsProps<RacingBarChartMapping>)}
-            args={arg.chartArgs as RacingBarChartArgs}
+            data={convertToRacingBarChartData(dataContent.data, arg.dataArgs)}
+            args={arg.chartArgs}
           />
           <Typography variant="h6">Description:</Typography>
           <Typography>{args.data[currentIndex].EDes}</Typography>

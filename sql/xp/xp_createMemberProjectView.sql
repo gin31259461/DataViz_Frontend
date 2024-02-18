@@ -7,7 +7,7 @@ GO
 CREATE
   OR
 
-ALTER PROCEDURE xp_createMemberProjectView @mid INT
+ALTER PROCEDURE [dbo].[xp_createMemberProjectView] @mid INT
 AS
 BEGIN
   DECLARE @account NVARCHAR(64), @sql NVARCHAR(2000)

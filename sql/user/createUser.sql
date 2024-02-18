@@ -38,6 +38,17 @@ ELSE
 EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = 'db_owner'
 GO
 
+USE RawDB
+GO
+
+-- add role db_owner to admin
+DECLARE @uid VARCHAR(20), @grpname VARCHAR(20)
+
+SELECT @uid = 'dataviz', @grpname = 'db_owner'
+
+EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
+GO
+
 -------------------------------------------------------------------------------
 -- Create apiw																													    	|
 -------------------------------------------------------------------------------

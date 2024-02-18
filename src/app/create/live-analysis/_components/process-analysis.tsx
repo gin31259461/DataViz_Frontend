@@ -7,17 +7,19 @@ import { GridContainerDivider } from '@/components/grid/grid-container-divider';
 import LoadingWithTitle from '@/components/loading/loading-with-title';
 import { useProjectStore } from '@/hooks/store/use-project-store';
 import { api } from '@/server/trpc/trpc.client';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import { Card, CardContent, Grid, Typography, useTheme } from '@mui/material';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 
 function ProcessAnalysis() {
-  const tabSliderContentHeight = 300;
+  const chartHeight = 300;
 
   const theme = useTheme();
 
   const selectedDataId = useProjectStore((state) => state.selectedDataId);
   const target = useProjectStore((state) => state.target);
   const selectedPath = useProjectStore((state) => state.selectedPath);
+  const setProcess = useProjectStore((state) => state.setProcess);
 
   const reqData =
     selectedDataId && target && selectedPath
@@ -29,6 +31,12 @@ function ProcessAnalysis() {
       : undefined;
 
   const process = api.analysis.getProcessPivotAnalysis.useQuery(reqData);
+
+  useEffect(() => {
+    if (process.data) {
+      setProcess(process.data);
+    }
+  }, [process.data, setProcess]);
 
   return (
     <>
@@ -64,15 +72,13 @@ function ProcessAnalysis() {
                 <Typography variant="h4">特徵分割過程</Typography>
               </GridContainer>
 
-              <GridContainer gap={1}>
+              <GridContainer gap={2}>
                 {selectedPath.process.map((p, i) => {
                   return (
                     <GridContainer key={`${p[0]}-${i}`} gap={1}>
                       <GridContainer>
                         <Typography color={theme.palette.secondary.main}>
-                          <strong>
-                            {i + 1}. {p[0]} :
-                          </strong>
+                          {i + 1}. {p[0]} :
                         </Typography>
                       </GridContainer>
                       <GridContainer>
@@ -94,7 +100,7 @@ function ProcessAnalysis() {
                 return (
                   <Fragment key={`${p.split_feature}-${i}`}>
                     <GridContainer>
-                      <Typography variant="h6">
+                      <Typography variant="h6" color={theme.palette.secondary.main}>
                         {i + 1}. {p.split_feature}
                       </Typography>
                     </GridContainer>
@@ -109,17 +115,30 @@ function ProcessAnalysis() {
                       <Grid item xs={6}>
                         <Card>
                           <CardContent>
-                            <BarGraph data={p.chart_data.before_split_count} height={tabSliderContentHeight}></BarGraph>
+                            <GridContainer gap={2}>
+                              <GridContainer>
+                                <Typography>
+                                  {p.split_feature} 加總 {selectedPath?.target}
+                                </Typography>
+                              </GridContainer>
+                              <GridContainer>
+                                <BarGraph data={p.chart_data.before_split_count} height={chartHeight}></BarGraph>
+                              </GridContainer>
+                            </GridContainer>
                           </CardContent>
                         </Card>
                       </Grid>
                       <Grid item xs={6}>
                         <Card>
                           <CardContent>
-                            <CircleGraph
-                              data={p.chart_data.before_split_rate}
-                              height={tabSliderContentHeight}
-                            ></CircleGraph>
+                            <GridContainer gap={2}>
+                              <GridContainer>
+                                <Typography>{p.split_feature} 樣本數比例</Typography>
+                              </GridContainer>
+                              <GridContainer>
+                                <CircleGraph data={p.chart_data.before_split_rate} height={chartHeight}></CircleGraph>
+                              </GridContainer>
+                            </GridContainer>
                           </CardContent>
                         </Card>
                       </Grid>
@@ -135,17 +154,30 @@ function ProcessAnalysis() {
                       <Grid item xs={6}>
                         <Card>
                           <CardContent>
-                            <BarGraph data={p.chart_data.after_split_count} height={tabSliderContentHeight}></BarGraph>
+                            <GridContainer gap={2}>
+                              <GridContainer>
+                                <Typography>
+                                  {p.split_feature} 加總 {selectedPath?.target}
+                                </Typography>
+                              </GridContainer>
+                              <GridContainer>
+                                <BarGraph data={p.chart_data.after_split_count} height={chartHeight}></BarGraph>
+                              </GridContainer>
+                            </GridContainer>
                           </CardContent>
                         </Card>
                       </Grid>
                       <Grid item xs={6}>
                         <Card>
                           <CardContent>
-                            <CircleGraph
-                              data={p.chart_data.after_split_rate}
-                              height={tabSliderContentHeight}
-                            ></CircleGraph>
+                            <GridContainer gap={2}>
+                              <GridContainer>
+                                <Typography>{p.split_feature} 樣本數比例</Typography>
+                              </GridContainer>
+                              <GridContainer>
+                                <CircleGraph data={p.chart_data.after_split_rate} height={chartHeight}></CircleGraph>
+                              </GridContainer>
+                            </GridContainer>
                           </CardContent>
                         </Card>
                       </Grid>
@@ -171,9 +203,7 @@ function ProcessAnalysis() {
                       return (
                         <GridContainer key={`${feature}-${i}`}>
                           <GridContainer>
-                            <Typography color={theme.palette.secondary.main}>
-                              <strong>{feature}</strong>
-                            </Typography>
+                            <Typography color={theme.palette.secondary.main}>{feature}</Typography>
                           </GridContainer>
                           <GridContainer>
                             <Typography>{selectedPath.features[feature].join(' ')}</Typography>
@@ -183,10 +213,16 @@ function ProcessAnalysis() {
                     })}
                   </GridContainer>
                 </Grid>
-                <Grid item xs={8} sx={{ display: 'flex', alignItems: 'center' }}>
+                <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                  <GridContainer>
+                    <ArrowForwardOutlinedIcon sx={{ fontSize: 80 }} />
+                  </GridContainer>
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center' }}>
                   <GridContainer>
                     <Typography variant="h4">
-                      目標 <q>{selectedPath.target}</q> 有 {selectedPath.class} 的趨勢
+                      <q style={{ color: theme.palette.info.main }}>{selectedPath.target}</q> 有
+                      <span style={{ color: theme.palette.warning.main }}>{selectedPath.class}</span>的趨勢
                     </Typography>
                   </GridContainer>
                 </Grid>

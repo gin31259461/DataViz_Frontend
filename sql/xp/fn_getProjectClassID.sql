@@ -1,7 +1,10 @@
+USE [DV]
+GO
+
 CREATE
   OR
 
-ALTER FUNCTION fn_getProjectClassID (@mid INT)
+ALTER FUNCTION [dbo].[fn_getProjectClassID] (@mid INT)
 RETURNS INT
 AS
 BEGIN

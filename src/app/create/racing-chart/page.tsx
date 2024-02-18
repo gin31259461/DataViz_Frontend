@@ -16,7 +16,6 @@ function CreateRacingBarChartPage() {
   const selectedDataOID = useProjectStore((state) => state.selectedDataId);
   const title = useProjectStore((state) => state.title);
   const des = useProjectStore((state) => state.des);
-  const chartType = useProjectStore((state) => state.chartType);
   const chartArgs = useProjectStore((state) => state.chartArgs);
   const dataArgs = useProjectStore((state) => state.dataArgs);
   const clear = useProjectStore((state) => state.clear);
@@ -44,7 +43,7 @@ function CreateRacingBarChartPage() {
           dataId: selectedDataOID,
           args: {
             dataId: selectedDataOID,
-            chartType: chartType ?? '',
+            chartType: ['racing-bar-chart'],
             chartArgs: chartArgs ?? {},
             dataArgs: dataArgs ?? {},
           },

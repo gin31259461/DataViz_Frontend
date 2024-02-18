@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER OFF
 GO
 
-ALTER PROCEDURE [dbo].[xp_insertClass] @PCID INT,
+Create OR ALTER PROCEDURE [dbo].[xp_insertClass] @PCID INT,
 	--c.CID，父節點
 	@Type INT,
 	--c.Type
@@ -27,7 +27,7 @@ BEGIN
 		BEGIN TRANSACTION --下面的過程設定為一整筆交易動作
 
 		DECLARE @NamePath NVARCHAR(900) = (
-				SELECT dbo.fn_getNamePath(@PCID, @CName)
+				SELECT [dbo].[fn_getNamePath](@PCID, @CName)
 				)
 
 		IF (

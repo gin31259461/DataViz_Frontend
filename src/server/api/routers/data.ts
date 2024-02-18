@@ -117,7 +117,7 @@ export const dataRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const result: ResponseScheme = { message: 'delete data done' };
+      const result: ResponseScheme = { message: '刪除資料成功' };
 
       const dataUsedCount = await ctx.prismaReader.oRel.count({
         where: {

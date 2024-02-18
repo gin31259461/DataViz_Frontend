@@ -51,6 +51,7 @@ export type PathInstanceScheme = {
 };
 
 export type PathAnalysisResultSchema = Record<string, PathInstanceScheme[]>;
+export type PathAnalysisDataArgs = { path: PathInstanceScheme; process: ProcessPivotAnalysisResultInstanceSchema[] };
 
 export type ProcessPivotAnalysisResultInstanceSchema = {
   split_feature: string;

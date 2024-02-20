@@ -145,17 +145,17 @@ function PathAnalysis() {
 
         {Object.keys(conceptHierarchy).length > 0 && (
           <Grid container>
-            <Card>
-              <CardContent>
-                {Object.keys(conceptHierarchy).map((col, i) => {
-                  return (
-                    <Grid container key={`${col}-${i}`} gap={2}>
-                      <Grid container gap={2}>
+            {Object.keys(conceptHierarchy).map((col, i) => {
+              return (
+                <Grid item xs={12} key={`${col}-${i}`}>
+                  <Card>
+                    <CardContent>
+                      <Grid container gap={1}>
                         <Typography color={theme.palette.info.main}>{col}</Typography>
-                        <Grid container>
+                        <Grid container gap={3}>
                           {conceptHierarchy[col].order.map((tag, j) => {
                             return (
-                              <Grid item xs={12} key={`${col}-${i}-${tag}-${j}`}>
+                              <Grid key={`${col}-${i}-${tag}-${j}`}>
                                 <GridContainer>
                                   <Typography color={theme.palette.secondary.main}>{tag}</Typography>
                                 </GridContainer>
@@ -167,11 +167,11 @@ function PathAnalysis() {
                           })}
                         </Grid>
                       </Grid>
-                    </Grid>
-                  );
-                })}
-              </CardContent>
-            </Card>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
           </Grid>
         )}
 

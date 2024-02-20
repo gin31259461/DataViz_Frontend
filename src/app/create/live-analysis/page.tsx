@@ -6,7 +6,7 @@ import ProcessAnalysis from './_components/process-analysis';
 import StepperProvider from './provider';
 
 async function LiveAnalysisPage() {
-  const steps = ['選擇資料', '展示資料', '路徑分析', '路徑回朔樞紐分析 + 資訊圖表', '完成!'];
+  const steps = ['選擇資料', '展示資料', '路徑分析', '資訊圖表', '完成!'];
 
   return (
     <StepperProvider steps={steps}>

@@ -15,6 +15,8 @@ export default function PathAnalysisResult() {
   const target = useProjectStore((state) => state.target);
   const setSelectedPath = useProjectStore((state) => state.setSelectedPath);
 
+  console.log(paths);
+
   const [activePathKey, setActivePathKey] = useState('');
 
   return (
@@ -37,7 +39,7 @@ export default function PathAnalysisResult() {
               {Object.keys(paths).map((path, i) => {
                 return <strong key={`${path}-${i}`}>{path} </strong>;
               })}
-              三種，其中您可能有興趣的路徑...
+              ，其中您可能有興趣的路徑...
             </Typography>
           </Grid>
           <Grid container gap={2}>

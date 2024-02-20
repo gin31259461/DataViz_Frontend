@@ -49,7 +49,7 @@ function StepperProvider(props: StepperProviderProps) {
             dataArgs: { path: selectedPath, process: process },
           },
           type: 'path-analysis',
-          title: dataInfo.info.name + ' : 路徑分析',
+          title: dataInfo.info.name + ` : 路徑分析-${target}-${selectedPath.class}`,
           des: '以目標為 ( ' + target + ' ) 進行路徑分析',
           dataId: selectedDataId,
         })

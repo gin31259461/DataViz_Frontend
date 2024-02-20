@@ -22,7 +22,7 @@ export const PathAnalysisInfographic = (props: ProcessAnalysisInfographicProps) 
   return (
     <GridContainer gap={2} sx={{ paddingTop: 10, paddingBottom: 10 }}>
       <GridContainer>
-        <Typography variant="h4">路徑回朔樞紐分析結果</Typography>
+        <Typography variant="h4">分析結果</Typography>
       </GridContainer>
       {props.path && (
         <GridContainer gap={2}>

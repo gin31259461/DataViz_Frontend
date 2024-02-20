@@ -2,151 +2,150 @@
 -- Create Database																												  	|
 -------------------------------------------------------------------------------
 -- main database : dataviz db -> DV
-CREATE DATABASE DV ON (NAME = DV_data, FILENAME = 'C:\DB\MSSQL\DV_data.mdf', SIZE = 10, FILEGROWTH = 5
-	) LOG ON (NAME = DV_log, FILENAME = 'C:\DB\MSSQL\DV_log.ldf', SIZE = 10, FILEGROWTH = 5)
-GO
+create database DV on (NAME = DV_data, FILENAME = 'C:\DB\MSSQL\DV_data.mdf', SIZE = 10, FILEGROWTH = 5) LOG on (NAME = DV_log, FILENAME = 'C:\DB\MSSQL\DV_log.ldf', SIZE = 10, FILEGROWTH = 5
+  )
+go
 
 -- save member's raw data db -> RawDB
-CREATE DATABASE RawDB ON (NAME = RawDB_data, FILENAME = 'C:\DB\MSSQL\RawDB_data.mdf', SIZE = 10, FILEGROWTH = 5
-	) LOG ON (NAME = RawDB_log, FILENAME = 'C:\DB\MSSQL\RawDB_log.ldf', SIZE = 10, FILEGROWTH = 5
-	)
-GO
+create database RawDB on (NAME = RawDB_data, FILENAME = 'C:\DB\MSSQL\RawDB_data.mdf', SIZE = 10, FILEGROWTH = 5) LOG on (NAME = RawDB_log, FILENAME = 'C:\DB\MSSQL\RawDB_log.ldf', SIZE = 10, FILEGROWTH = 5
+  )
+go
 
 -------------------------------------------------------------------------------
 -- Create Account																												    	|
 -------------------------------------------------------------------------------
-USE DV
-GO
+use DV
+go
 
 -- add dataviz admin login and add role db_owner
 -- notice!! : add login don't need to select DB, because it's global, but add user need to select DB, it's for alter user of DB
-DECLARE @uid VARCHAR(20), @pwd VARCHAR(20), @db VARCHAR(20)
+declare @uid varchar(20), @pwd varchar(20), @db varchar(20)
 
-SELECT @uid = 'dataviz', @pwd = '.dataviz.', @db = 'DV'
+select @uid = 'dataviz', @pwd = '.dataviz.', @db = 'DV'
 
-IF NOT EXISTS (
-		SELECT *
-		FROM master.dbo.syslogins
-		WHERE name = @uid
-		)
-BEGIN
-	EXEC sp_addlogin @uid, @pwd, @db
-END
-ELSE
-	PRINT 'the user was already existed'
+if not exists (
+    select *
+    from master.dbo.syslogins
+    where name = @uid
+    )
+begin
+  exec sp_addlogin @uid, @pwd, @db
+end
+else
+  print 'the user was already existed'
 
-EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = 'db_owner'
-GO
+exec sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = 'db_owner'
+go
 
-USE RawDB
-GO
+use RawDB
+go
 
 -- add role db_owner to admin
-DECLARE @uid VARCHAR(20), @grpname VARCHAR(20)
+declare @uid varchar(20), @grpname varchar(20)
 
-SELECT @uid = 'dataviz', @grpname = 'db_owner'
+select @uid = 'dataviz', @grpname = 'db_owner'
 
-EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
-GO
+exec sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
+go
 
 -------------------------------------------------------------------------------
 -- Create apiw																													    	|
 -------------------------------------------------------------------------------
-USE DV
-GO
+use DV
+go
 
 -- add api writer login and add user to RawMD
-DECLARE @uid VARCHAR(20), @pwd VARCHAR(20), @db VARCHAR(20), @grpname VARCHAR(20)
+declare @uid varchar(20), @pwd varchar(20), @db varchar(20), @grpname varchar(20)
 
-SELECT @uid = 'apiw', @pwd = '.apiw.', @db = 'DV', @grpname = 'db_owner'
+select @uid = 'apiw', @pwd = '.apiw.', @db = 'DV', @grpname = 'db_owner'
 
-IF NOT EXISTS (
-		SELECT *
-		FROM master.dbo.syslogins
-		WHERE name = @uid
-		)
-BEGIN
-	EXEC sp_addlogin @uid, @pwd, @db
-END
-ELSE
-	PRINT 'the user was already existed'
+if not exists (
+    select *
+    from master.dbo.syslogins
+    where name = @uid
+    )
+begin
+  exec sp_addlogin @uid, @pwd, @db
+end
+else
+  print 'the user was already existed'
 
-EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname;
-GO
+exec sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname;
+go
 
-USE RawDB
-GO
+use RawDB
+go
 
 -- add role db_owner to api writer
-DECLARE @uid VARCHAR(20), @grpname VARCHAR(20)
+declare @uid varchar(20), @grpname varchar(20)
 
-SELECT @uid = 'apiw', @grpname = 'db_owner'
+select @uid = 'apiw', @grpname = 'db_owner'
 
-EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
-GO
+exec sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
+go
 
 -------------------------------------------------------------------------------
 -- Create apir																													    	|
 -------------------------------------------------------------------------------
-USE DV
-GO
+use DV
+go
 
 -- add api reader login and add user to RawMD
-DECLARE @uid VARCHAR(20), @pwd VARCHAR(20), @db VARCHAR(20), @grpname VARCHAR(20)
+declare @uid varchar(20), @pwd varchar(20), @db varchar(20), @grpname varchar(20)
 
-SELECT @uid = 'apir', @pwd = '.apir.', @db = 'DV', @grpname = 'db_datareader'
+select @uid = 'apir', @pwd = '.apir.', @db = 'DV', @grpname = 'db_datareader'
 
-IF NOT EXISTS (
-		SELECT *
-		FROM master.dbo.syslogins
-		WHERE name = @uid
-		)
-BEGIN
-	EXEC sp_addlogin @uid, @pwd, @db
-END
-ELSE
-	PRINT 'the user was already existed'
+if not exists (
+    select *
+    from master.dbo.syslogins
+    where name = @uid
+    )
+begin
+  exec sp_addlogin @uid, @pwd, @db
+end
+else
+  print 'the user was already existed'
 
-EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname;
-GO
+exec sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname;
+go
 
-USE RawDB
-GO
+use RawDB
+go
 
 -- add role db_datareader to api reader
-DECLARE @uid VARCHAR(20), @grpname VARCHAR(20)
+declare @uid varchar(20), @grpname varchar(20)
 
-SELECT @uid = 'apir', @grpname = 'db_datareader'
+select @uid = 'apir', @grpname = 'db_datareader'
 
-EXEC sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
-GO
+exec sp_adduser @loginame = @uid, @name_in_db = @uid, @grpname = @grpname
+go
 
 -------------------------------------------------------------------------------
 -- Alter rule											      																    	|
 -------------------------------------------------------------------------------
-ALTER ROLE db_owner ADD member dataviz
+alter role db_owner add member dataviz
 
 -------------------------------------------------------------------------------
 -- Connect user to login													                    				|
 -------------------------------------------------------------------------------
-USE DV
-GO
+use DV
+go
 
-ALTER user apir
-	WITH LOGIN = apir;
+alter user apir
+  with login = apir;
 
-ALTER user apiw
-	WITH LOGIN = apiw;
+alter user apiw
+  with login = apiw;
 
-ALTER user dataviz
-	WITH LOGIN = dataviz;
-GO
+alter user dataviz
+  with login = dataviz;
+go
 
-USE RawDB
-GO
+use RawDB
+go
 
-ALTER user apir
-	WITH LOGIN = apir;
+alter user apir
+  with login = apir;
 
-ALTER user apiw
-	WITH LOGIN = apiw;
+alter user apiw
+  with login = apiw;

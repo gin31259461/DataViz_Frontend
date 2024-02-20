@@ -1,25 +1,23 @@
-USE [DV]
-GO
+use [DV]
+go
 
-CREATE
-  OR
+create or
 
-ALTER FUNCTION [dbo].[fn_getProjectClassID] (@mid INT)
-RETURNS INT
-AS
-BEGIN
-  DECLARE @ProjectClassID INT
+alter function [dbo].[fn_getProjectClassID] (@mid int)
+returns int
+as
+begin
+  declare @ProjectClassID int
 
-  SELECT @ProjectClassID = (
-      SELECT DISTINCT I.CCID
-      FROM [dbo].[Class] C, [dbo].[Inheritance] I
-      WHERE I.PCID = (
-          SELECT CID
-          FROM [dbo].[Member]
-          WHERE MID = @mid
-          )
-        AND C.CName = 'project'
+  select @ProjectClassID = (
+      select distinct I.CCID
+      from [dbo].[Class] C, [dbo].[Inheritance] I
+      where I.PCID = (
+          select CID
+          from [dbo].[Member]
+          where MID = @mid
+          ) and C.CName = 'project'
       )
 
-  RETURN @ProjectClassID
-END
+  return @ProjectClassID
+end

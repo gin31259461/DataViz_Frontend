@@ -1,26 +1,23 @@
-/*
-This procedure is used to create a view for the specified member's project class.
-*/
-USE [DV]
-GO
+-- This procedure is used to create a view for the specified member's project class.
+use [DV]
+go
 
-CREATE
-  OR
+create or
 
-ALTER PROCEDURE [dbo].[xp_createMemberProjectView] @mid INT
-AS
-BEGIN
-  DECLARE @account NVARCHAR(64), @sql NVARCHAR(2000)
+alter procedure [dbo].[xp_createMemberProjectView] @mid int
+as
+begin
+  declare @account nvarchar(64), @sql nvarchar(2000)
 
-  SELECT @account = (
-      SELECT Account
-      FROM [dbo].[Member]
-      WHERE MID = @mid
+  select @account = (
+      select Account
+      from [dbo].[Member]
+      where MID = @mid
       )
 
-  PRINT (@account)
+  print (@account)
 
-  SELECT @sql = '
+  select @sql = '
     CREATE OR ALTER VIEW dbo.vd_project_' + @account +
     '
     AS
@@ -42,8 +39,8 @@ BEGIN
       AND C.CID = I.CCID
   '
 
-  EXEC sp_executesql @sql
-END
-GO
+  exec sp_executesql @sql
+end
+go
 
 

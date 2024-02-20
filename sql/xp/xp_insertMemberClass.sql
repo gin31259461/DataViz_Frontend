@@ -2,40 +2,38 @@
 This procedure is used to create a new member's space for the specified member.
 Included member's class and member's project class.
 */
-USE [DV]
-GO
+use [DV]
+go
 
-CREATE
-  OR
+create or
 
-ALTER PROCEDURE xp_insertMemberClass @MID INT
+alter procedure xp_insertMemberClass @MID int
   -- 新創建會員的 ID
-AS
-BEGIN
-  DECLARE @Member INT
+as
+begin
+  declare @Member int
 
-  SELECT @Member = CID
-  FROM Class
-  WHERE nLevel = 1
-    AND Class.EName = 'Member'
+  select @Member = CID
+  from Class
+  where nLevel = 1 and Class.EName = 'Member'
 
-  DECLARE @Account NVARCHAR(255), @CName NVARCHAR(255)
+  declare @Account nvarchar(255), @CName nvarchar(255)
 
-  SELECT @Account = Account
-  FROM [dbo].[Member]
-  WHERE MID = @MID
+  select @Account = Account
+  from [dbo].[Member]
+  where MID = @MID
 
-  DECLARE @CCID INT
+  declare @CCID int
 
   -- insert member's class
-  EXEC xp_insertClass @Member, 1, @Account, 'Member', @CCID OUTPUT
+  exec xp_insertClass @Member, 1, @Account, 'Member', @CCID output
 
-  UPDATE Member
-  SET CID = @CCID
-  WHERE MID = @MID
+  update Member
+  set CID = @CCID
+  where MID = @MID
 
   -- insert project class to member's class
-  EXEC xp_insertClass @CCID, 8, 'project', 'Project', @CCID OUTPUT
+  exec xp_insertClass @CCID, 8, 'project', 'Project', @CCID output
 
-  EXEC xp_createMemberProjectView @mid
-END
+  exec xp_createMemberProjectView @mid
+end

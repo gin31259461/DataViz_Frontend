@@ -1,109 +1,110 @@
-USE [DV]
-GO
+use [DV]
+go
 
 /****** Object:  StoredProcedure [dbo].[xp_insertClass]    Script Date: 2023/11/21 下午 10:19:59 ******/
-SET ANSI_NULLS ON
-GO
+set ansi_nulls on
+go
 
-SET QUOTED_IDENTIFIER OFF
-GO
+set quoted_identifier off
+go
 
-Create OR ALTER PROCEDURE [dbo].[xp_insertClass] @PCID INT,
-	--c.CID，父節點
-	@Type INT,
-	--c.Type
-	@CName NVARCHAR(400),
-	--c.CName
-	@EName NVARCHAR(400),
-	--c.EName
-	@CCID INT OUTPUT
-	--c.CID,新產生的節點，回傳
-AS
-BEGIN
-	SET XACT_ABORT ON
+create or
 
-	--指定當 Transact-SQL 陳述式產生執行階段錯誤時，SQL Server 是否自動回復目前的交易
-	BEGIN TRY
-		BEGIN TRANSACTION --下面的過程設定為一整筆交易動作
+alter procedure [dbo].[xp_insertClass] @PCID int,
+  --c.CID，父節點
+  @Type int,
+  --c.Type
+  @CName nvarchar(400),
+  --c.CName
+  @EName nvarchar(400),
+  --c.EName
+  @CCID int output
+  --c.CID,新產生的節點，回傳
+as
+begin
+  set xact_abort on
 
-		DECLARE @NamePath NVARCHAR(900) = (
-				SELECT [dbo].[fn_getNamePath](@PCID, @CName)
-				)
+  --指定當 Transact-SQL 陳述式產生執行階段錯誤時，SQL Server 是否自動回復目前的交易
+  begin try
+    begin transaction --下面的過程設定為一整筆交易動作
 
-		IF (
-				(
-					SELECT count(*)
-					FROM Class
-					WHERE NamePath = @NamePath
-					) = 0
-				)
-		BEGIN
-			DECLARE @CID INT
-			DECLARE @nlevel INT
+    declare @NamePath nvarchar(900) = (
+        select [dbo].[fn_getNamePath](@PCID, @CName)
+        )
 
-			INSERT INTO Class (CName, [Type], EName)
-			VALUES (@CName, @Type, @EName)
+    if (
+        (
+          select count(*)
+          from Class
+          where NamePath = @NamePath
+          ) = 0
+        )
+    begin
+      declare @CID int
+      declare @nlevel int
 
-			SET @CID = @@Identity
+      insert into Class (CName, [Type], EName)
+      values (@CName, @Type, @EName)
 
-			IF @PCID IS NOT NULL
-				INSERT INTO Inheritance (PCID, CCID)
-				VALUES (@PCID, @CID)
+      set @CID = @@Identity
 
-			-- 利用GetCID 取得Parent的CID
-			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
-			VALUES (@CID, 0, 0, 63)
+      if @PCID is not null
+        insert into Inheritance (PCID, CCID)
+        values (@PCID, @CID)
 
-			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
-			VALUES (@CID, 1, 1, 3)
+      -- 利用GetCID 取得Parent的CID
+      insert into Permission (CID, RoleType, RoleID, PermissionBits)
+      values (@CID, 0, 0, 63)
 
-			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
-			VALUES (@CID, 0, 1, 3)
+      insert into Permission (CID, RoleType, RoleID, PermissionBits)
+      values (@CID, 1, 1, 3)
 
-			INSERT INTO Permission (CID, RoleType, RoleID, PermissionBits)
-			VALUES (@CID, 0, 2, 3)
+      insert into Permission (CID, RoleType, RoleID, PermissionBits)
+      values (@CID, 0, 1, 3)
 
-			UPDATE Class
-			SET nLevel = dbo.fn_getLevel(@PCID)
-			WHERE CID = @CID
+      insert into Permission (CID, RoleType, RoleID, PermissionBits)
+      values (@CID, 0, 2, 3)
 
-			SELECT @nlevel = nlevel
-			FROM Class
-			WHERE CID = @CID
+      update Class
+      set nLevel = dbo.fn_getLevel(@PCID)
+      where CID = @CID
 
-			IF (@nlevel = 1)
-			BEGIN
-				UPDATE Class
-				SET NamePath = @CName, IDPath = @CID
-				WHERE CID = @CID
-			END
-			ELSE
-			BEGIN
-				UPDATE Class
-				SET NamePath = dbo.fn_getNamePath(@PCID, @CName), IDPath = dbo.fn_getIDPath(
-						@PCID, @CID)
-				WHERE CID = @CID
-			END
+      select @nlevel = nlevel
+      from Class
+      where CID = @CID
 
-			--設定回傳值
-			SET @CCID = @CID
-		END
-		ELSE
-		BEGIN
-			SET @CCID = NULL
-		END
+      if (@nlevel = 1)
+      begin
+        update Class
+        set NamePath = @CName, IDPath = @CID
+        where CID = @CID
+      end
+      else
+      begin
+        update Class
+        set NamePath = dbo.fn_getNamePath(@PCID, @CName), IDPath = dbo.fn_getIDPath(@PCID, @CID)
+        where CID = @CID
+      end
 
-		COMMIT TRANSACTION
-	END TRY
+      --設定回傳值
+      set @CCID = @CID
+    end
+    else
+    begin
+      set @CCID = null
+    end
 
-	BEGIN CATCH
-		IF XACT_STATE() <> 0
-		BEGIN
-			ROLLBACK TRANSACTION
-		END
+    commit transaction
+  end try
 
-		SELECT ERROR_NUMBER() AS ErrorNumber, ERROR_MESSAGE() AS ErrorMessage
-	END CATCH
+  begin catch
+    if XACT_STATE() <> 0
+    begin
+      rollback transaction
+    end
 
-	SET XACT_ABORT OFF
-END
+    select ERROR_NUMBER() as ErrorNumber, ERROR_MESSAGE() as ErrorMessage
+  end catch
+
+  set xact_abort off
+end

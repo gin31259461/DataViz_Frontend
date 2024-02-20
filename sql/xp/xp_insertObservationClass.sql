@@ -1,33 +1,31 @@
-USE [DV]
-GO
+use [DV]
+go
 
-CREATE
-  OR
+create or
 
 -- MID: prooject creator
 -- EName: projecct title
 -- EDes: projecct description
 -- CCID: current added project id -> output
-ALTER PROCEDURE xp_insertObservationClass @ProjectCID INT, @EName NVARCHAR(255), @EDes
-  NVARCHAR(800), @CCID INT OUTPUT
-AS
-BEGIN
-  DECLARE @guid UNIQUEIDENTIFIER, @CName VARCHAR(255), @currentCRank TINYINT
+alter procedure xp_insertObservationClass @ProjectCID int, @EName nvarchar(255), @EDes nvarchar(800), @CCID int output
+as
+begin
+  declare @guid uniqueidentifier, @CName varchar(255), @currentCRank tinyint
 
-  SELECT @guid = NEWID()
+  select @guid = NEWID()
 
-  SELECT @CName = CONVERT(VARCHAR(255), @guid)
+  select @CName = CONVERT(varchar(255), @guid)
 
-  EXEC [dbo].[xp_insertClass] @ProjectCID, 8, @CName, @EName, @CCID OUTPUT
+  exec [dbo].[xp_insertClass] @ProjectCID, 8, @CName, @EName, @CCID output
 
-  SELECT TOP 1 @currentCRank = cRank
-  FROM Class
-  WHERE CID = @ProjectCID
+  select top 1 @currentCRank = cRank
+  from Class
+  where CID = @ProjectCID
 
-  UPDATE Class
-  SET EDes = @EDes, cRank = @currentCRank + 1
-  WHERE CID = @CCID
-END
-GO
+  update Class
+  set EDes = @EDes, cRank = @currentCRank + 1
+  where CID = @CCID
+end
+go
 
 

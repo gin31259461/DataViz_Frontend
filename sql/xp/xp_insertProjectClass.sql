@@ -1,43 +1,41 @@
-USE [DV]
-GO
+use [DV]
+go
 
-CREATE
-  OR
+create or
 
 -- MID: project creator
 -- EName: project title
 -- EDes: project description
 -- CDes: project type
-ALTER PROCEDURE xp_insertProjectClass @mid INT, @EName NVARCHAR(255), @EDes NVARCHAR(800
-  ), @CDes NVARCHAR(100)
-AS
-BEGIN
-  DECLARE @ProjectClassID INT, @CCID INT
+alter procedure xp_insertProjectClass @mid int, @EName nvarchar(255), @EDes nvarchar(800), @CDes nvarchar(100)
+as
+begin
+  declare @ProjectClassID int, @CCID int
 
-  SELECT @ProjectClassID = [dbo].[fn_getProjectClassID](@mid)
+  select @ProjectClassID = [dbo].[fn_getProjectClassID](@mid)
 
-  DECLARE @guid UNIQUEIDENTIFIER, @CName VARCHAR(255)
+  declare @guid uniqueidentifier, @CName varchar(255)
 
-  SELECT @guid = NEWID()
+  select @guid = NEWID()
 
-  SELECT @CName = CONVERT(VARCHAR(255), @guid)
+  select @CName = CONVERT(varchar(255), @guid)
 
-  EXEC [dbo].[xp_insertClass] @ProjectClassID, 8, @CName, @EName, @CCID OUTPUT
+  exec [dbo].[xp_insertClass] @ProjectClassID, 8, @CName, @EName, @CCID output
 
-  UPDATE Class
-  SET EDes = @EDes, CDes = @CDes
-  WHERE CID = @CCID
+  update Class
+  set EDes = @EDes, CDes = @CDes
+  where CID = @CCID
 
-  SELECT @guid = NEWID()
+  select @guid = NEWID()
 
-  SELECT @CName = CONVERT(VARCHAR(255), @guid)
+  select @CName = CONVERT(varchar(255), @guid)
 
-  EXEC [dbo].[xp_insertClass] @CCID, 8, @CName, @EName, @CCID OUTPUT
+  exec [dbo].[xp_insertClass] @CCID, 8, @CName, @EName, @CCID output
 
-  UPDATE Class
-  SET cRank = 0
-  WHERE CID = @CCID
-END
-GO
+  update Class
+  set cRank = 0
+  where CID = @CCID
+end
+go
 
 

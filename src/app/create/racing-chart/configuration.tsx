@@ -194,14 +194,16 @@ export default function Configuration() {
             <Typography variant="body1">Value column</Typography>
           </Grid>
           <Grid item xs={12}>
-            <CustomSelect
-              required
-              label="value"
-              items={columnTypeMapping?.number}
-              helperText="this is required filed"
-              onChange={onChange}
-              defaultValue={dataArgs?.mapping.value}
-            ></CustomSelect>
+            {columnTypeMapping && (
+              <CustomSelect
+                required
+                label="value"
+                items={[...columnTypeMapping.number, ...columnTypeMapping.date]}
+                helperText="this is required filed"
+                onChange={onChange}
+                defaultValue={dataArgs?.mapping.value}
+              ></CustomSelect>
+            )}
           </Grid>
         </Grid>
       </Grid>
